@@ -45,7 +45,7 @@ const ForgotPassword = ({navigation}) => {
           </View>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('OrderDetails')}
+            onPress={() => navigation.navigate('DrawerNavigator')}
             style={{
               justifyContent: 'center',
               alignItems: 'center',

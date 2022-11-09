@@ -8,7 +8,7 @@ import ForgotPassword from '../screens/ForgotPassword/ForgotPassword';
 import OrderDetails from '../screens/OrderDetails/OrderDetails';
 import SettingScreen from '../screens/SettingScreen/SettingScreen';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
-
+import DrawerNavigator from './DrawerNavigator';
 const Stack = createStackNavigator();
 const StackNavigation = () => {
   return (
@@ -16,6 +16,7 @@ const StackNavigation = () => {
       <Stack.Navigator
         screenOptions={{headerShown: false}}
         initialRouteName="SplashScreen">
+        {/* <Stack.Screen name="DrawerNavigation" component={DrawerNavigation} /> */}
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="AppIntroSliders" component={AppIntroSliders} />
         <Stack.Screen name="Login" component={Login} />
@@ -23,6 +24,7 @@ const StackNavigation = () => {
         <Stack.Screen name="OrderDetails" component={OrderDetails} />
         <Stack.Screen name="SettingScreen" component={SettingScreen} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} />
       </Stack.Navigator>
     </>
   );
