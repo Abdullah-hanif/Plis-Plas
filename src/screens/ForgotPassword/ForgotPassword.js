@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import {color} from '../../theme';
-import Button from '../../components/Button/Button';
+import Mail from 'react-native-vector-icons/Fontisto';
 const ForgotPassword = ({navigation}) => {
   return (
     <>
@@ -36,11 +36,12 @@ const ForgotPassword = ({navigation}) => {
           </View>
           <View style={styles.txtInputContainer}>
             <View style={styles.emailInput}>
-              <Image
-                style={{height: 20, width: 20, top: 15, tintColor: 'gray'}}
-                source={require('../../assets/Icons/mail.png')}
+              <Mail name="email" size={20} color="black" style={{top: 15}} />
+
+              <TextInput
+                placeholderTextColor={'black'}
+                placeholder="Paco ramos"
               />
-              <TextInput placeholder="Paco ramos" />
             </View>
           </View>
 

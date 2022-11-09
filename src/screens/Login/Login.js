@@ -11,6 +11,9 @@ import {
 import React from 'react';
 import {color} from '../../theme';
 import Button from '../../components/Button/Button';
+import Mail from 'react-native-vector-icons/Fontisto';
+import Lock from 'react-native-vector-icons/EvilIcons';
+
 const Login = ({navigation}) => {
   return (
     <>
@@ -35,18 +38,18 @@ const Login = ({navigation}) => {
           </View>
           <View style={styles.txtInputContainer}>
             <View style={styles.emailInput}>
-              <Image
-                style={{height: 20, width: 20, top: 15, tintColor: 'gray'}}
-                source={require('../../assets/Icons/mail.png')}
+              <Mail name="email" size={20} color="black" style={{top: 15}} />
+              <TextInput
+                placeholderTextColor={'black'}
+                placeholder="Paco ramos"
               />
-              <TextInput placeholder="Paco ramos" />
             </View>
             <View style={styles.passInput}>
-              <Image
-                style={{height: 20, width: 20, top: 15, tintColor: 'gray'}}
-                source={require('../../assets/Icons/mail.png')}
+              <Lock name="lock" size={30} color="black" style={{top: 15}} />
+              <TextInput
+                placeholderTextColor={'black'}
+                placeholder="Password"
               />
-              <TextInput placeholder="Password" />
             </View>
           </View>
           <View style={{alignItems: 'flex-end', margin: 20}}>
