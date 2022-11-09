@@ -10,7 +10,9 @@ const SettingScreen = ({navigation}) => {
           flexDirection: 'row',
           marginTop: 20,
         }}>
-        <Ico name="left" size={25} color="black" />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ico name="left" size={25} color="black" />
+        </TouchableOpacity>
 
         <Text
           style={{
@@ -24,11 +26,7 @@ const SettingScreen = ({navigation}) => {
         </Text>
       </View>
       <View style={{margin: 10, flex: 2, marginTop: 30}}>
-        <SettingItems
-          name=" Notifications"
-          icon={<Switch />}
-          onpress={() => navigation.navigate('ProfileScreen')}
-        />
+        <SettingItems name=" Notifications" icon={<Switch />} />
         <SettingItems
           name="Change Password"
           icon={<Ico name="right" size={25} color="black" />}
@@ -54,10 +52,10 @@ const SettingScreen = ({navigation}) => {
   );
 };
 
-const SettingItems = ({name, icon, onpress}) => {
+const SettingItems = ({name, icon}) => {
   return (
     <>
-      <TouchableOpacity onPress={onpress}>
+      <TouchableOpacity>
         <View
           style={{
             borderBottomWidth: 1,

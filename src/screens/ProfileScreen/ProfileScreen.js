@@ -5,6 +5,7 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import React from 'react';
 import Ico from 'react-native-vector-icons/AntDesign';
@@ -14,14 +15,16 @@ import Emial from 'react-native-vector-icons/Fontisto';
 
 import {color} from '../../theme';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       {/* Header Started */}
       <ScrollView>
         <View style={styles.topHeader}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Ico name="left" size={25} color="white" />
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Ico name="left" size={25} color="white" />
+            </TouchableOpacity>
             <Text style={styles.txt}>My Profile</Text>
             <Edit name="edit" size={25} color="white" />
           </View>
@@ -37,7 +40,7 @@ const ProfileScreen = () => {
                 width: 130,
 
                 borderWidth: 3,
-                borderColor: 'black',
+                borderColor: color.black,
                 borderRadius: 60,
                 alignItems: 'center',
                 justifyContent: 'center',
