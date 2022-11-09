@@ -68,15 +68,20 @@ const ProfileScreen = () => {
             shadowColor: '#000',
             shadowOffset: {
               width: 0,
-              height: 12,
+              height: 4,
             },
-            shadowOpacity: 0.58,
-            shadowRadius: 16.0,
+            shadowOpacity: 0.3,
+            shadowRadius: 4.65,
 
-            elevation: 24,
+            elevation: 8,
           }}>
           {/* Informtion area */}
-          <View style={{paddingVertical: 10, borderBottomWidth: 1}}>
+          <View
+            style={{
+              paddingVertical: 10,
+              borderBottomWidth: 1,
+              borderColor: 'lightgray',
+            }}>
             <Text
               style={{
                 fontSize: 17,
@@ -89,7 +94,6 @@ const ProfileScreen = () => {
             </Text>
           </View>
           {/* End Informtion area */}
-
           <InfromationDetails
             icon={<Gender name="account" size={25} color="black" />}
             title="Name"
@@ -111,13 +115,32 @@ const ProfileScreen = () => {
             name="Male"
           />
           <InfromationDetails
-            icon={<Ico name="calender" size={25} color="black" />}
+            icon={<Ico name="calendar" size={25} color="black" />}
             title="DOB"
             name="8/17/1996"
           />
         </View>
+        {/* FirstComp Ended */}
+        {/* license Container start */}
+
+        <LicenceContainer
+          icon={<Gender name="gender-female" size={25} color="black" />}
+          title="Gender"
+          name="Male"
+          topHeading="Licence"
+        />
+
+        {/* license Container End */}
+        {/* CIVIL ID CONTAINER */}
+        <LicenceContainer
+          icon={<Gender name="gender-female" size={25} color="black" />}
+          title="Gender"
+          name="Male"
+          topHeading="Civil ID"
+        />
+
+        {/* End CIVIL CONTAINER */}
       </ScrollView>
-      {/* FirstComp Ended */}
     </View>
   );
 };
@@ -127,24 +150,105 @@ const InfromationDetails = ({icon, title, name}) => {
     <>
       <View
         style={{
-          flexDirection: 'row',
           margin: 10,
-          // justifyContent: 'space-evenly',
-          alignItems: 'flex-start',
           justifyContent: 'space-between',
+          flexDirection: 'row',
         }}>
-        {icon}
-        {/* <Ico name="left" size={25} color="white" /> */}
-        <Text
+        <View style={{flexDirection: 'row'}}>
+          <View>{icon}</View>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              color: 'black',
+              fontSize: 17,
+              left: 10,
+            }}>
+            {title}
+          </Text>
+        </View>
+        <Text style={{color: 'black', right: 25}}>{name}</Text>
+      </View>
+    </>
+  );
+};
+
+const LicenceContainer = ({icon, title, name, topHeading}) => {
+  return (
+    <>
+      <View
+        style={{
+          margin: 20,
+          // marginTop: 110,
+          backgroundColor: 'white',
+          // padding: 10,
+          borderRadius: 10,
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 4,
+          },
+          shadowOpacity: 0.3,
+          shadowRadius: 4.65,
+
+          elevation: 8,
+        }}>
+        <View
           style={{
-            fontWeight: 'bold',
-            color: 'black',
-            right: 30,
-            textAlign: 'right',
+            paddingVertical: 10,
+            borderBottomWidth: 1,
+            borderColor: 'lightgray',
           }}>
-          {title}
-        </Text>
-        <Text style={{color: 'black', textAlign: 'left'}}>{name}</Text>
+          <Text
+            style={{
+              fontSize: 17,
+              fontWeight: 'bold',
+              margin: 10,
+              color: 'black',
+              // padding: 10,
+            }}>
+            {topHeading}
+          </Text>
+        </View>
+        <View
+          style={{
+            margin: 10,
+
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+          }}>
+          <View>
+            <Text
+              style={{
+                fontWeight: '100',
+                color: 'black',
+                fontSize: 17,
+                margin: 10,
+              }}>
+              Front
+            </Text>
+            {/* <Text style={{color: 'black', right: 25}}>{name}</Text> */}
+            <Image
+              style={{height: 150, width: 145}}
+              source={require('../../assets/Images/licese.jpg')}
+            />
+          </View>
+          <View>
+            <Text
+              style={{
+                fontWeight: '100',
+                color: 'black',
+                fontSize: 17,
+                margin: 10,
+              }}>
+              Back
+            </Text>
+            {/* <Text style={{color: 'black', right: 25}}>{name}</Text> */}
+            <Image
+              style={{height: 150, width: 145}}
+              source={require('../../assets/Images/licese.jpg')}
+            />
+          </View>
+        </View>
       </View>
     </>
   );
