@@ -18,9 +18,10 @@ const styles = StyleSheet.create({
     width: 340,
     // height: 40,
     padding: 15,
-    marginBottom: 10,
+    right: 10,
+    marginBottom: 50,
     backgroundColor: color.blue,
-    borderRadius: 20,
+    borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -68,19 +69,22 @@ const AppIntroSliders = ({navigation}) => {
           style={{
             flex: 1,
             backgroundColor: 'white',
-            padding: 10,
+            // padding: 10,
             marginTop: 10,
+            marginBottom: 70,
           }}>
-          <Text style={{fontSize: 15, color: 'gray', fontWeight: '100'}}>
+          <Text style={{fontSize: 15, color: 'black', fontWeight: '400'}}>
             Hello nice to meet you!
           </Text>
           <Text style={{fontSize: 27, color: 'black', fontWeight: 'bold'}}>
             Get a new experience
           </Text>
           <Image
+            resizeMode="contain"
             style={{
-              marginTop: 30,
-              height: 360,
+              // marginTop: 30,
+              // backgroundColor: 'blue',
+              height: '100%',
               width: Dimensions.get('screen').width,
             }}
             source={item.image}

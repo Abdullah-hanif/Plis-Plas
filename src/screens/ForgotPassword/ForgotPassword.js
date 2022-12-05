@@ -12,11 +12,18 @@ import {
 import React from 'react';
 import {color} from '../../theme';
 import Mail from 'react-native-vector-icons/Fontisto';
+import Back from 'react-native-vector-icons/Ionicons';
+
 const ForgotPassword = ({navigation}) => {
   return (
     <>
       <StatusBar hidden />
       <View style={styles.container}>
+        <TouchableOpacity
+          style={{left: 15, top: 15}}
+          onPress={() => navigation.goBack()}>
+          <Back name="chevron-back" size={30} color="black" />
+        </TouchableOpacity>
         <ScrollView>
           <View style={styles.innerContainer}>
             <Image
@@ -28,19 +35,29 @@ const ForgotPassword = ({navigation}) => {
               style={{
                 marginTop: 30,
                 fontWeight: 'bold',
-                fontSize: 18,
+                fontSize: 20,
                 color: 'black',
               }}>
-              ForgotPassword
+              Forgot Password
             </Text>
           </View>
           <View style={styles.txtInputContainer}>
             <View style={styles.emailInput}>
-              <Mail name="email" size={20} color="black" style={{top: 15}} />
+              <Image
+                resizeMode="contain"
+                // style={}
+                style={{
+                  height: 25,
+                  width: 25,
+                  top: 11,
+                }}
+                source={require('../../assets/Icons/mail.png')}
+              />
 
               <TextInput
                 placeholderTextColor={'black'}
                 placeholder="Paco ramos"
+                style={{left: 10, fontSize: 15}}
               />
             </View>
           </View>
@@ -50,10 +67,10 @@ const ForgotPassword = ({navigation}) => {
             style={{
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: 130,
+              marginTop: Dimensions.get('screen').height / 5.5,
               margin: 30,
               padding: 20,
-              borderRadius: 30,
+              borderRadius: 40,
               backgroundColor: color.blue,
             }}>
             <Text style={{fontWeight: 'bold', color: 'white'}}>SENT</Text>
@@ -87,6 +104,7 @@ const styles = StyleSheet.create({
   emailInput: {
     flexDirection: 'row',
     borderBottomWidth: 1,
+    marginVertical: 30,
     borderBottomColor: 'black',
   },
   passInput: {

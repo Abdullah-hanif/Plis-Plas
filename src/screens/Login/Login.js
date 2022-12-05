@@ -18,7 +18,9 @@ const Login = ({navigation}) => {
   return (
     <>
       <StatusBar hidden />
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{flex: 1, backgroundColor: 'white'}}>
         <View style={styles.container}>
           <View style={styles.innerContainer}>
             <Image
@@ -30,7 +32,7 @@ const Login = ({navigation}) => {
               style={{
                 marginTop: 30,
                 fontWeight: 'bold',
-                fontSize: 18,
+                fontSize: 28,
                 color: 'black',
               }}>
               Login
@@ -38,25 +40,45 @@ const Login = ({navigation}) => {
           </View>
           <View style={styles.txtInputContainer}>
             <View style={styles.emailInput}>
-              <Mail name="email" size={20} color="black" style={{top: 15}} />
+              <Image
+                resizeMode="contain"
+                // style={}
+                style={{
+                  height: 25,
+                  width: 25,
+                  top: 13,
+                }}
+                source={require('../../assets/Icons/mail.png')}
+              />
               <TextInput
                 placeholderTextColor={'black'}
                 placeholder="Paco ramos"
+                style={{left: 10, fontSize: 15}}
               />
             </View>
             <View style={styles.passInput}>
-              <Lock name="lock" size={30} color="black" style={{top: 15}} />
+              <Image
+                resizeMode="contain"
+                // style={}
+                style={{
+                  height: 25,
+                  width: 25,
+                  top: 13,
+                }}
+                source={require('../../assets/Icons/Group5461.png')}
+              />
               <TextInput
                 placeholderTextColor={'black'}
                 placeholder="Password"
+                style={{left: 10, fontSize: 15}}
               />
             </View>
           </View>
           <View style={{alignItems: 'flex-end', margin: 20}}>
             <TouchableOpacity
               onPress={() => navigation.navigate('ForgotPassword')}>
-              <Text style={{color: 'black', fontWeight: 'bold'}}>
-                Forgot Password ?
+              <Text style={{color: 'black', fontWeight: 'bold', fontSize: 15}}>
+                Forgot Password?
               </Text>
             </TouchableOpacity>
           </View>
@@ -86,7 +108,7 @@ const styles = StyleSheet.create({
     width: 150,
   },
   innerContainer: {
-    marginTop: 40,
+    marginVertical: 40,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -95,12 +117,14 @@ const styles = StyleSheet.create({
   },
   emailInput: {
     flexDirection: 'row',
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
+    marginVertical: 20,
     borderBottomColor: 'black',
   },
   passInput: {
     flexDirection: 'row',
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
+    fontSize: 18,
     borderBottomColor: 'black',
   },
 });
