@@ -117,14 +117,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 0.5,
     marginVertical: 20,
-    borderBottomColor: 'black',
+    borderBottomColor: '#C6C6C6',
     alignItems:'center',
   },
   passInput: {
     flexDirection: 'row',
     borderBottomWidth: 0.5,
     fontSize: 18,
-    borderBottomColor: 'black',
+    borderBottomColor: '#C6C6C6',
     alignItems:'center'
   },
 });

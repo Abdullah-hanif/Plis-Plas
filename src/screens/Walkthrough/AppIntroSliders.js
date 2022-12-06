@@ -16,6 +16,21 @@ import {color} from '../../theme';
 const styles = StyleSheet.create({
   buttonCircle: {
     width: 340,
+     height: '55%',
+    // padding: 15,
+    right: '3.5%',
+    marginBottom: 50,
+    backgroundColor: color.blue,
+    borderRadius: 360,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf:'center',
+    alignContent:'center',
+    display:'flex'
+    
+  },
+  buttonCirclet: {
+    width: 340,
      height: '50%',
     // padding: 15,
     right: '3.5%',
@@ -73,23 +88,26 @@ const AppIntroSliders = ({navigation}) => {
           style={{
             flex: 1,
             backgroundColor: 'white',
-             padding: 10,
+            //  padding: 10,
             marginTop: 10,
-            marginBottom: 70,
+            marginBottom: 190,
           }}>
-          <Text style={{paddingLeft:'5%',fontSize: 15, color: 'black', fontWeight: '400'}}>
+            <View style={{paddingLeft:'5%',paddingTop:'15%'}}>
+          <Text style={{fontSize: 15, color: 'black', fontWeight: '400'}}>
             Hello nice to meet you!
           </Text>
-          <Text style={{paddingLeft:'5%',fontSize: 27, color: 'black', fontWeight: 'bold'}}>
+          <Text style={{fontSize: 27, color: 'black', fontWeight: 'bold'}}>
             Get a new experience
           </Text>
+          </View>
           <Image
             resizeMode="contain"
             style={{
               // marginTop: 30,
               // backgroundColor: 'blue',
               height: '100%',
-              width: Dimensions.get('screen').width,
+              width:'100%',
+              // width: Dimensions.get('screen').width,
             }}
             source={item.image}
           />
@@ -100,15 +118,15 @@ const AppIntroSliders = ({navigation}) => {
   renderNextButton = () => {
     return (
       <View style={styles.buttonCircle}>
-        <Text style={{fontWeight: 'bold', color: 'white'}}>Continue</Text>
+        <Text style={{fontWeight: 'bold', color: 'white'}}>CONTINUE</Text>
       </View>
     );
   };
   renderDoneButton = () => {
     return (
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <View style={styles.buttonCircle}>
-          <Text style={{fontWeight: 'bold', color: 'white'}}>Continue</Text>
+        <View style={styles.buttonCirclet}>
+          <Text style={{fontWeight: 'bold', color: 'white'}}>CONTINUE</Text>
         </View>
       </TouchableOpacity>
     );

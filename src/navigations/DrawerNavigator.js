@@ -45,7 +45,7 @@ const Home = ({navigation}) => {
     <>
       <Header onClick={() => navigation.openDrawer()} />
       {/* Map is rendering here!!!!! */}
-      <Text>Map is rendering here </Text>
+      <Text style={{paddingLeft:'10%',top:'2%'}}>Map is rendering here... </Text>
       <View
         style={{
           flex: 1,
@@ -86,18 +86,18 @@ const Home = ({navigation}) => {
                   style={{
                     height: 50,
                     width: 50,
-
+                   marginLeft:'8%',
                     borderWidth: 3,
                     borderColor: 'black',
-                    borderRadius: 60,
+                    borderRadius: 360,
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
                   <Image
                     style={{
                       margin: 10,
-
-                      borderRadius: 60,
+                   
+                      borderRadius: 360,
                       height: 48,
                       width: 48,
                       resizeMode: 'contain',
@@ -108,7 +108,7 @@ const Home = ({navigation}) => {
                 <Text
                   style={{
                     fontWeight: 'bold',
-                    left: 10,
+                    left: 15,
                     color: 'black',
                     fontSize: 19,
                     top: 13,
@@ -123,6 +123,8 @@ const Home = ({navigation}) => {
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={toggleSwitch}
                 value={isEnabled}
+                style={{marginRight:'2%'}}
+              
               />
             </View>
             {/* End 2nd Container */}

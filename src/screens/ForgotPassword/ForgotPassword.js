@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 1,
     marginVertical: 30,
-    borderBottomColor: 'black',
+    borderBottomColor: '#C6C6C6',
     alignItems:'center'
   },
   passInput: {

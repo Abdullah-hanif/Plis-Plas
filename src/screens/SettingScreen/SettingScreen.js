@@ -34,7 +34,7 @@ const SettingScreen = ({navigation}) => {
       </View>
       <View style={{margin: 10, flex: 2, marginTop: 50}}>
         <SettingItems
-          name=" Notifications"
+          name="Notifications"
           icon={
             <Switch
               trackColor={{false: '#767577', true: color.blue}}
@@ -50,20 +50,20 @@ const SettingScreen = ({navigation}) => {
           icon={<Ico name="right" size={22} color="black" />}
         />
         <SettingItems
-          name=" Privacy Policy"
+          name="Privacy Policy"
           icon={<Ico name="right" size={22} color="black" />}
         />
         <SettingItems
-          name=" Terms & Condition"
+          name="Terms & Condition"
           icon={<Ico name="right" size={22} color="black" />}
         />
         <SettingItems
-          name=" About Us"
+          name="About Us"
           icon={<Ico name="right" size={22} color="black" />}
         />
         <SettingItems
         onPress={()=>(navigation.navigate('Login'))}
-          name=" Logout"
+          name="Logout"
           icon={<Ico name="right" size={22} color="black" />}
         />
       </View>
@@ -78,13 +78,16 @@ const SettingItems = ({name, icon, onPress}) => {
         <View
           style={{
             borderBottomWidth: 1,
-            borderColor: 'black',
+            borderColor: '#C6C6C6',
             flexDirection: 'row',
             justifyContent: 'space-between',
-            padding: 15,
-            alignItems:'center'
+           width:'100%',
+            alignItems:'center',
+            paddingVertical:15,
+            
+            
           }}>
-          <Text style={{color: 'black'}}>{name}</Text>
+          <Text style={{color: 'black',textAlign:'center',textAlignVertical:'center',fontSize:17}}>{name}</Text>
           {icon}
         </View>
       </TouchableOpacity>

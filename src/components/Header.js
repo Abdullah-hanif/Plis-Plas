@@ -8,15 +8,21 @@ import {useNavigation} from '@react-navigation/native';
 const Header = ({onClick}) => {
   return (
     <View style={styles.headerContainer}>
-      <TouchableOpacity onPress={onClick}>
-        <Drawer name="navicon" size={20}  color="white" />
+      <TouchableOpacity onPress={onClick} style={{paddingLeft:'5%'}}>
+      <Image
+        style={{width:20,height:20}}
+        source={require('../assets/Icons/menu.png')}
+      />
       </TouchableOpacity>
       <Image
         style={styles.imgStyle}
         source={require('../assets/Icons/Group15265.png')}
       />
-       <TouchableOpacity>
-      <Bell name="bell-o" size={20} color="white" />
+       <TouchableOpacity style={{paddingRight:'5%'}}>
+       <Image
+        style={{width:20,height:20}}
+        source={require('../assets/Icons/bell.png')}
+      />
       </TouchableOpacity>
     </View>
   );

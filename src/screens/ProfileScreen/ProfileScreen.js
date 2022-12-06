@@ -121,19 +121,15 @@ const ProfileScreen = ({navigation}) => {
       {/* Header Started */}
       <ScrollView>
         <View style={styles.topHeader}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 20,
-              alignItems:'center'
-            }}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Ico name="left" size={25} color="white" />
+         <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+         <TouchableOpacity onPress={() => navigation.goBack()} style={{paddingLeft:'3%'}}>
+             <Image source={require('../../assets/Icons/back.png')} style={{width:22,height:22}}/>
             </TouchableOpacity>
-            <Text style={styles.txt}>My Profile</Text>
-            <Edit name="edit" size={25} color="white" />
-          </View>
+          <View><Text style={styles.txt}>My Profile</Text></View>
+          <TouchableOpacity style={{paddingRight:'3%'}}>
+            <Image source={require('../../assets/Icons/editProfile.png')} style={{width:22,height:22,marginRight:'2%'}}/>
+            </TouchableOpacity>
+         </View>
           <View
             style={{
               flexDirection: 'row',
@@ -199,7 +195,7 @@ const ProfileScreen = ({navigation}) => {
                 fontWeight: 'bold',
                 margin: 10,
                 color: 'black',
-                // padding: 10,
+                paddingLeft: 5,
               }}>
               Information
             </Text>
@@ -388,7 +384,7 @@ const ProfileScreen = ({navigation}) => {
 const InfromationDetails = ({icon, title, name}) => {
   return (
     <>
-      <View style={{flexDirection: 'row', margin: 10}}>
+      <View style={{flexDirection: 'row', margin: 15}}>
         <View style={{alignItems: 'center'}}>{icon}</View>
         <View
           style={{
@@ -399,7 +395,7 @@ const InfromationDetails = ({icon, title, name}) => {
             // justifyContent: 'space-between',
 
             width: '70%',
-            marginHorizontal: 20,
+            marginHorizontal: 25,
             // paddingHorizontal: 30,
           }}>
           <View style={{width: '30%', alignItems: 'center'}}>
@@ -565,6 +561,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 25,
     margin: 10,
+    alignSelf:'center',
+    alignItems:'center',
+    justifyContent:'center'
   },
   profileContainer: {
     padding: 30,
