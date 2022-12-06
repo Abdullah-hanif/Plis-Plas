@@ -2,12 +2,12 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {color} from '../../theme';
 
-const Button = () => {
+const Button = ({onPress,text}) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Text
         style={{textAlign: 'center', color: color.white, fontWeight: 'bold'}}>
-        LOGIN
+       {text}
       </Text>
     </TouchableOpacity>
   );
@@ -17,7 +17,7 @@ export default Button;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 13,
     width: '90%',
     margin: 40,
     borderRadius: 40,

@@ -119,6 +119,7 @@ export const DrawerContent = ({navigation}) => {
             }
           />
           <DrawerItemContainer
+          onpress={()=>(navigation.navigate('Login'))}
             ico={
               <Image
                 source={require('../../assets/Icons/Group4090.png')}

@@ -126,6 +126,7 @@ const ProfileScreen = ({navigation}) => {
               flexDirection: 'row',
               justifyContent: 'space-between',
               marginTop: 20,
+              alignItems:'center'
             }}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Ico name="left" size={25} color="white" />

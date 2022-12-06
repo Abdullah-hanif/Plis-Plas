@@ -14,6 +14,7 @@ const SettingScreen = ({navigation}) => {
           marginTop: 20,
           // marginRight: 20,
           left: 25,
+          alignItems:"center"
         }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ico name="left" size={20} color="black" />
@@ -46,33 +47,34 @@ const SettingScreen = ({navigation}) => {
         />
         <SettingItems
           name="Change Password"
-          icon={<Ico name="right" size={25} color="black" />}
+          icon={<Ico name="right" size={22} color="black" />}
         />
         <SettingItems
           name=" Privacy Policy"
-          icon={<Ico name="right" size={25} color="black" />}
+          icon={<Ico name="right" size={22} color="black" />}
         />
         <SettingItems
           name=" Terms & Condition"
-          icon={<Ico name="right" size={25} color="black" />}
+          icon={<Ico name="right" size={22} color="black" />}
         />
         <SettingItems
           name=" About Us"
-          icon={<Ico name="right" size={25} color="black" />}
+          icon={<Ico name="right" size={22} color="black" />}
         />
         <SettingItems
+        onPress={()=>(navigation.navigate('Login'))}
           name=" Logout"
-          icon={<Ico name="right" size={25} color="black" />}
+          icon={<Ico name="right" size={22} color="black" />}
         />
       </View>
     </View>
   );
 };
 
-const SettingItems = ({name, icon}) => {
+const SettingItems = ({name, icon, onPress}) => {
   return (
     <>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onPress}>
         <View
           style={{
             borderBottomWidth: 1,
@@ -80,6 +82,7 @@ const SettingItems = ({name, icon}) => {
             flexDirection: 'row',
             justifyContent: 'space-between',
             padding: 15,
+            alignItems:'center'
           }}>
           <Text style={{color: 'black'}}>{name}</Text>
           {icon}

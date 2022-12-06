@@ -49,7 +49,6 @@ const ForgotPassword = ({navigation}) => {
                 style={{
                   height: 25,
                   width: 25,
-                  top: 11,
                 }}
                 source={require('../../assets/Icons/mail.png')}
               />
@@ -63,13 +62,13 @@ const ForgotPassword = ({navigation}) => {
           </View>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('DrawerNavigator')}
+            onPress={() => navigation.navigate('Login')}
             style={{
               justifyContent: 'center',
               alignItems: 'center',
               marginTop: Dimensions.get('screen').height / 5.5,
               margin: 30,
-              padding: 20,
+              padding: 13,
               borderRadius: 40,
               backgroundColor: color.blue,
             }}>
@@ -106,6 +105,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginVertical: 30,
     borderBottomColor: 'black',
+    alignItems:'center'
   },
   passInput: {
     flexDirection: 'row',

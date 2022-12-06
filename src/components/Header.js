@@ -9,13 +9,15 @@ const Header = ({onClick}) => {
   return (
     <View style={styles.headerContainer}>
       <TouchableOpacity onPress={onClick}>
-        <Drawer name="navicon" size={20} style={{top: 20}} color="white" />
+        <Drawer name="navicon" size={20}  color="white" />
       </TouchableOpacity>
       <Image
         style={styles.imgStyle}
         source={require('../assets/Icons/Group15265.png')}
       />
-      <Bell name="bell-o" style={{top: 20}} size={20} color="white" />
+       <TouchableOpacity>
+      <Bell name="bell-o" size={20} color="white" />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -27,8 +29,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: color.blue,
     padding: 20,
-
-    justifyContent: 'space-between',
+   justifyContent: 'space-between',
+    alignItems:'center'
   },
   imgStyle: {
     height: 50,

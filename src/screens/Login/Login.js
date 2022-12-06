@@ -46,7 +46,6 @@ const Login = ({navigation}) => {
                 style={{
                   height: 25,
                   width: 25,
-                  top: 13,
                 }}
                 source={require('../../assets/Icons/mail.png')}
               />
@@ -63,7 +62,6 @@ const Login = ({navigation}) => {
                 style={{
                   height: 25,
                   width: 25,
-                  top: 13,
                 }}
                 source={require('../../assets/Icons/Group5461.png')}
               />
@@ -88,7 +86,7 @@ const Login = ({navigation}) => {
               alignItems: 'center',
               marginTop: 20,
             }}>
-            <Button />
+            <Button onPress={() => navigation.navigate('DrawerNavigator')} text={'LOGIN'}/>
           </View>
         </View>
       </ScrollView>
@@ -120,11 +118,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     marginVertical: 20,
     borderBottomColor: 'black',
+    alignItems:'center',
   },
   passInput: {
     flexDirection: 'row',
     borderBottomWidth: 0.5,
     fontSize: 18,
     borderBottomColor: 'black',
+    alignItems:'center'
   },
 });
