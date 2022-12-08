@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "99489453555",
+    "project_id": "plisplasrider",
+    "storage_bucket": "plisplasrider.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:99489453555:android:99e111a69e5d11a4b0ae86",
+        "android_client_info": {
+          "package_name": "com.plisplas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "99489453555-acmmg9j7hdo2s41rtj28veod92j2v7h0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.plisplas",
+            "certificate_hash": "cd74ccfe74e796af205ae7ce2a4b9a2d6919656d"
+          }
+        },
+        {
+          "client_id": "99489453555-cghvugtqa793n3nqmkus88j5spur96d1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3ALbbTWzIeCaeBNIk5G8xxZCjEscC9bQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "99489453555-cghvugtqa793n3nqmkus88j5spur96d1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

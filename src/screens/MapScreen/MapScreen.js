@@ -20,6 +20,7 @@ import MapView, {Marker} from 'react-native-maps';
 import Header from '../../components/Header';
 import {color} from 'react-native-reanimated';
 import {CustomMapStyle} from './CustomMapStyle';
+import messaging from '@react-native-firebase/messaging';
 
 import GetLocation from 'react-native-get-location';
 // import Geolocation from 'react-native-geolocation-service';
@@ -27,8 +28,48 @@ import GetLocation from 'react-native-get-location';
 
 const MapScreen = ({navigation}) => {
   const [isEnabled, setIsEnabled] = useState(false);
+  // const [loading, setLoading] = useState(true);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [region, setRegion] = useState();
+
+  useEffect(() => {
+    getToken();
+  }, []);
+  const getToken = async () => {
+    await messaging().registerDeviceForRemoteMessages();
+    const token = await messaging().getToken();
+    return console.log('====>TOKENNNNNN====>', token);
+  };
+
+  // const [initialRoute, setInitialRoute] = useState('Home');
+
+  // Assume a message-notification contains a "type" property in the data payload of the screen to open
+
+  // messaging().onNotificationOpenedApp(remoteMessage => {
+  //   return console.log(
+  //     'Notification caused app to open from background state:',
+  //     remoteMessage.notification,
+  //   );
+  //   // navigation.navigate(remoteMessage.data.type);
+  // });
+
+  // Check whether an initial notification is available
+  // messaging()
+  //   .getInitialNotification()
+  //   .then(remoteMessage => {
+  //     if (remoteMessage) {
+  //       console.log(
+  //         'Notification caused app to open from quit state:',
+  //         remoteMessage.notification,
+  //       );
+  //       // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+  //     }
+  //     // setLoading(false);
+  //   });
+
+  // if (loading) {
+  //   return null;
+  // }
 
   const [latitude, setLatitude] = useState(24.833797888244483);
   const [longitude, setLongitute] = useState(67.07092911044822);
@@ -232,7 +273,9 @@ const MapScreen = ({navigation}) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <AntDesign name="checkcircle" size={30} color={'#1284f2'} />
+                <TouchableOpacity>
+                  <AntDesign name="checkcircle" size={30} color={'#1284f2'} />
+                </TouchableOpacity>
                 <Text style={{fontWeight: 'bold', color: 'black'}}>95.0%</Text>
                 <Text style={{fontSize: 15, color: 'gray'}}>Acceptance</Text>
               </View>
