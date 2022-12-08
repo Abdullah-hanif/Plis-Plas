@@ -86,7 +86,10 @@ const Login = ({navigation}) => {
               alignItems: 'center',
               marginTop: 20,
             }}>
-            <Button onPress={() => navigation.navigate('DrawerNavigator')} text={'LOGIN'}/>
+            <Button
+              onPress={() => navigation.navigate('DrawerNavigator')}
+              text={'LOGIN'}
+            />
           </View>
         </View>
       </ScrollView>
@@ -118,13 +121,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     marginVertical: 20,
     borderBottomColor: '#C6C6C6',
-    alignItems:'center',
+    alignItems: 'center',
   },
   passInput: {
     flexDirection: 'row',
     borderBottomWidth: 0.5,
     fontSize: 18,
     borderBottomColor: '#C6C6C6',
-    alignItems:'center'
+    alignItems: 'center',
   },
 });

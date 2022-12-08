@@ -5,6 +5,8 @@ import Login from './src/screens/Login/Login';
 import {NavigationContainer} from '@react-navigation/native';
 import StackNavigation from './src/navigations/StackNavigation';
 import messaging from '@react-native-firebase/messaging';
+import PushNotification from 'react-native-push-notification';
+import {ForegroundHandler} from './src/utils/ForegroundHandler';
 
 import {
   requestUserPermission,
@@ -21,6 +23,7 @@ const App = () => {
     <>
       {/* <Text>App</Text> */}
       {/* <Login /> */}
+      <ForegroundHandler />
       <NavigationContainer>
         <StackNavigation />
       </NavigationContainer>

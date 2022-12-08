@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
+import PushNotification from 'react-native-push-notification';
 
 export const requestUserPermission = async () => {
   const authStatus = await messaging().requestPermission();
@@ -31,14 +32,14 @@ function GetFCMToken() {
 }
 
 export const NotificationListner = async () => {
-  await messaging().onNotificationOpenedApp(remoteMessage => {
+  messaging().onNotificationOpenedApp(remoteMessage => {
     console.log(
       'notification caused app to open bacgrund state',
       remoteMessage.notification,
     );
   });
 
-  await messaging()
+  messaging()
     .getInitialNotification()
     .then(remoteMessage => {
       if (remoteMessage) {
@@ -46,7 +47,7 @@ export const NotificationListner = async () => {
       }
     });
 
-  await messaging().onMessage(async remoteMessage => {
+  messaging().onMessage(remoteMessage => {
     console.log('notification on foreground state....', remoteMessage);
   });
 };
