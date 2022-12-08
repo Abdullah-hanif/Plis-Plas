@@ -20,7 +20,7 @@ import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 
 import Header from '../../components/Header';
 import {color} from 'react-native-reanimated';
-import {CustomMapStyle} from './CustomMapStyle';
+// import {CustomMapStyle} from './CustomMapStyle';
 
 import GetLocation from 'react-native-get-location';
 // import Geolocation from 'react-native-geolocation-service';
@@ -32,7 +32,9 @@ const MapScreen = ({navigation}) => {
   const [region, setRegion] = useState();
 
   const [latitude, setLatitude] = useState(24.833797888244483);
+  const [latitudeDelta, setLatitudeDelta] = useState(0.0922);
   const [longitude, setLongitute] = useState(67.07092911044822);
+  const [longitudeDelta, setLongituteDelta] = useState(0.0421);
 
   try {
     const granted = PermissionsAndroid.request(
@@ -56,7 +58,6 @@ const MapScreen = ({navigation}) => {
     console.warn(err);
   }
 
-  //GetPermission
   useEffect(() => {
     geLocation();
   }, []);
@@ -68,8 +69,10 @@ const MapScreen = ({navigation}) => {
     })
       .then(location => {
         console.log('===>', location);
-        setLongitute(location.longitude);
-        setLatitude(location.latitude);
+        setLongitute(location?.longitude);
+        setLongituteDelta(location?.longitudeDelta);
+        setLatitude(location?.latitude);
+        setLatitudeDelta(location?.latitudeDelta);
       })
       .catch(error => {
         const {code, message} = error;
@@ -105,6 +108,7 @@ const MapScreen = ({navigation}) => {
       <View style={{flex: 1, backgroundColor: 'green'}}>
         <MapView
           //   mapPadding={{top: 300, right: 300, bottom: 300, left: 300}}
+          // ref={map => (this.map = map)}
           provider={PROVIDER_GOOGLE}
           pinColor="red"
           initialRegion={{
@@ -123,8 +127,8 @@ const MapScreen = ({navigation}) => {
           <Marker
             coordinate={{
               //   latitude: 24.833797888244483,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
+              latitudeDelta,
+              longitudeDelta,
               latitude,
               longitude,
               //   longitude: 67.07092911044822,

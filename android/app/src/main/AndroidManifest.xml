@@ -1,10 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.plisplas">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
@@ -33,7 +33,7 @@
         </intent-filter>
       </activity>
       <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="true"/>
-<receiver android:exported="false" android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver">
+      <receiver android:exported="false" android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
@@ -47,7 +47,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-  <receiver android:name="io.invertase.firebase.notifications.RNFirebaseNotificationReceiver"></receiver>
+      <receiver android:name="io.invertase.firebase.notifications.RNFirebaseNotificationReceiver"></receiver>
 <receiver android:enabled="true" android:exported="true"  android:name="io.invertase.firebase.notifications.RNFirebaseNotificationsRebootReceiver"></receiver>
     </application>
 </manifest>

@@ -19,6 +19,15 @@ const App = () => {
     requestUserPermission();
   }, []);
 
+  React.useEffect(() => {
+    getToken();
+  }, []);
+  const getToken = async () => {
+    await messaging().registerDeviceForRemoteMessages();
+    const token = await messaging().getToken();
+    return console.log('====>TOKENNNNNN====>', token);
+  };
+
   return (
     <>
       {/* <Text>App</Text> */}
