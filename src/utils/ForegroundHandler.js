@@ -5,11 +5,14 @@ import React, {useEffect} from 'react';
 export const ForegroundHandler = () => {
   React.useEffect(() => {
     const unSubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('notification on foreground state....', remoteMessage);
+      console.log(
+        'notification on foreground state....',
+        remoteMessage?.notification,
+      );
       PushNotification.localNotification({
         channelId: 'chanel-1',
-        title: 'android app',
-        body: 'testbody',
+        title: remoteMessage?.notification.title,
+        body: remoteMessage?.notification.body,
         soundName: 'default',
         vibrate: true,
         playSound: true,

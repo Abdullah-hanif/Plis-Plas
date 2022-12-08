@@ -22,7 +22,9 @@ import Header from '../../components/Header';
 import {color} from 'react-native-reanimated';
 // import {CustomMapStyle} from './CustomMapStyle';
 
+// @Map Imports
 import GetLocation from 'react-native-get-location';
+import MapViewDirections from 'react-native-maps-directions';
 // import Geolocation from 'react-native-geolocation-service';
 // import Geolocation from '@react-native-community/geolocation';
 
@@ -79,28 +81,12 @@ const MapScreen = ({navigation}) => {
         console.warn(code, message);
       });
   };
-  const Data = {
-    markers: [
-      {
-        coordinate: {
-          latitude: 37.298984,
-          longitude: -122.050362,
-        },
-        title: 'Best Place',
-        description: 'Description1',
-        id: 1,
-      },
-      {
-        coordinate: {
-          latitude: 37.297803,
-          longitude: -122.050037,
-        },
-        title: 'Best Place2',
-        description: 'Description 2',
-        id: 2,
-      },
-    ],
+  const origin = {latitude: latitude, longitude: longitude};
+  const destination = {
+    latitude: 24.810594354413933,
+    longitude: 67.13072490262066,
   };
+  const GOOGLE_MAPS_APIKEY = 'AIzaSyC_47Al-kSZhkd7VidzuGiKl1R39E1lN8E';
   return (
     <>
       <Header onClick={() => navigation.openDrawer()} />
@@ -121,7 +107,7 @@ const MapScreen = ({navigation}) => {
           showsUserLocation={true}
           style={styles.map}
           showsMyLocationButton={true}
-          onRegionChange={region => console.log('REGION====>', region)}
+          // onRegionChange={region => console.log('REGION====>', region)}
           //   customMapStyle={CustomMapStyle}
         >
           <Marker
@@ -145,6 +131,30 @@ const MapScreen = ({navigation}) => {
               resizeMode="contain"
             />
           </Marker>
+
+          {/* Destination Marker */}
+          <Marker
+            coordinate={{
+              //   latitude: 24.833797888244483,
+              latitude: 24.810594354413933,
+              longitude: 67.13072490262066,
+              // latitude,
+              // longitude,
+              //   longitude: 67.07092911044822,
+            }}
+            title="altaf"
+            description="des"
+            pinColor="red"
+            // style={{backgroundColor: 'blue'}}
+            // image={require('../../assets/Icons/Group15301.png')}
+          />
+          <MapViewDirections
+            origin={origin}
+            destination={destination}
+            apikey={GOOGLE_MAPS_APIKEY}
+            strokeWidth={4}
+            strokeColor="black"
+          />
         </MapView>
       </View>
       <View
@@ -271,7 +281,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: Dimensions.get('screen').width,
-    height: Dimensions.get('screen').height / 1.8,
+    height: Dimensions.get('screen').height / 1.5,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
