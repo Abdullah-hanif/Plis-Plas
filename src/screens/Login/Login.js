@@ -8,13 +8,75 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {color} from '../../theme';
 import Button from '../../components/Button/Button';
 import Mail from 'react-native-vector-icons/Fontisto';
 import Lock from 'react-native-vector-icons/EvilIcons';
 
+// @API
+import {loginUser} from '../../api/api';
+import {Base_Url} from '../../api/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const Login = ({navigation}) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [userId, setUserId] = useState('');
+  const [token, setToken] = useState('');
+
+  const login = async () => {
+    //  navigation.navigate('DrawerNavigator')
+
+    const params = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        email: username,
+        password: password,
+      }),
+    };
+    fetch(`${Base_Url}/login`, params)
+      .then(response => response.json())
+      .then(data => {
+        setUserId(data?.data?.id);
+        if (data?.message == 'Email and password are required') {
+          alert(data?.message);
+        } else if (data?.message == 'Email or password is incorrect') {
+          alert(data?.message);
+        } else {
+          // navigation.navigate('DrawerNavigator');
+          alert('sucessfully');
+        }
+        console.log(data?.data?.fcm);
+
+        navigation.navigate('DrawerNavigator');
+      });
+  };
+
+  React.useEffect(() => {
+    setFCM();
+  }, [userId]);
+
+  const setFCM = async () => {
+    const token = await AsyncStorage.getItem('token');
+    console.log('TOKEN===>', token);
+    const params = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        userId: userId,
+        fcm: token,
+      }),
+    };
+    fetch(`${Base_Url}/store-fcm`, params)
+      .then(response => response.json())
+      .then(data => {
+        console.log('TOKENSSS', data);
+
+        // navigation.navigate('DrawerNavigator');
+      });
+  };
   return (
     <>
       <StatusBar hidden />
@@ -52,6 +114,7 @@ const Login = ({navigation}) => {
               <TextInput
                 placeholderTextColor={'black'}
                 placeholder="Paco ramos"
+                onChangeText={txt => setUsername(txt)}
                 style={{left: 10, fontSize: 15}}
               />
             </View>
@@ -68,6 +131,8 @@ const Login = ({navigation}) => {
               <TextInput
                 placeholderTextColor={'black'}
                 placeholder="Password"
+                onChangeText={txt => setPassword(txt)}
+                secureTextEntry={true}
                 style={{left: 10, fontSize: 15}}
               />
             </View>
@@ -86,10 +151,7 @@ const Login = ({navigation}) => {
               alignItems: 'center',
               marginTop: 20,
             }}>
-            <Button
-              onPress={() => navigation.navigate('DrawerNavigator')}
-              text={'LOGIN'}
-            />
+            <Button onPress={login} text={'LOGIN'} />
           </View>
         </View>
       </ScrollView>

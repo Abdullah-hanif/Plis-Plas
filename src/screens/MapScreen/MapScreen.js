@@ -87,6 +87,7 @@ const MapScreen = ({navigation}) => {
     longitude: 67.13072490262066,
   };
   const GOOGLE_MAPS_APIKEY = 'AIzaSyC_47Al-kSZhkd7VidzuGiKl1R39E1lN8E';
+
   return (
     <>
       <Header onClick={() => navigation.openDrawer()} />

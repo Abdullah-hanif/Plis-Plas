@@ -12,8 +12,11 @@ import {
   requestUserPermission,
   NotificationListner,
 } from './src/utils/pushnotification_helper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App = () => {
+  //Post token
+
   React.useEffect(() => {
     NotificationListner();
     requestUserPermission();
@@ -25,6 +28,7 @@ const App = () => {
   const getToken = async () => {
     await messaging().registerDeviceForRemoteMessages();
     const token = await messaging().getToken();
+    AsyncStorage.setItem('token', token);
     return console.log('====>TOKENNNNNN====>', token);
   };
 
