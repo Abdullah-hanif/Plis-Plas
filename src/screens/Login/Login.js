@@ -45,12 +45,12 @@ const Login = ({navigation}) => {
         } else if (data?.message == 'Email or password is incorrect') {
           alert(data?.message);
         } else {
-          // navigation.navigate('DrawerNavigator');
+          navigation.navigate('DrawerNavigator');
           alert('sucessfully');
         }
         console.log(data?.data?.fcm);
 
-        navigation.navigate('DrawerNavigator');
+        // navigation.navigate('DrawerNavigator');
       });
   };
 
