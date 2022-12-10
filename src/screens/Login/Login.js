@@ -19,11 +19,15 @@ import {loginUser} from '../../api/api';
 import {Base_Url} from '../../api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// @Toast
+import {useToast} from 'react-native-toast-notifications';
 const Login = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [userId, setUserId] = useState('');
   const [token, setToken] = useState('');
+
+  const toast = useToast();
 
   const login = async () => {
     //  navigation.navigate('DrawerNavigator')
@@ -41,12 +45,30 @@ const Login = ({navigation}) => {
       .then(data => {
         setUserId(data?.data?.id);
         if (data?.message == 'Email and password are required') {
-          alert(data?.message);
+          toast.show(data?.message, {
+            type: 'danger',
+            placement: 'top',
+            duration: 4000,
+            offset: 30,
+            animationType: 'slide-in | zoom-in',
+          });
         } else if (data?.message == 'Email or password is incorrect') {
-          alert(data?.message);
+          toast.show(data?.message, {
+            type: 'danger',
+            placement: 'top',
+            duration: 4000,
+            offset: 30,
+            animationType: 'slide-in | zoom-in',
+          });
         } else {
+          toast.show('login suceesfully', {
+            type: 'success',
+            placement: 'top',
+            duration: 4000,
+            offset: 30,
+            animationType: 'slide-in | zoom-in',
+          });
           navigation.navigate('DrawerNavigator');
-          alert('sucessfully');
         }
         console.log(data?.data?.fcm);
 
