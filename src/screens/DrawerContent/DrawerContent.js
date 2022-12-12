@@ -16,6 +16,7 @@ import Order from 'react-native-vector-icons/FontAwesome';
 import Profile from 'react-native-vector-icons/MaterialCommunityIcons';
 import Cross from 'react-native-vector-icons/EvilIcons';
 import {color} from '../../theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const DrawerContent = ({navigation}) => {
   return (
@@ -119,7 +120,9 @@ export const DrawerContent = ({navigation}) => {
             }
           />
           <DrawerItemContainer
-          onpress={()=>(navigation.navigate('Login'))}
+            onpress={() => {
+              AsyncStorage.clear(), navigation.navigate('Login');
+            }}
             ico={
               <Image
                 source={require('../../assets/Icons/Group4090.png')}

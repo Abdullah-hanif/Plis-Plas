@@ -20,6 +20,8 @@ import {
 } from '../../helper/helperFunction';
 import Header from '../../components/Header';
 import {color} from '../../theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import messaging from '@react-native-firebase/messaging';
 
 const screen = Dimensions.get('window');
 const ASPECT_RATIO = screen.width / screen.height;
@@ -40,8 +42,8 @@ const MapScreen = ({navigation}) => {
       longitudeDelta: 0.0421,
     },
     destinationCords: {
-      latitude: 24.822977,
-      longitude: 67.137927,
+      latitude: 24.817622,
+      longitude: 67.139973,
     },
     isLoading: false,
     coordinate: new AnimatedRegion({
@@ -68,7 +70,15 @@ const MapScreen = ({navigation}) => {
 
   useEffect(() => {
     getLiveLocation();
+    getToken();
   }, []);
+
+  const getToken = async () => {
+    await messaging().registerDeviceForRemoteMessages();
+    const token = await messaging().getToken();
+    AsyncStorage.setItem('token', token);
+    return console.log('====>TOKENNNNNN====>', token);
+  };
 
   const getLiveLocation = async () => {
     const locPermissionDenied = await locationPermission();
@@ -157,7 +167,7 @@ const MapScreen = ({navigation}) => {
             }}>
             <Marker.Animated ref={markerRef} coordinate={coordinate}>
               <Image
-                source={require('../../assets/Icons/carssss.png')}
+                source={require('../../assets/Icons/CarImg.png')}
                 style={{
                   width: 40,
                   height: 40,

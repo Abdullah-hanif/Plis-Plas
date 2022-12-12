@@ -1,14 +1,26 @@
 import {StyleSheet, Text, View, Image, StatusBar} from 'react-native';
 import React from 'react';
 import {color} from '../../theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = ({navigation}) => {
-  setTimeout(() => {
-    navigation.navigate('AppIntroSliders');
+  setTimeout(async () => {
+    const token = await AsyncStorage.getItem('token');
+    console.log('SPLASH TOKEN', token);
+    if (token == null) {
+      navigation.navigate('AppIntroSliders');
+      // alert('token is not null');
+    } else {
+      // alert('token is null');
+      navigation.navigate('DrawerNavigator');
+    }
   }, 4000);
   return (
     <>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
+      <StatusBar
+        hidden
+        // barStyle={'dark-content'} backgroundColor={'white'}
+      />
       <View style={styles.container}>
         {/* <Text>splashScreen</Text> */}
         <Image

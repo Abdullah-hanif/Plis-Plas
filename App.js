@@ -26,15 +26,15 @@ const App = () => {
     requestUserPermission();
   }, []);
 
-  React.useEffect(() => {
-    getToken();
-  }, []);
-  const getToken = async () => {
-    await messaging().registerDeviceForRemoteMessages();
-    const token = await messaging().getToken();
-    AsyncStorage.setItem('token', token);
-    return console.log('====>TOKENNNNNN====>', token);
-  };
+  // React.useEffect(() => {
+  //   getToken();
+  // }, []);
+  // const getToken = async () => {
+  //   await messaging().registerDeviceForRemoteMessages();
+  //   const token = await messaging().getToken();
+  //   AsyncStorage.setItem('token', token);
+  //   return console.log('====>TOKENNNNNN====>', token);
+  // };
 
   return (
     <>
