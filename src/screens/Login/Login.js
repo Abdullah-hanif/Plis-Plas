@@ -44,6 +44,8 @@ const Login = ({navigation}) => {
       .then(response => response.json())
       .then(data => {
         setUserId(data?.data?.id);
+        setFCM();
+
         if (data?.message == 'Email and password are required') {
           toast.show(data?.message, {
             type: 'danger',
@@ -74,6 +76,8 @@ const Login = ({navigation}) => {
 
         // navigation.navigate('DrawerNavigator');
       });
+    setUsername('');
+    setPassword('');
   };
 
   React.useEffect(() => {
@@ -94,7 +98,8 @@ const Login = ({navigation}) => {
     fetch(`${Base_Url}/store-fcm`, params)
       .then(response => response.json())
       .then(data => {
-        console.log('TOKENSSS', data);
+        console.log('FCMM TOKEN====>', data);
+        // alert('TOKENSSS FCMSOTE');
 
         // navigation.navigate('DrawerNavigator');
       });
@@ -134,6 +139,7 @@ const Login = ({navigation}) => {
                 source={require('../../assets/Icons/mail.png')}
               />
               <TextInput
+                value={username}
                 placeholderTextColor={'black'}
                 placeholder="Paco ramos"
                 onChangeText={txt => setUsername(txt)}
@@ -151,6 +157,7 @@ const Login = ({navigation}) => {
                 source={require('../../assets/Icons/Group5461.png')}
               />
               <TextInput
+                value={password}
                 placeholderTextColor={'black'}
                 placeholder="Password"
                 onChangeText={txt => setPassword(txt)}
