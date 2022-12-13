@@ -11,10 +11,17 @@ import {color} from '../../theme';
 import Back from 'react-native-vector-icons/AntDesign';
 import Bell from 'react-native-vector-icons/FontAwesome';
 
+// @APi
+import {approvedOrder} from '../../api/api';
+
 const OrderDetails = ({navigation}) => {
+  const AcceptOrder = async () => {
+    const res = await approvedOrder('/approved', {checkoutId: 21, userId: 35});
+    console.log('RESPONSE +++', res);
+  };
   return (
     <View style={styles.container}>
-      <Header />
+      <Header onClick={() => navigation.goBack()} />
       <ScrollView>
         {/* first Container */}
         <View style={styles.secoundContainer}>
@@ -118,11 +125,9 @@ const OrderDetails = ({navigation}) => {
           style={{
             margin: 50,
             flexDirection: 'row',
-            justifyContent: 'space-evenly',
+            justifyContent: 'space-between',
           }}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('SettingScreen')}
-            style={styles.acceptStyle}>
+          <TouchableOpacity onPress={AcceptOrder} style={styles.acceptStyle}>
             <Text style={{fontWeight: 'bold', color: 'white'}}>ACCEPT</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.rejectStyle}>
@@ -134,11 +139,13 @@ const OrderDetails = ({navigation}) => {
   );
 };
 
-const Header = () => {
+const Header = ({onClick}) => {
   return (
     <>
-      <View style={styles.headerContainer}>
-        <Back name="left" size={30} color="white" />
+      <View onPress={onClick} style={styles.headerContainer}>
+        <TouchableOpacity onPress={onClick}>
+          <Back name="left" size={30} color="white" />
+        </TouchableOpacity>
         <Image
           style={styles.imgStyle}
           source={require('../../assets/Icons/Group15265.png')}

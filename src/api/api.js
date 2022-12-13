@@ -15,3 +15,17 @@ export const loginUser = async () => {
 };
 
 export const Base_Url = 'http://45.77.60.11/api';
+
+export const approvedOrder = async (params, data) => {
+  const rawResponse = await fetch(`http://45.77.60.11/api${params}`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  const content = await rawResponse.json();
+
+  return content;
+};

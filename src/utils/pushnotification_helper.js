@@ -48,6 +48,9 @@ export const NotificationListner = async () => {
     });
 
   messaging().onMessage(remoteMessage => {
-    console.log('notification on foreground state....', remoteMessage);
+    console.log(
+      'notification on foreground state pushnotification....',
+      remoteMessage?.data?.data?.address,
+    );
   });
 };

@@ -8,6 +8,7 @@ import {
   Image,
   Switch,
   Platform,
+  Touchable,
 } from 'react-native';
 import MapView, {Marker, AnimatedRegion} from 'react-native-maps';
 
@@ -22,6 +23,8 @@ import Header from '../../components/Header';
 import {color} from '../../theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
+import {approvedOrder} from '../../api/api';
+import {useToast} from 'react-native-toast-notifications';
 
 const screen = Dimensions.get('window');
 const ASPECT_RATIO = screen.width / screen.height;
@@ -33,6 +36,9 @@ const GOOGLE_MAP_KEY = 'AIzaSyC_47Al-kSZhkd7VidzuGiKl1R39E1lN8E';
 const MapScreen = ({navigation}) => {
   const mapRef = useRef();
   const markerRef = useRef();
+  const [isEnabled, setIsEnabled] = useState(false);
+  const [showacceptScreen, setAcceptScree] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   const [state, setState] = useState({
     curLoc: {
@@ -149,6 +155,8 @@ const MapScreen = ({navigation}) => {
   return (
     <>
       <Header onClick={() => navigation.openDrawer()} />
+      {showacceptScreen ? <PickupDropoffContainer /> : null}
+
       <View style={styles.container}>
         {/* {distance !== 0 && time !== 0 && (
           <View style={{alignItems: 'center', marginVertical: 16}}>
@@ -156,6 +164,10 @@ const MapScreen = ({navigation}) => {
             <Text>Distance left: {distance.toFixed(0)}</Text>
           </View>
         )} */}
+
+        {/* //Incomming Details pickup and Dropoff */}
+
+        {/* Incomming Details END pickup and Dropoff */}
         <View style={{flex: 1}}>
           <MapView
             ref={mapRef}
@@ -241,14 +253,140 @@ const MapScreen = ({navigation}) => {
             />
           </TouchableOpacity>
         </View>
-        <BottomSheet />
+        {!showacceptScreen ? (
+          <BottomSheet
+            isEnabled={isEnabled}
+            toggleSwitch={() => {
+              setIsEnabled(previousState => !previousState),
+                setTimeout(() => {
+                  setAcceptScree(true);
+                }, 4000);
+            }}
+          />
+        ) : (
+          <AcceptRejectContainer
+            viewOrderScreen={() => {
+              navigation.navigate('OrderDetails'), setAcceptScree(false);
+            }}
+          />
+        )}
       </View>
     </>
   );
 };
-const BottomSheet = () => {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+const AcceptRejectContainer = ({viewOrderScreen}) => {
+  const toast = useToast();
+
+  const AcceptOrder = async () => {
+    const res = await approvedOrder('/approved', {checkoutId: 21, userId: 35});
+    console.log('RESPONSE +++', res);
+    toast.show(res?.data.status, {
+      type: 'success',
+      placement: 'top',
+      duration: 4000,
+      offset: 30,
+      animationType: 'slide-in | zoom-in',
+    });
+  };
+
+  const RejectOrder = async () => {
+    const res = await approvedOrder('/cancelled', {checkoutId: 21, userId: 35});
+    console.log('RESPONSE +++', res);
+    toast.show(res?.message, {
+      type: 'danger',
+      placement: 'top',
+      duration: 4000,
+      offset: 30,
+      animationType: 'slide-in | zoom-in',
+    });
+  };
+  return (
+    <View
+      style={{
+        //   flex: 1,
+        //   backgroundColor: 'yellow',
+        flexDirection: 'column-reverse',
+      }}>
+      <View
+        style={{
+          backgroundColor: 'white',
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          // borderColor: 'lightgray',
+          // borderWidth: 1,
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 4,
+          },
+          shadowOpacity: 0.32,
+          shadowRadius: 5.46,
+
+          elevation: 9,
+        }}>
+        <View
+          style={{padding: 10, justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
+            Header Up!
+          </Text>
+          <Text style={{color: 'black', fontSize: 15, top: 5}}>
+            you have got a new order
+          </Text>
+          <TouchableOpacity onPress={viewOrderScreen}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 15,
+                top: 5,
+                textDecorationLine: 'underline',
+              }}>
+              View Order
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            padding: 10,
+            justifyContent: 'space-between',
+            marginHorizontal: 10,
+            alignItems: 'center',
+            flexDirection: 'row',
+          }}>
+          {/* ACCEPT BUTTON=========> */}
+          <TouchableOpacity
+            onPress={AcceptOrder}
+            style={{
+              backgroundColor: color.blue,
+              padding: 15,
+              paddingHorizontal: 50,
+              borderRadius: 30,
+            }}>
+            <Text style={{fontWeight: 'bold', color: 'white'}}>ACCEPT</Text>
+          </TouchableOpacity>
+          {/* ACCEPT END=========> */}
+          {/* ACCEPT BUTTON=========> */}
+          <TouchableOpacity
+            onPress={RejectOrder}
+            style={{
+              backgroundColor: color.white,
+              padding: 15,
+              paddingHorizontal: 50,
+              borderWidth: 1,
+              borderColor: 'black',
+              borderRadius: 30,
+            }}>
+            <Text style={{fontWeight: 'bold', color: 'black'}}>Reject</Text>
+          </TouchableOpacity>
+          {/* ACCEPT END=========> */}
+        </View>
+      </View>
+    </View>
+  );
+};
+const BottomSheet = ({isEnabled, toggleSwitch}) => {
+  // const [isEnabled, setIsEnabled] = useState(false);
+  // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   return (
     <View
       style={{
@@ -278,9 +416,9 @@ const BottomSheet = () => {
             style={{
               textAlign: 'center',
               fontWeight: 'bold',
-              color: 'darkred',
+              color: !isEnabled ? 'darkred' : 'lightgreen',
             }}>
-            Your're Offline
+            {!isEnabled ? "Your're Offline" : "Your're Online"}
           </Text>
           {/* 2nd Container */}
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -356,16 +494,80 @@ const BottomSheet = () => {
               <Text style={{fontSize: 15, color: 'gray'}}>Cancellation</Text>
             </View>
           </View>
-          {/* End 3rd Container */}
         </View>
+        {/* End 3rd Container */}
       </View>
     </View>
+  );
+};
+
+const PickupDropoffContainer = () => {
+  return (
+    <>
+      <View
+        style={{
+          backgroundColor: 'white',
+          height: '20%',
+          position: 'absolute',
+          width: '90%',
+
+          // top: '10%',
+          borderRadius: 10,
+          padding: 10,
+          margin: 15,
+          zIndex: 1,
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 4,
+          },
+          shadowOpacity: 0.32,
+          shadowRadius: 5.46,
+          flexDirection: 'row',
+
+          elevation: 9,
+        }}>
+        <View>
+          <Image
+            style={{height: 30, width: 30}}
+            source={require('../../assets/Icons/Group15266.png')}
+          />
+          <Image
+            style={{height: 30, width: 30}}
+            source={require('../../assets/Icons/Group15266.png')}
+          />
+          <Image
+            style={{height: 30, width: 30}}
+            source={require('../../assets/Icons/Group15266.png')}
+          />
+        </View>
+        <View style={{left: 10}}>
+          <View>
+            <Text style={{color: 'black', fontSize: 12}}>
+              AI Zumarodn Tower Floor 21,20,m2
+            </Text>
+            <Text style={{fontWeight: 'bold', color: 'black'}}>
+              Pickeup Location
+            </Text>
+          </View>
+          <View style={{top: 25}}>
+            <Text style={{color: 'black', fontSize: 12}}>
+              AI Zumarodn Tower Floor 21,20,m2
+            </Text>
+            <Text style={{fontWeight: 'bold', color: 'black'}}>
+              Delivery Address
+            </Text>
+          </View>
+        </View>
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    zIndex: -1,
   },
   bottomCard: {
     backgroundColor: 'white',
