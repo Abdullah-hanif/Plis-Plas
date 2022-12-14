@@ -6,7 +6,7 @@ export const ForegroundHandler = () => {
   React.useEffect(() => {
     const unSubscribe = messaging().onMessage(async remoteMessage => {
       console.log(
-        'notification on foreground state forground....',
+        'notification on foreground state forgroundHandler....',
         remoteMessage?.notification,
       );
       PushNotification.localNotification({

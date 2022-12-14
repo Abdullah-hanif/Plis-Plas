@@ -6,64 +6,100 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {color} from '../../theme';
 import Back from 'react-native-vector-icons/AntDesign';
 import Bell from 'react-native-vector-icons/FontAwesome';
 
 // @APi
 import {approvedOrder} from '../../api/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const OrderDetails = ({navigation}) => {
+const OrderDetails = ({navigation, route}) => {
+  const [shopeDetails, setShopeDetails] = React.useState();
+
+  const {enableAccept} = route.params;
+  console.log('CONDITION=====>', enableAccept);
+
+  useEffect(() => {
+    getRestDetails();
+  }, []);
+
+  const getRestDetails = async () => {
+    const data = await AsyncStorage.getItem('restaurantDetails');
+    const realData = JSON.parse(data);
+    setShopeDetails(realData);
+    console.log('RESTAURANT DETAILS======>', realData?.shopName);
+  };
+
   const AcceptOrder = async () => {
-    const res = await approvedOrder('/approved', {checkoutId: 21, userId: 35});
+    const res = await approvedOrder('/approved', {
+      checkoutId: shopeDetails?.checkoutId,
+      userId: 35,
+    });
     console.log('RESPONSE +++', res);
   };
   return (
     <View style={styles.container}>
       <Header onClick={() => navigation.goBack()} />
-      <ScrollView>
+      <ScrollView style={{marginBottom: 30}}>
         {/* first Container */}
         <View style={styles.secoundContainer}>
           <Text style={styles.restStyle}>Rastaurant</Text>
-          <Text style={styles.restNameStyle}>The Lahori Rastaurant</Text>
+          <Text style={styles.restNameStyle}>{shopeDetails?.shopName}</Text>
         </View>
         {/* secoundContainer */}
-        <View style={styles.secoundContainer}>
-          <Text style={styles.restStyle}>Order Detail</Text>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  height: 20,
-                  width: 20,
-                  borderColor: 'black',
-                  borderWidth: 1,
-                  alignItems: 'center',
-                  borderRadius: 30,
-                  justifyContent: 'center',
-                }}>
-                <Text style={{color: 'black'}}>1</Text>
+        {shopeDetails?.items.map((item, index) => {
+          return (
+            <>
+              <View style={styles.secoundContainer}>
+                <Text style={styles.restStyle}>Order Detail</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <View
+                      style={{
+                        height: 20,
+                        width: 20,
+                        borderColor: 'black',
+                        borderWidth: 1,
+                        alignItems: 'center',
+                        borderRadius: 30,
+                        justifyContent: 'center',
+                      }}>
+                      <Text style={{color: 'black'}}>{item?.quantity}</Text>
+                    </View>
+                    <View style={{left: 10}}>
+                      <Text
+                        style={{
+                          fontWeight: 'bold',
+                          fontSize: 18,
+                          color: 'black',
+                        }}>
+                        Deail 5
+                      </Text>
+                      <Text style={{color: 'gray', fontSize: 14}}>
+                        {item?.itemName}
+                      </Text>
+                    </View>
+                  </View>
+                  <Text style={{fontWeight: '900', top: 20, color: 'black'}}>
+                    {` Rs${item?.itemPrice}`}
+                  </Text>
+                </View>
               </View>
-              <View style={{left: 10}}>
-                <Text
-                  style={{fontWeight: 'bold', fontSize: 18, color: 'black'}}>
-                  Deail 5
-                </Text>
-                <Text style={{color: 'gray', fontSize: 14}}>Cocal cola</Text>
-              </View>
-            </View>
-            <Text style={{fontWeight: '900', top: 20, color: 'blck'}}>
-              Rs 1,510.00
-            </Text>
-          </View>
-        </View>
+            </>
+          );
+        })}
         {/* 3rd Container */}
         <View
           style={[
@@ -80,7 +116,6 @@ const OrderDetails = ({navigation}) => {
           <View>
             <Text style={styles.restStyle}> Rs 1,510.00</Text>
             <Text style={[styles.restNameStyle, {textAlign: 'right'}]}>
-              {' '}
               Rs 49.00
             </Text>
           </View>
@@ -103,7 +138,7 @@ const OrderDetails = ({navigation}) => {
               styles.restNameStyle,
               {fontWeight: 'bold', color: 'black'},
             ]}>
-            Rs 1,510.00
+            {`Rs${shopeDetails?.totalPrice}`}
           </Text>
         </View>
         {/* 4th container */}
@@ -121,19 +156,21 @@ const OrderDetails = ({navigation}) => {
           </Text>
         </View>
         {/* End 4th container */}
-        <View
-          style={{
-            margin: 50,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <TouchableOpacity onPress={AcceptOrder} style={styles.acceptStyle}>
-            <Text style={{fontWeight: 'bold', color: 'white'}}>ACCEPT</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.rejectStyle}>
-            <Text style={{fontWeight: 'bold', color: 'black'}}>Reject</Text>
-          </TouchableOpacity>
-        </View>
+        {!enableAccept ? (
+          <View
+            style={{
+              margin: 50,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <TouchableOpacity onPress={AcceptOrder} style={styles.acceptStyle}>
+              <Text style={{fontWeight: 'bold', color: 'white'}}>ACCEPT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.rejectStyle}>
+              <Text style={{fontWeight: 'bold', color: 'black'}}>Reject</Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
       </ScrollView>
     </View>
   );

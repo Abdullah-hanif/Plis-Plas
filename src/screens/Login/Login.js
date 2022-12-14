@@ -31,6 +31,7 @@ const Login = ({navigation}) => {
 
   const login = async () => {
     //  navigation.navigate('DrawerNavigator')
+    setFCM();
 
     const params = {
       method: 'POST',
@@ -44,7 +45,6 @@ const Login = ({navigation}) => {
       .then(response => response.json())
       .then(data => {
         setUserId(data?.data?.id);
-        setFCM();
 
         if (data?.message == 'Email and password are required') {
           toast.show(data?.message, {

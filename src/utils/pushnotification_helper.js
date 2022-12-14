@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import PushNotification from 'react-native-push-notification';
+import {ShowAlerScree} from '../screens/MapScreen/MapScreen';
 
 export const requestUserPermission = async () => {
   const authStatus = await messaging().requestPermission();
@@ -50,7 +51,9 @@ export const NotificationListner = async () => {
   messaging().onMessage(remoteMessage => {
     console.log(
       'notification on foreground state pushnotification....',
-      remoteMessage?.data?.data?.address,
+      remoteMessage?.data?.data,
+      AsyncStorage.setItem('restaurantDetails', remoteMessage?.data?.data),
+      ShowAlerScree(true),
     );
   });
 };

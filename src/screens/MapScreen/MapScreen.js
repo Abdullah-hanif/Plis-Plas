@@ -33,12 +33,30 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const GOOGLE_MAP_KEY = 'AIzaSyC_47Al-kSZhkd7VidzuGiKl1R39E1lN8E';
 
+let myconditon = '';
+
+export const ShowAlerScree = value => {
+  myconditon = value;
+  return myconditon;
+};
+
 const MapScreen = ({navigation}) => {
   const mapRef = useRef();
   const markerRef = useRef();
   const [isEnabled, setIsEnabled] = useState(false);
   const [showacceptScreen, setAcceptScree] = useState(false);
+  const [checkOutId, setCheckOutId] = useState('');
+
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  // console.log('====FUNICUCNC===>', myconditon);
+
+  const showAcceptScreen = () => {
+    setTimeout(() => {
+      // alert(myconditon);
+
+      myconditon ? setAcceptScree(true) : null;
+    }, 4000);
+  };
 
   const [state, setState] = useState({
     curLoc: {
@@ -77,7 +95,17 @@ const MapScreen = ({navigation}) => {
   useEffect(() => {
     getLiveLocation();
     getToken();
-  }, []);
+    getDestination();
+    showAcceptScreen();
+  }, [myconditon]);
+
+  const getDestination = async () => {
+    const data = await AsyncStorage.getItem('restaurantDetails');
+    const realData = JSON.parse(data);
+    setCheckOutId(realData?.checkoutId);
+    // setShopeDetails(realData);
+    console.log('======>', realData);
+  };
 
   const getToken = async () => {
     await messaging().registerDeviceForRemoteMessages();
@@ -164,9 +192,7 @@ const MapScreen = ({navigation}) => {
             <Text>Distance left: {distance.toFixed(0)}</Text>
           </View>
         )} */}
-
         {/* //Incomming Details pickup and Dropoff */}
-
         {/* Incomming Details END pickup and Dropoff */}
         <View style={{flex: 1}}>
           <MapView
@@ -257,16 +283,18 @@ const MapScreen = ({navigation}) => {
           <BottomSheet
             isEnabled={isEnabled}
             toggleSwitch={() => {
-              setIsEnabled(previousState => !previousState),
-                setTimeout(() => {
-                  setAcceptScree(true);
-                }, 4000);
+              setIsEnabled(previousState => !previousState);
+              // setTimeout(() => {
+              //   setAcceptScree(true);
+              // }, 4000);
             }}
           />
         ) : (
           <AcceptRejectContainer
-            viewOrderScreen={() => {
-              navigation.navigate('OrderDetails'), setAcceptScree(false);
+            checkOutId={checkOutId}
+            viewOrderScreen={enableAccept => {
+              navigation.navigate('OrderDetails', {enableAccept: enableAccept}),
+                setAcceptScree(false);
             }}
           />
         )}
@@ -275,13 +303,18 @@ const MapScreen = ({navigation}) => {
   );
 };
 
-const AcceptRejectContainer = ({viewOrderScreen}) => {
+const AcceptRejectContainer = ({viewOrderScreen, checkOutId}) => {
   const toast = useToast();
+  const [enableAccept, setEnableAccept] = useState(false);
 
   const AcceptOrder = async () => {
-    const res = await approvedOrder('/approved', {checkoutId: 21, userId: 35});
+    setEnableAccept(true);
+    const res = await approvedOrder('/approved', {
+      checkoutId: checkOutId,
+      userId: 35,
+    });
     console.log('RESPONSE +++', res);
-    toast.show(res?.data.status, {
+    toast.show(res?.message, {
       type: 'success',
       placement: 'top',
       duration: 4000,
@@ -291,7 +324,10 @@ const AcceptRejectContainer = ({viewOrderScreen}) => {
   };
 
   const RejectOrder = async () => {
-    const res = await approvedOrder('/cancelled', {checkoutId: 21, userId: 35});
+    const res = await approvedOrder('/cancelled', {
+      checkoutId: checkOutId,
+      userId: 35,
+    });
     console.log('RESPONSE +++', res);
     toast.show(res?.message, {
       type: 'danger',
@@ -333,7 +369,7 @@ const AcceptRejectContainer = ({viewOrderScreen}) => {
           <Text style={{color: 'black', fontSize: 15, top: 5}}>
             you have got a new order
           </Text>
-          <TouchableOpacity onPress={viewOrderScreen}>
+          <TouchableOpacity onPress={() => viewOrderScreen(enableAccept)}>
             <Text
               style={{
                 color: 'black',
@@ -368,15 +404,22 @@ const AcceptRejectContainer = ({viewOrderScreen}) => {
           {/* ACCEPT BUTTON=========> */}
           <TouchableOpacity
             onPress={RejectOrder}
+            disabled={enableAccept}
             style={{
               backgroundColor: color.white,
               padding: 15,
               paddingHorizontal: 50,
               borderWidth: 1,
-              borderColor: 'black',
+              borderColor: !enableAccept ? 'black' : 'gray',
               borderRadius: 30,
             }}>
-            <Text style={{fontWeight: 'bold', color: 'black'}}>Reject</Text>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                color: !enableAccept ? 'black' : 'gray',
+              }}>
+              Reject
+            </Text>
           </TouchableOpacity>
           {/* ACCEPT END=========> */}
         </View>
