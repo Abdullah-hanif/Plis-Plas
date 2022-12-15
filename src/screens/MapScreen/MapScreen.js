@@ -92,20 +92,33 @@ const MapScreen = ({navigation}) => {
   } = state;
   const updateState = data => setState(state => ({...state, ...data}));
 
-  useEffect(() => {
-    getLiveLocation();
-    getToken();
-    getDestination();
-    showAcceptScreen();
-  }, [myconditon]);
-
   const getDestination = async () => {
     const data = await AsyncStorage.getItem('restaurantDetails');
     const realData = JSON.parse(data);
     setCheckOutId(realData?.checkoutId);
-    // setShopeDetails(realData);
-    console.log('======>', realData);
+    // const {destinationCords} = state;
+
+    setState({
+      ...state,
+      destinationCords: {
+        latitude: JSON.parse(realData?.latitude),
+        longitude: JSON.parse(realData?.longitude),
+      },
+    });
+
+    console.log('======>LATITIUDEEEEE', realData?.latitude);
+    console.log('======>LATITIUDEEEEE', realData?.longitude);
   };
+
+  useEffect(() => {
+    getLiveLocation();
+    getToken();
+    // getDestination();
+
+    // getDestination();
+
+    showAcceptScreen();
+  }, [myconditon]);
 
   const getToken = async () => {
     await messaging().registerDeviceForRemoteMessages();
@@ -292,6 +305,7 @@ const MapScreen = ({navigation}) => {
         ) : (
           <AcceptRejectContainer
             checkOutId={checkOutId}
+            showDestination={() => getDestination()}
             viewOrderScreen={enableAccept => {
               navigation.navigate('OrderDetails', {enableAccept: enableAccept}),
                 setAcceptScree(false);
@@ -303,7 +317,11 @@ const MapScreen = ({navigation}) => {
   );
 };
 
-const AcceptRejectContainer = ({viewOrderScreen, checkOutId}) => {
+const AcceptRejectContainer = ({
+  viewOrderScreen,
+  checkOutId,
+  showDestination,
+}) => {
   const toast = useToast();
   const [enableAccept, setEnableAccept] = useState(false);
 
@@ -313,6 +331,7 @@ const AcceptRejectContainer = ({viewOrderScreen, checkOutId}) => {
       checkoutId: checkOutId,
       userId: 35,
     });
+    showDestination();
     console.log('RESPONSE +++', res);
     toast.show(res?.message, {
       type: 'success',
