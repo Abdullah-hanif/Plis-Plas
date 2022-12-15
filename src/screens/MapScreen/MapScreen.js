@@ -47,6 +47,8 @@ const MapScreen = ({navigation}) => {
   const [showacceptScreen, setAcceptScree] = useState(false);
   const [checkOutId, setCheckOutId] = useState('');
 
+  // const [meetDistance, setMeetDistance] = useState();
+
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   // console.log('====FUNICUCNC===>', myconditon);
 
@@ -81,6 +83,15 @@ const MapScreen = ({navigation}) => {
     heading: 0,
   });
 
+  // useEffect(() => {
+  //   PostionsMarks();
+  // }, [meetDistance]);
+  //check rider is at restaurant address or not
+  // const PostionsMarks = () => {
+  //   setMeetDistance(distance * 1000);
+  //   return meetDistance <= 30 ? alert('meet done') : console.log('not equal');
+  // };
+
   const {
     curLoc,
     time,
@@ -101,8 +112,12 @@ const MapScreen = ({navigation}) => {
     setState({
       ...state,
       destinationCords: {
-        latitude: JSON.parse(realData?.latitude),
-        longitude: JSON.parse(realData?.longitude),
+        latitude: 24.817625,
+        longitude: 67.139975,
+        //<=======================Real COde is here=======================>
+        // latitude: JSON.parse(realData?.latitude),
+        // longitude: JSON.parse(realData?.longitude),
+        //<=======================Real COde is here=======================>
       },
     });
 
@@ -193,6 +208,28 @@ const MapScreen = ({navigation}) => {
     });
   };
 
+  //OrderDispatched
+
+  const OrderDispatched = async () => {
+    // alert('dispathced sucessfully');
+    const data = await AsyncStorage.getItem('restaurantDetails');
+    // const realData = JSON.parse(data);
+    // setCheckOutId(realData?.checkoutId);
+    // const {destinationCords} = state;
+
+    setState({
+      ...state,
+      destinationCords: {
+        latitude: 24.818079,
+        longitude: 67.142253,
+        //<=======================Real COde is here=======================>
+        // latitude: JSON.parse(realData?.latitude),
+        // longitude: JSON.parse(realData?.longitude),
+        //<=======================Real COde is here=======================>
+      },
+    });
+  };
+
   return (
     <>
       <Header onClick={() => navigation.openDrawer()} />
@@ -201,8 +238,8 @@ const MapScreen = ({navigation}) => {
       <View style={styles.container}>
         {/* {distance !== 0 && time !== 0 && (
           <View style={{alignItems: 'center', marginVertical: 16}}>
-            <Text>Time left: {time.toFixed(0)} </Text>
-            <Text>Distance left: {distance.toFixed(0)}</Text>
+            <Text>Time left: {time.toFixed(0)}min </Text>
+            <Text>Distance left: {distance.toFixed(0)} km</Text>
           </View>
         )} */}
         {/* //Incomming Details pickup and Dropoff */}
@@ -304,6 +341,8 @@ const MapScreen = ({navigation}) => {
           />
         ) : (
           <AcceptRejectContainer
+            orderDispatched={() => OrderDispatched()}
+            distance={distance}
             checkOutId={checkOutId}
             showDestination={() => getDestination()}
             viewOrderScreen={enableAccept => {
@@ -321,9 +360,17 @@ const AcceptRejectContainer = ({
   viewOrderScreen,
   checkOutId,
   showDestination,
+  distance,
+  orderDispatched,
 }) => {
   const toast = useToast();
   const [enableAccept, setEnableAccept] = useState(false);
+  const [customerHandle, setCustomerHandle] = useState(false);
+
+  const DispatchedOrder = () => {
+    orderDispatched();
+    setCustomerHandle(true);
+  };
 
   const AcceptOrder = async () => {
     setEnableAccept(true);
@@ -363,86 +410,180 @@ const AcceptRejectContainer = ({
         //   backgroundColor: 'yellow',
         flexDirection: 'column-reverse',
       }}>
-      <View
-        style={{
-          backgroundColor: 'white',
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
-          // borderColor: 'lightgray',
-          // borderWidth: 1,
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 4,
-          },
-          shadowOpacity: 0.32,
-          shadowRadius: 5.46,
-
-          elevation: 9,
-        }}>
-        <View
-          style={{padding: 10, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
-            Header Up!
-          </Text>
-          <Text style={{color: 'black', fontSize: 15, top: 5}}>
-            you have got a new order
-          </Text>
-          <TouchableOpacity onPress={() => viewOrderScreen(enableAccept)}>
-            <Text
-              style={{
-                color: 'black',
-                fontSize: 15,
-                top: 5,
-                textDecorationLine: 'underline',
-              }}>
-              View Order
-            </Text>
-          </TouchableOpacity>
-        </View>
+      {!customerHandle ? (
         <View
           style={{
-            padding: 10,
-            justifyContent: 'space-between',
-            marginHorizontal: 10,
-            alignItems: 'center',
-            flexDirection: 'row',
+            backgroundColor: 'white',
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+            // borderColor: 'lightgray',
+            // borderWidth: 1,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 4,
+            },
+            shadowOpacity: 0.32,
+            shadowRadius: 5.46,
+
+            elevation: 9,
           }}>
-          {/* ACCEPT BUTTON=========> */}
-          <TouchableOpacity
-            onPress={AcceptOrder}
+          <Text style={{fontWeight: 'bold', color: 'black'}}>
+            {`${distance * 1000}`}m
+          </Text>
+          <View
             style={{
-              backgroundColor: color.blue,
-              padding: 15,
-              paddingHorizontal: 50,
-              borderRadius: 30,
+              padding: 10,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}>
-            <Text style={{fontWeight: 'bold', color: 'white'}}>ACCEPT</Text>
-          </TouchableOpacity>
-          {/* ACCEPT END=========> */}
-          {/* ACCEPT BUTTON=========> */}
-          <TouchableOpacity
-            onPress={RejectOrder}
-            disabled={enableAccept}
-            style={{
-              backgroundColor: color.white,
-              padding: 15,
-              paddingHorizontal: 50,
-              borderWidth: 1,
-              borderColor: !enableAccept ? 'black' : 'gray',
-              borderRadius: 30,
-            }}>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                color: !enableAccept ? 'black' : 'gray',
-              }}>
-              Reject
+            <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
+              {distance * 1000 <= 50 ? 'Please wait' : 'Header Up!'}
             </Text>
-          </TouchableOpacity>
-          {/* ACCEPT END=========> */}
+            <Text style={{color: 'black', fontSize: 15, top: 5}}>
+              {distance * 1000 <= 50
+                ? 'Order is getting ready,'
+                : 'you have got a new order'}
+            </Text>
+            <TouchableOpacity onPress={() => viewOrderScreen(enableAccept)}>
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: 15,
+                  top: 5,
+                  textDecorationLine: 'underline',
+                }}>
+                {distance * 1000 <= 50
+                  ? 'Please wait few mintues'
+                  : 'View Order'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {distance * 1000 <= 50 ? (
+            <TouchableOpacity
+              onPress={DispatchedOrder}
+              style={{
+                backgroundColor: color.blue,
+                padding: 15,
+                paddingHorizontal: 50,
+                margin: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 30,
+              }}>
+              <Text style={{fontWeight: 'bold', color: 'white'}}>
+                Order Dispatched
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <View
+              style={{
+                padding: 10,
+                justifyContent: 'space-between',
+                marginHorizontal: 10,
+                alignItems: 'center',
+                flexDirection: 'row',
+              }}>
+              {/* ACCEPT BUTTON=========> */}
+              <TouchableOpacity
+                onPress={AcceptOrder}
+                style={{
+                  backgroundColor: color.blue,
+                  padding: 15,
+                  paddingHorizontal: 50,
+                  borderRadius: 30,
+                }}>
+                <Text style={{fontWeight: 'bold', color: 'white'}}>ACCEPT</Text>
+              </TouchableOpacity>
+              {/* ACCEPT END=========> */}
+              {/* ACCEPT BUTTON=========> */}
+              <TouchableOpacity
+                onPress={RejectOrder}
+                disabled={enableAccept}
+                style={{
+                  backgroundColor: color.white,
+                  padding: 15,
+                  paddingHorizontal: 50,
+                  borderWidth: 1,
+                  borderColor: !enableAccept ? 'black' : 'gray',
+                  borderRadius: 30,
+                }}>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    color: !enableAccept ? 'black' : 'gray',
+                  }}>
+                  Reject
+                </Text>
+              </TouchableOpacity>
+              {/* ACCEPT END=========> */}
+            </View>
+          )}
         </View>
-      </View>
+      ) : (
+        <>
+          <View
+            style={{
+              backgroundColor: 'white',
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+              // borderColor: 'lightgray',
+              // borderWidth: 1,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 4,
+              },
+              shadowOpacity: 0.32,
+              shadowRadius: 5.46,
+
+              elevation: 9,
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: 20,
+              paddingVertical: 30,
+            }}>
+            <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
+              On The Way
+            </Text>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              <Image
+                resizeMode="contain"
+                style={{height: 50, width: 50, right: 10}}
+                source={require('../../assets/Icons/Group15303.png')}
+              />
+              <Text style={{color: 'black', fontSize: 18}}>
+                Contact Customer
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={{
+                marginVertical: 10,
+                backgroundColor: color.blue,
+                padding: 15,
+                top: 30,
+                paddingHorizontal: 100,
+
+                // borderColor:'black',
+                borderRadius: 30,
+              }}>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color: 'white',
+                }}>
+                Delivered
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
     </View>
   );
 };
@@ -591,17 +732,18 @@ const PickupDropoffContainer = () => {
         }}>
         <View>
           <Image
+            resizeMode="contain"
+            style={{height: '80%'}}
+            source={require('../../assets/Icons/Group16945.png')}
+          />
+          {/* <Image
             style={{height: 30, width: 30}}
             source={require('../../assets/Icons/Group15266.png')}
           />
           <Image
             style={{height: 30, width: 30}}
             source={require('../../assets/Icons/Group15266.png')}
-          />
-          <Image
-            style={{height: 30, width: 30}}
-            source={require('../../assets/Icons/Group15266.png')}
-          />
+          /> */}
         </View>
         <View style={{left: 10}}>
           <View>
