@@ -10,6 +10,7 @@ import {ForegroundHandler} from './src/utils/ForegroundHandler';
 
 //Toast Notification
 import {ToastProvider} from 'react-native-toast-notifications';
+// import './src/constants/DCSLocalize';
 
 import {
   requestUserPermission,

@@ -9,6 +9,7 @@ import {
   Switch,
   Platform,
   Touchable,
+  Modal,
 } from 'react-native';
 import MapView, {Marker, AnimatedRegion} from 'react-native-maps';
 
@@ -46,6 +47,7 @@ const MapScreen = ({navigation}) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const [showacceptScreen, setAcceptScree] = useState(false);
   const [checkOutId, setCheckOutId] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
   // const [meetDistance, setMeetDistance] = useState();
 
@@ -57,7 +59,7 @@ const MapScreen = ({navigation}) => {
       // alert(myconditon);
 
       myconditon ? setAcceptScree(true) : null;
-    }, 4000);
+    }, 1000);
   };
 
   const [state, setState] = useState({
@@ -112,11 +114,12 @@ const MapScreen = ({navigation}) => {
     setState({
       ...state,
       destinationCords: {
-        latitude: 24.817625,
-        longitude: 67.139975,
+        // latitude: 24.816201,
+        // longitude: 67.142086,
+        // 24.815821, 67.140169
         //<=======================Real COde is here=======================>
-        // latitude: JSON.parse(realData?.latitude),
-        // longitude: JSON.parse(realData?.longitude),
+        latitude: JSON.parse(realData?.latitude),
+        longitude: JSON.parse(realData?.longitude),
         //<=======================Real COde is here=======================>
       },
     });
@@ -164,7 +167,7 @@ const MapScreen = ({navigation}) => {
   useEffect(() => {
     const interval = setInterval(() => {
       getLiveLocation();
-    }, 6000);
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
@@ -220,8 +223,8 @@ const MapScreen = ({navigation}) => {
     setState({
       ...state,
       destinationCords: {
-        latitude: 24.818079,
-        longitude: 67.142253,
+        latitude: 24.81796,
+        longitude: 67.141646,
         //<=======================Real COde is here=======================>
         // latitude: JSON.parse(realData?.latitude),
         // longitude: JSON.parse(realData?.longitude),
@@ -257,8 +260,8 @@ const MapScreen = ({navigation}) => {
               <Image
                 source={require('../../assets/Icons/CarImg.png')}
                 style={{
-                  width: 40,
-                  height: 40,
+                  width: 30,
+                  height: 30,
                   transform: [{rotate: `${heading}deg`}],
                 }}
                 resizeMode="contain"
@@ -352,6 +355,24 @@ const MapScreen = ({navigation}) => {
           />
         )}
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        // onRequestClose={() => {
+        //   Alert.alert('Modal has been closed.');
+        //   setModalVisible(!modalVisible);
+        // }}
+      >
+        <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.62)'}}>
+          <View>
+            <Image
+              style={{height: 50, width: 50}}
+              source={require('../../assets/Icons/Group15299.png')}
+            />
+          </View>
+        </View>
+      </Modal>
     </>
   );
 };
@@ -369,7 +390,7 @@ const AcceptRejectContainer = ({
 
   const DispatchedOrder = () => {
     orderDispatched();
-    setCustomerHandle(true);
+    setCustomerHandle(!customerHandle);
   };
 
   const AcceptOrder = async () => {
@@ -459,7 +480,7 @@ const AcceptRejectContainer = ({
               </Text>
             </TouchableOpacity>
           </View>
-          {distance * 1000 <= 50 ? (
+          {distance * 1000 <= 30 ? (
             <TouchableOpacity
               onPress={DispatchedOrder}
               style={{
@@ -556,13 +577,14 @@ const AcceptRejectContainer = ({
               <Image
                 resizeMode="contain"
                 style={{height: 50, width: 50, right: 10}}
-                source={require('../../assets/Icons/Group15303.png')}
+                source={require('../../assets/Icons/Group13525.png')}
               />
               <Text style={{color: 'black', fontSize: 18}}>
                 Contact Customer
               </Text>
             </View>
             <TouchableOpacity
+              onPress={() => alert('Order Deliverd')}
               style={{
                 marginVertical: 10,
                 backgroundColor: color.blue,

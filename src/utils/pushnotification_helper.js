@@ -49,11 +49,12 @@ export const NotificationListner = async () => {
     });
 
   messaging().onMessage(remoteMessage => {
-    console.log(
-      'notification on foreground state pushnotification....',
-      remoteMessage?.data?.data,
-      AsyncStorage.setItem('restaurantDetails', remoteMessage?.data?.data),
-      ShowAlerScree(true),
-    );
+    ShowAlerScree(true),
+      console.log(
+        'notification on foreground state pushnotification....',
+        remoteMessage?.data?.data,
+        AsyncStorage.setItem('restaurantDetails', remoteMessage?.data?.data),
+        ShowAlerScree(true),
+      );
   });
 };
