@@ -21,7 +21,11 @@ import ImagePicker, {
 
 import {color} from '../../theme';
 
+// @transaltion
+import {useTranslation} from 'react-i18next';
+
 const ProfileScreen = ({navigation}) => {
+  const {t} = useTranslation();
   const dummyImage = require('../../assets/Icons/Group3952.png');
   const [openModal, setopenModal] = React.useState(false);
   const [img, imgUri] = React.useState(null);
@@ -121,15 +125,30 @@ const ProfileScreen = ({navigation}) => {
       {/* Header Started */}
       <ScrollView>
         <View style={styles.topHeader}>
-         <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-         <TouchableOpacity onPress={() => navigation.goBack()} style={{paddingLeft:'3%'}}>
-             <Image source={require('../../assets/Icons/back.png')} style={{width:22,height:22}}/>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{paddingLeft: '3%'}}>
+              <Image
+                source={require('../../assets/Icons/back.png')}
+                style={{width: 22, height: 22}}
+              />
             </TouchableOpacity>
-          <View><Text style={styles.txt}>My Profile</Text></View>
-          <TouchableOpacity style={{paddingRight:'3%'}}>
-            <Image source={require('../../assets/Icons/editProfile.png')} style={{width:22,height:22,marginRight:'2%'}}/>
+            <View>
+              <Text style={styles.txt}>{t('common:MyProfile')}</Text>
+            </View>
+            <TouchableOpacity style={{paddingRight: '3%'}}>
+              <Image
+                source={require('../../assets/Icons/editProfile.png')}
+                style={{width: 22, height: 22, marginRight: '2%'}}
+              />
             </TouchableOpacity>
-         </View>
+          </View>
           <View
             style={{
               flexDirection: 'row',
@@ -197,7 +216,7 @@ const ProfileScreen = ({navigation}) => {
                 color: 'black',
                 paddingLeft: 5,
               }}>
-              Information
+              {t('common:Information')}
             </Text>
           </View>
           {/* End Informtion area */}
@@ -208,7 +227,7 @@ const ProfileScreen = ({navigation}) => {
                 style={{height: 25, width: 25}}
               />
             }
-            title="Name"
+            title={t('common:Name')}
             name="Poco Ramos"
           />
           <InfromationDetails
@@ -218,7 +237,7 @@ const ProfileScreen = ({navigation}) => {
                 style={{height: 25, width: 25}}
               />
             }
-            title="Phone"
+            title={t('common:Phone')}
             name="+92345628299"
           />
           <InfromationDetails
@@ -228,7 +247,7 @@ const ProfileScreen = ({navigation}) => {
                 style={{height: 25, width: 25}}
               />
             }
-            title="Email"
+            title={t('common:Email')}
             name="PocoRamos@gmail.com"
           />
           <InfromationDetails
@@ -238,7 +257,7 @@ const ProfileScreen = ({navigation}) => {
                 style={{height: 25, width: 25}}
               />
             }
-            title="Gender"
+            title={t('common:Gender')}
             name="Male"
           />
           <InfromationDetails
@@ -248,7 +267,7 @@ const ProfileScreen = ({navigation}) => {
                 style={{height: 25, width: 25}}
               />
             }
-            title="DOB"
+            title={t('common:DOB')}
             name="8/17/1996"
           />
         </View>
@@ -260,7 +279,7 @@ const ProfileScreen = ({navigation}) => {
           icon={<Gender name="gender-female" size={25} color="black" />}
           title="Gender"
           name="Male"
-          topHeading="Licence"
+          topHeading={t('common:Licence')}
           imgUri={
             !frontLicence ? (
               <>
@@ -277,7 +296,7 @@ const ProfileScreen = ({navigation}) => {
                     style={{height: 30, width: 30, tintColor: 'black'}}
                     source={dummyImage}
                   />
-                  <Text style={{color: 'black'}}>Upload</Text>
+                  <Text style={{color: 'black'}}>{t('common:upload')}</Text>
                 </View>
               </>
             ) : (
@@ -296,7 +315,7 @@ const ProfileScreen = ({navigation}) => {
           icon={<Gender name="gender-female" size={25} color="black" />}
           title="Gender"
           name="Male"
-          topHeading="Civil ID"
+          topHeading={t('common:CivilId')}
           imgUri={
             !img ? (
               <>
@@ -313,7 +332,7 @@ const ProfileScreen = ({navigation}) => {
                     style={{height: 30, width: 30, tintColor: 'black'}}
                     source={dummyImage}
                   />
-                  <Text style={{color: 'black'}}>Upload</Text>
+                  <Text style={{color: 'black'}}>{t('common:upload')}</Text>
                 </View>
               </>
             ) : (
@@ -354,7 +373,7 @@ const ProfileScreen = ({navigation}) => {
                   <Ico name="camerao" size={30} color="black" />
                   <Text
                     style={{fontSize: 15, color: 'black', top: 5, left: 10}}>
-                    Take a photo
+                    {t('common:takeaphoto')}
                   </Text>
                 </TouchableOpacity>
 
@@ -368,7 +387,7 @@ const ProfileScreen = ({navigation}) => {
                   />
                   <Text
                     style={{fontSize: 15, color: 'black', top: 5, left: 10}}>
-                    chose from Gallery
+                    {t('common:chosefromGallery')}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -456,6 +475,7 @@ const InfromationDetails = ({icon, title, name}) => {
 };
 
 const LicenceContainer = ({icon, title, name, topHeading, onClick, imgUri}) => {
+  const {t} = useTranslation();
   return (
     <>
       <View
@@ -508,7 +528,7 @@ const LicenceContainer = ({icon, title, name, topHeading, onClick, imgUri}) => {
                   fontSize: 17,
                   margin: 10,
                 }}>
-                Front
+                {t('common:front')}
               </Text>
               {/* <Text style={{color: 'black', right: 25}}>{name}</Text> */}
               {/* <Image
@@ -527,7 +547,7 @@ const LicenceContainer = ({icon, title, name, topHeading, onClick, imgUri}) => {
                   fontSize: 17,
                   margin: 10,
                 }}>
-                Back
+                {t('common:Back')}
               </Text>
               {/* <Text style={{color: 'black', right: 25}}>{name}</Text> */}
               {imgUri}
@@ -561,9 +581,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 25,
     margin: 10,
-    alignSelf:'center',
-    alignItems:'center',
-    justifyContent:'center'
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   profileContainer: {
     padding: 30,

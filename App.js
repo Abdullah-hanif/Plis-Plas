@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, PermissionsAndroid, LogBox} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  PermissionsAndroid,
+  LogBox,
+  NativeModules,
+} from 'react-native';
 import React from 'react';
 import SplashScreen from './src/screens/SplashScreen/SplashScreen';
 import Login from './src/screens/Login/Login';
@@ -10,7 +17,8 @@ import {ForegroundHandler} from './src/utils/ForegroundHandler';
 
 //Toast Notification
 import {ToastProvider} from 'react-native-toast-notifications';
-// import './src/constants/DCSLocalize';
+import {useTranslation} from 'react-i18next';
+import './src/constants/DCSLocalize';
 
 import {
   requestUserPermission,
@@ -20,22 +28,35 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 LogBox.ignoreAllLogs();
 const App = () => {
+  // languge Changer
+  const locale = NativeModules.I18nManager.localeIdentifier;
+  console.log('==>LOCAL BEFORE===>', locale);
+  const localLang = locale.split('_');
+  const {t, i18n} = useTranslation();
+
+  // const localLang = ['es', 'es'];
+  // es mean spanish
+  console.log('====>DEVICE LANG', localLang[0]);
+
+  const setLanguge = code => {
+    return i18n.changeLanguage(code);
+  };
+
+  React.useEffect(() => {
+    setLanguge(localLang[0]);
+    setTimeout(() => {
+      setLanguge(localLang[0]);
+    }, 2000);
+  }, []);
+
+  // Languge change end
+
   //Post token
 
   React.useEffect(() => {
     NotificationListner();
     requestUserPermission();
   }, []);
-
-  // React.useEffect(() => {
-  //   getToken();
-  // }, []);
-  // const getToken = async () => {
-  //   await messaging().registerDeviceForRemoteMessages();
-  //   const token = await messaging().getToken();
-  //   AsyncStorage.setItem('token', token);
-  //   return console.log('====>TOKENNNNNN====>', token);
-  // };
 
   return (
     <>

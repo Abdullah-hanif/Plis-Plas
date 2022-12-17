@@ -13,10 +13,13 @@ import {
 import AppIntroSlider from 'react-native-app-intro-slider';
 import {color} from '../../theme';
 
+// @Translation
+import {useTranslation} from 'react-i18next';
+
 const styles = StyleSheet.create({
   buttonCircle: {
     width: 340,
-     height: '55%',
+    height: '55%',
     // padding: 15,
     right: '3.5%',
     marginBottom: 50,
@@ -24,14 +27,13 @@ const styles = StyleSheet.create({
     borderRadius: 360,
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf:'center',
-    alignContent:'center',
-    display:'flex'
-    
+    alignSelf: 'center',
+    alignContent: 'center',
+    display: 'flex',
   },
   buttonCirclet: {
     width: 340,
-     height: '50%',
+    height: '50%',
     // padding: 15,
     right: '3.5%',
     marginBottom: 50,
@@ -39,10 +41,9 @@ const styles = StyleSheet.create({
     borderRadius: 360,
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf:'center',
-    alignContent:'center',
-    display:'flex'
-    
+    alignSelf: 'center',
+    alignContent: 'center',
+    display: 'flex',
   },
   slide: {
     flex: 1,
@@ -80,6 +81,8 @@ const slides = [
 ];
 
 const AppIntroSliders = ({navigation}) => {
+  const {t} = useTranslation();
+
   const renderItem = ({item}) => {
     return (
       <>
@@ -92,13 +95,14 @@ const AppIntroSliders = ({navigation}) => {
             marginTop: 10,
             marginBottom: 190,
           }}>
-            <View style={{paddingLeft:'5%',paddingTop:'15%'}}>
-          <Text style={{fontSize: 15, color: 'black', fontWeight: '400'}}>
-            Hello nice to meet you!
-          </Text>
-          <Text style={{fontSize: 27, color: 'black', fontWeight: 'bold'}}>
-            Get a new experience
-          </Text>
+          <View style={{paddingLeft: '5%', paddingTop: '15%'}}>
+            <Text style={{fontSize: 15, color: 'black', fontWeight: '400'}}>
+              {/* Hello nice to meet you! */}
+              {t('common:Hellonicetomeetyou')}
+            </Text>
+            <Text style={{fontSize: 27, color: 'black', fontWeight: 'bold'}}>
+              {t('common:Getanewexperience')}
+            </Text>
           </View>
           <Image
             resizeMode="contain"
@@ -106,7 +110,7 @@ const AppIntroSliders = ({navigation}) => {
               // marginTop: 30,
               // backgroundColor: 'blue',
               height: '100%',
-              width:'100%',
+              width: '100%',
               // width: Dimensions.get('screen').width,
             }}
             source={item.image}
@@ -118,7 +122,9 @@ const AppIntroSliders = ({navigation}) => {
   renderNextButton = () => {
     return (
       <View style={styles.buttonCircle}>
-        <Text style={{fontWeight: 'bold', color: 'white'}}>CONTINUE</Text>
+        <Text style={{fontWeight: 'bold', color: 'white'}}>
+          {t('common:CONTINUE')}
+        </Text>
       </View>
     );
   };
@@ -126,7 +132,9 @@ const AppIntroSliders = ({navigation}) => {
     return (
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
         <View style={styles.buttonCirclet}>
-          <Text style={{fontWeight: 'bold', color: 'white'}}>CONTINUE</Text>
+          <Text style={{fontWeight: 'bold', color: 'white'}}>
+            {t('common:CONTINUE')}
+          </Text>
         </View>
       </TouchableOpacity>
     );

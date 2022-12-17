@@ -14,7 +14,11 @@ import {color} from '../../theme';
 import Mail from 'react-native-vector-icons/Fontisto';
 import Back from 'react-native-vector-icons/Ionicons';
 
+// @langugeChanger
+import {useTranslation} from 'react-i18next';
+
 const ForgotPassword = ({navigation}) => {
+  const {t} = useTranslation();
   return (
     <>
       <StatusBar hidden />
@@ -38,7 +42,7 @@ const ForgotPassword = ({navigation}) => {
                 fontSize: 20,
                 color: 'black',
               }}>
-              Forgot Password
+              {t('common:ForgotPassword')}
             </Text>
           </View>
           <View style={styles.txtInputContainer}>
@@ -72,7 +76,9 @@ const ForgotPassword = ({navigation}) => {
               borderRadius: 40,
               backgroundColor: color.blue,
             }}>
-            <Text style={{fontWeight: 'bold', color: 'white'}}>SENT</Text>
+            <Text style={{fontWeight: 'bold', color: 'white'}}>
+              {t('common:send')}
+            </Text>
             {/* <Button /> */}
           </TouchableOpacity>
         </ScrollView>
@@ -105,7 +111,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginVertical: 30,
     borderBottomColor: '#C6C6C6',
-    alignItems:'center'
+    alignItems: 'center',
   },
   passInput: {
     flexDirection: 'row',

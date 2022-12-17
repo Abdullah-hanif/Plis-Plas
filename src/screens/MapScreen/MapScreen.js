@@ -26,6 +26,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {approvedOrder} from '../../api/api';
 import {useToast} from 'react-native-toast-notifications';
+// @Translation
+import {useTranslation} from 'react-i18next';
 
 const screen = Dimensions.get('window');
 const ASPECT_RATIO = screen.width / screen.height;
@@ -48,6 +50,8 @@ const MapScreen = ({navigation}) => {
   const [showacceptScreen, setAcceptScree] = useState(false);
   const [checkOutId, setCheckOutId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+
+  const {t} = useTranslation();
 
   // const [meetDistance, setMeetDistance] = useState();
 
@@ -387,6 +391,7 @@ const AcceptRejectContainer = ({
   const toast = useToast();
   const [enableAccept, setEnableAccept] = useState(false);
   const [customerHandle, setCustomerHandle] = useState(false);
+  const {t} = useTranslation();
 
   const DispatchedOrder = () => {
     orderDispatched();
@@ -459,12 +464,14 @@ const AcceptRejectContainer = ({
               alignItems: 'center',
             }}>
             <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
-              {distance * 1000 <= 50 ? 'Please wait' : 'Header Up!'}
+              {distance * 1000 <= 50
+                ? t('common:Pleasewait')
+                : t('common:HeaderUp')}
             </Text>
             <Text style={{color: 'black', fontSize: 15, top: 5}}>
               {distance * 1000 <= 50
-                ? 'Order is getting ready,'
-                : 'you have got a new order'}
+                ? t('common:Orderisgettingready')
+                : t('common:youhavegotaneworder')}
             </Text>
             <TouchableOpacity onPress={() => viewOrderScreen(enableAccept)}>
               <Text
@@ -475,8 +482,8 @@ const AcceptRejectContainer = ({
                   textDecorationLine: 'underline',
                 }}>
                 {distance * 1000 <= 50
-                  ? 'Please wait few mintues'
-                  : 'View Order'}
+                  ? t('common:Pleasewaitfewmintues')
+                  : t('common:ViewOrder')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -493,7 +500,7 @@ const AcceptRejectContainer = ({
                 borderRadius: 30,
               }}>
               <Text style={{fontWeight: 'bold', color: 'white'}}>
-                Order Dispatched
+                {t('common:OrderDispatched')}
               </Text>
             </TouchableOpacity>
           ) : (
@@ -514,7 +521,9 @@ const AcceptRejectContainer = ({
                   paddingHorizontal: 50,
                   borderRadius: 30,
                 }}>
-                <Text style={{fontWeight: 'bold', color: 'white'}}>ACCEPT</Text>
+                <Text style={{fontWeight: 'bold', color: 'white'}}>
+                  {t('common:accept')}
+                </Text>
               </TouchableOpacity>
               {/* ACCEPT END=========> */}
               {/* ACCEPT BUTTON=========> */}
@@ -534,7 +543,7 @@ const AcceptRejectContainer = ({
                     fontWeight: 'bold',
                     color: !enableAccept ? 'black' : 'gray',
                   }}>
-                  Reject
+                  {t('common:reject')}
                 </Text>
               </TouchableOpacity>
               {/* ACCEPT END=========> */}
@@ -565,7 +574,7 @@ const AcceptRejectContainer = ({
               paddingVertical: 30,
             }}>
             <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
-              On The Way
+              {t('common:OnTheWay')}
             </Text>
 
             <View
@@ -580,7 +589,7 @@ const AcceptRejectContainer = ({
                 source={require('../../assets/Icons/Group13525.png')}
               />
               <Text style={{color: 'black', fontSize: 18}}>
-                Contact Customer
+                {t('common:ContactCustomer')}
               </Text>
             </View>
             <TouchableOpacity
@@ -600,7 +609,7 @@ const AcceptRejectContainer = ({
                   fontWeight: 'bold',
                   color: 'white',
                 }}>
-                Delivered
+                {t('common:Delivered')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -612,6 +621,7 @@ const AcceptRejectContainer = ({
 const BottomSheet = ({isEnabled, toggleSwitch}) => {
   // const [isEnabled, setIsEnabled] = useState(false);
   // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const {t} = useTranslation();
   return (
     <View
       style={{
@@ -643,7 +653,7 @@ const BottomSheet = ({isEnabled, toggleSwitch}) => {
               fontWeight: 'bold',
               color: !isEnabled ? 'darkred' : 'lightgreen',
             }}>
-            {!isEnabled ? "Your're Offline" : "Your're Online"}
+            {!isEnabled ? t('common:youareoffline') : t('common:youareonline')}
           </Text>
           {/* 2nd Container */}
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -707,7 +717,9 @@ const BottomSheet = ({isEnabled, toggleSwitch}) => {
               }}>
               <AntDesign name="checkcircle" size={30} color={'#1284f2'} />
               <Text style={{fontWeight: 'bold', color: 'black'}}>95.0%</Text>
-              <Text style={{fontSize: 15, color: 'gray'}}>Acceptance</Text>
+              <Text style={{fontSize: 15, color: 'gray'}}>
+                {t('common:acceptance')}
+              </Text>
             </View>
             <View
               style={{
@@ -716,7 +728,9 @@ const BottomSheet = ({isEnabled, toggleSwitch}) => {
               }}>
               <AntDesign name="closecircle" size={30} color={'#1284f2'} />
               <Text style={{fontWeight: 'bold', color: 'black'}}>2.0%</Text>
-              <Text style={{fontSize: 15, color: 'gray'}}>Cancellation</Text>
+              <Text style={{fontSize: 15, color: 'gray'}}>
+                {t('common:cancellation')}
+              </Text>
             </View>
           </View>
         </View>

@@ -18,7 +18,11 @@ import Cross from 'react-native-vector-icons/EvilIcons';
 import {color} from '../../theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// @translation
+import {useTranslation} from 'react-i18next';
+
 export const DrawerContent = ({navigation}) => {
+  const {t} = useTranslation();
   return (
     <>
       <View
@@ -77,7 +81,9 @@ export const DrawerContent = ({navigation}) => {
               />
             }
             name={
-              <Text style={{margin: 10, left: 10, color: 'black'}}>Home</Text>
+              <Text style={{margin: 10, left: 10, color: 'black'}}>
+                {t('common:home')}
+              </Text>
             }
           />
           <DrawerItemContainer
@@ -90,7 +96,7 @@ export const DrawerContent = ({navigation}) => {
             }
             name={
               <Text style={{margin: 10, left: 10, color: 'black'}}>
-                Profile
+                {t('common:profile')}
               </Text>
             }
           />
@@ -102,7 +108,9 @@ export const DrawerContent = ({navigation}) => {
               />
             }
             name={
-              <Text style={{margin: 10, left: 10, color: 'black'}}>Orders</Text>
+              <Text style={{margin: 10, left: 10, color: 'black'}}>
+                {t('common:orders')}
+              </Text>
             }
           />
           <DrawerItemContainer
@@ -115,7 +123,7 @@ export const DrawerContent = ({navigation}) => {
             }
             name={
               <Text style={{margin: 10, left: 10, color: 'black'}}>
-                Settings
+                {t('common:settings')}
               </Text>
             }
           />
@@ -130,7 +138,9 @@ export const DrawerContent = ({navigation}) => {
               />
             }
             name={
-              <Text style={{margin: 10, left: 10, color: 'black'}}>Logout</Text>
+              <Text style={{margin: 10, left: 10, color: 'black'}}>
+                {t('common:logout')}
+              </Text>
             }
           />
           {/*END Drawer ITems */}

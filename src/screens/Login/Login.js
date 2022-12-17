@@ -21,6 +21,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // @Toast
 import {useToast} from 'react-native-toast-notifications';
+
+// @langugeChange
+import {useTranslation} from 'react-i18next';
 const Login = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -28,6 +31,7 @@ const Login = ({navigation}) => {
   const [token, setToken] = useState('');
 
   const toast = useToast();
+  const {t} = useTranslation();
 
   const login = async () => {
     //  navigation.navigate('DrawerNavigator')
@@ -124,7 +128,7 @@ const Login = ({navigation}) => {
                 fontSize: 28,
                 color: 'black',
               }}>
-              Login
+              {t('common:login')}
             </Text>
           </View>
           <View style={styles.txtInputContainer}>
@@ -159,7 +163,7 @@ const Login = ({navigation}) => {
               <TextInput
                 value={password}
                 placeholderTextColor={'black'}
-                placeholder="Password"
+                placeholder={t('common:password')}
                 onChangeText={txt => setPassword(txt)}
                 secureTextEntry={true}
                 style={{left: 10, fontSize: 15}}
@@ -170,7 +174,7 @@ const Login = ({navigation}) => {
             <TouchableOpacity
               onPress={() => navigation.navigate('ForgotPassword')}>
               <Text style={{color: 'black', fontWeight: 'bold', fontSize: 15}}>
-                Forgot Password?
+                {t('common:ForgotPassword')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -180,7 +184,7 @@ const Login = ({navigation}) => {
               alignItems: 'center',
               marginTop: 20,
             }}>
-            <Button onPress={login} text={'LOGIN'} />
+            <Button onPress={login} text={t('common:login')} />
           </View>
         </View>
       </ScrollView>

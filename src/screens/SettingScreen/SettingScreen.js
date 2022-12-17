@@ -2,6 +2,7 @@ import {StyleSheet, Text, View, Switch, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import Ico from 'react-native-vector-icons/AntDesign';
 import {color} from '../../theme';
+import {t} from 'i18next';
 
 const SettingScreen = ({navigation}) => {
   const [isEnabled, setIsEnabled] = useState(true);
@@ -14,7 +15,7 @@ const SettingScreen = ({navigation}) => {
           marginTop: 20,
           // marginRight: 20,
           left: 25,
-          alignItems:"center"
+          alignItems: 'center',
         }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ico name="left" size={20} color="black" />
@@ -29,12 +30,12 @@ const SettingScreen = ({navigation}) => {
             fontSize: 24,
             color: 'black',
           }}>
-          Settings
+          {t('common:settings')}
         </Text>
       </View>
       <View style={{margin: 10, flex: 2, marginTop: 50}}>
         <SettingItems
-          name="Notifications"
+          name={t('common:Notifications')}
           icon={
             <Switch
               trackColor={{false: '#767577', true: color.blue}}
@@ -46,24 +47,24 @@ const SettingScreen = ({navigation}) => {
           }
         />
         <SettingItems
-          name="Change Password"
+          name={t('common:changePassword')}
           icon={<Ico name="right" size={22} color="black" />}
         />
         <SettingItems
-          name="Privacy Policy"
+          name={t('common:privacyPolicy')}
           icon={<Ico name="right" size={22} color="black" />}
         />
         <SettingItems
-          name="Terms & Condition"
+          name={t('common:termmsCondition')}
           icon={<Ico name="right" size={22} color="black" />}
         />
         <SettingItems
-          name="About Us"
+          name={t('common:aboutus')}
           icon={<Ico name="right" size={22} color="black" />}
         />
         <SettingItems
-        onPress={()=>(navigation.navigate('Login'))}
-          name="Logout"
+          onPress={() => navigation.navigate('Login')}
+          name={t('common:logout')}
           icon={<Ico name="right" size={22} color="black" />}
         />
       </View>
@@ -81,13 +82,19 @@ const SettingItems = ({name, icon, onPress}) => {
             borderColor: '#C6C6C6',
             flexDirection: 'row',
             justifyContent: 'space-between',
-           width:'100%',
-            alignItems:'center',
-            paddingVertical:15,
-            
-            
+            width: '100%',
+            alignItems: 'center',
+            paddingVertical: 15,
           }}>
-          <Text style={{color: 'black',textAlign:'center',textAlignVertical:'center',fontSize:17}}>{name}</Text>
+          <Text
+            style={{
+              color: 'black',
+              textAlign: 'center',
+              textAlignVertical: 'center',
+              fontSize: 17,
+            }}>
+            {name}
+          </Text>
           {icon}
         </View>
       </TouchableOpacity>
