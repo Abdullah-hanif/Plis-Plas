@@ -18,6 +18,7 @@ import Lock from 'react-native-vector-icons/EvilIcons';
 import {loginUser} from '../../api/api';
 import {Base_Url} from '../../api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import messaging from '@react-native-firebase/messaging';
 
 // @Toast
 import {useToast} from 'react-native-toast-notifications';
@@ -35,7 +36,7 @@ const Login = ({navigation}) => {
 
   const login = async () => {
     //  navigation.navigate('DrawerNavigator')
-    setFCM();
+    // setFCM();
 
     const params = {
       method: 'POST',
@@ -48,7 +49,11 @@ const Login = ({navigation}) => {
     fetch(`${Base_Url}/login`, params)
       .then(response => response.json())
       .then(data => {
+        getToken();
         setUserId(data?.data?.id);
+        const fcmid = data?.data?.id;
+        setFCM(fcmid);
+        // console.log(data?.data?.id, '====>inside login fun');
 
         if (data?.message == 'Email and password are required') {
           toast.show(data?.message, {
@@ -74,9 +79,10 @@ const Login = ({navigation}) => {
             offset: 30,
             animationType: 'slide-in | zoom-in',
           });
-          navigation.navigate('DrawerNavigator');
+          console.log('StATE END LOGIN FUN====>', userId);
+          // navigation.navigate('DrawerNavigator');
         }
-        console.log(data?.data?.fcm);
+        // console.log(data?.data?.fcm);
 
         // navigation.navigate('DrawerNavigator');
       });
@@ -84,18 +90,28 @@ const Login = ({navigation}) => {
     setPassword('');
   };
 
-  React.useEffect(() => {
-    setFCM();
-  }, [userId]);
+  // React.useEffect(() => {
+  //   setFCM();
+  // }, []);
 
-  const setFCM = async () => {
-    const token = await AsyncStorage.getItem('token');
-    console.log('TOKEN===>', token);
+  const getToken = async () => {
+    await messaging().registerDeviceForRemoteMessages();
+    const token = await messaging().getToken();
+    AsyncStorage.setItem('token', token);
+    return token;
+  };
+
+  const setFCM = async fcmid => {
+    // console.log('StATE inside setFCm====>', userId);
+    alert(fcmid);
+
+    const token = await getToken();
+    console.log('TOKENSSSSSSSSSS===>', token);
     const params = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        userId: userId,
+        userId: fcmid,
         fcm: token,
       }),
     };
@@ -105,7 +121,7 @@ const Login = ({navigation}) => {
         console.log('FCMM TOKEN====>', data);
         // alert('TOKENSSS FCMSOTE');
 
-        // navigation.navigate('DrawerNavigator');
+        navigation.navigate('DrawerNavigator');
       });
   };
   return (

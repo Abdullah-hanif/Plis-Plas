@@ -134,16 +134,16 @@ const MapScreen = ({navigation}) => {
 
   useEffect(() => {
     getLiveLocation();
-    getToken();
+    // getToken();
     showAcceptScreen();
   }, [myconditon]);
 
-  const getToken = async () => {
-    await messaging().registerDeviceForRemoteMessages();
-    const token = await messaging().getToken();
-    AsyncStorage.setItem('token', token);
-    return console.log('====>TOKENNNNNN====>', token);
-  };
+  // const getToken = async () => {
+  //   await messaging().registerDeviceForRemoteMessages();
+  //   const token = await messaging().getToken();
+  //   AsyncStorage.setItem('token', token);
+  //   return console.log('====>TOKENNNNNN====>', token);
+  // };
 
   const getLiveLocation = async () => {
     const locPermissionDenied = await locationPermission();
@@ -223,8 +223,8 @@ const MapScreen = ({navigation}) => {
     setState({
       ...state,
       destinationCords: {
-        latitude: 24.81796,
-        longitude: 67.141646,
+        latitude: 24.816884,
+        longitude: 67.141917,
         //<=======================Real COde is here=======================>
         // latitude: JSON.parse(realData?.latitude),
         // longitude: JSON.parse(realData?.longitude),

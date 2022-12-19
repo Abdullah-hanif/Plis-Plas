@@ -31,10 +31,10 @@ const App = () => {
   // languge Changer
   const locale = NativeModules.I18nManager.localeIdentifier;
   console.log('==>LOCAL BEFORE===>', locale);
-  const localLang = locale.split('_');
+  // const localLang = locale.split('_');
   const {t, i18n} = useTranslation();
 
-  // const localLang = ['es', 'es'];
+  const localLang = ['es', 'es'];
   // es mean spanish
   console.log('====>DEVICE LANG', localLang[0]);
 
