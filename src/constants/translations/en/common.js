@@ -11,6 +11,7 @@ export default {
   youareonline: "You're Online",
   acceptance: 'Acceptance',
   cancellation: 'Cancellation',
+  details: 'Deails',
 
   Orderisgettingready: 'Order is getting ready',
   youhavegotaneworder: 'you have got a new order',
@@ -57,4 +58,16 @@ export default {
   privacyPolicy: 'Privacy Policy',
   termmsCondition: 'Terms & Condition',
   aboutus: 'About Us',
+
+  // @OrderDetails
+  restaurant: 'Restaurant',
+  deliveryfee: 'Delivery Fee',
+  orderdetail: 'Order Detail',
+  deal: 'Deal',
+  subtotal: 'Subtotal',
+  total: 'Total',
+  tax: 'Tax',
+  paymentType: 'Payment Type',
+  cashondelivery: 'Cash On Delivery',
+  orderdeliverd: 'Order Delivered',
 };

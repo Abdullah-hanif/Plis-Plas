@@ -61,7 +61,7 @@ const MapScreen = ({navigation}) => {
   const showAcceptScreen = () => {
     setTimeout(() => {
       // alert(myconditon);
-
+      // AsyncStorage.setItem("acitveScreen","accept")
       myconditon ? setAcceptScree(true) : null;
     }, 1000);
   };
@@ -135,10 +135,6 @@ const MapScreen = ({navigation}) => {
   useEffect(() => {
     getLiveLocation();
     getToken();
-    // getDestination();
-
-    // getDestination();
-
     showAcceptScreen();
   }, [myconditon]);
 
@@ -353,8 +349,8 @@ const MapScreen = ({navigation}) => {
             checkOutId={checkOutId}
             showDestination={() => getDestination()}
             viewOrderScreen={enableAccept => {
-              navigation.navigate('OrderDetails', {enableAccept: enableAccept}),
-                setAcceptScree(false);
+              navigation.navigate('OrderDetails', {enableAccept: enableAccept});
+              // setAcceptScree(false);
             }}
           />
         )}
@@ -429,6 +425,8 @@ const AcceptRejectContainer = ({
       animationType: 'slide-in | zoom-in',
     });
   };
+
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <View
       style={{
@@ -570,7 +568,7 @@ const AcceptRejectContainer = ({
               elevation: 9,
               justifyContent: 'center',
               alignItems: 'center',
-              padding: 20,
+              // padding: 10,
               paddingVertical: 30,
             }}>
             <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
@@ -592,8 +590,21 @@ const AcceptRejectContainer = ({
                 {t('common:ContactCustomer')}
               </Text>
             </View>
+            <TouchableOpacity onPress={() => viewOrderScreen(enableAccept)}>
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: 15,
+                  textDecorationLine: 'underline',
+                }}>
+                {t('common:details')}
+              </Text>
+            </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => alert('Order Deliverd')}
+              onPress={() => {
+                // alert(t('common:orderdeliverd'));
+                setModalVisible(true);
+              }}
               style={{
                 marginVertical: 10,
                 backgroundColor: color.blue,
@@ -613,6 +624,63 @@ const AcceptRejectContainer = ({
               </Text>
             </TouchableOpacity>
           </View>
+
+          <Modal
+            statusBarTranslucent={true}
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'rgba(0,0,0,0.61)',
+                height: Dimensions.get('screen').height,
+                width: Dimensions.get('screen').width,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  width: '90%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: 30,
+                  borderRadius: 20,
+                }}>
+                <TouchableOpacity
+                  style={{alignSelf: 'flex-end'}}
+                  onPress={() => setModalVisible(!modalVisible)}>
+                  <Text
+                    style={{
+                      textAlign: 'right',
+                      color: 'black',
+                      fontWeight: 'bold',
+                    }}>
+                    Close
+                  </Text>
+                </TouchableOpacity>
+                <Image
+                  resizeMode="contain"
+                  style={{height: 150, width: 150}}
+                  source={require('../../assets/Icons/Group15265.png')}
+                />
+                <Text
+                  style={{fontWeight: 'bold', fontSize: 19, color: 'black'}}>
+                  Order Delivered
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    color: 'black',
+                    textAlign: 'center',
+                    flexWrap: 'wrap',
+                  }}>
+                  you have sucessfully delivered{'\n'} your order
+                </Text>
+              </View>
+            </View>
+          </Modal>
         </>
       )}
     </View>

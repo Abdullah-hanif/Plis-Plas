@@ -417,7 +417,8 @@ const InfromationDetails = ({icon, title, name}) => {
             marginHorizontal: 25,
             // paddingHorizontal: 30,
           }}>
-          <View style={{width: '30%', alignItems: 'center'}}>
+          <View
+            style={{width: '30%', alignItems: 'center', marginHorizontal: 10}}>
             <Text
               style={{
                 fontWeight: 'bold',

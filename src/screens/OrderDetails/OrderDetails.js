@@ -15,6 +15,8 @@ import Bell from 'react-native-vector-icons/FontAwesome';
 import {approvedOrder} from '../../api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// @transaltion
+import {useTranslation} from 'react-i18next';
 const OrderDetails = ({navigation, route}) => {
   const [shopeDetails, setShopeDetails] = React.useState();
 
@@ -32,6 +34,7 @@ const OrderDetails = ({navigation, route}) => {
     console.log('RESTAURANT DETAILS======>', realData?.shopName);
   };
 
+  const {t} = useTranslation();
   const AcceptOrder = async () => {
     const res = await approvedOrder('/approved', {
       checkoutId: shopeDetails?.checkoutId,
@@ -45,7 +48,7 @@ const OrderDetails = ({navigation, route}) => {
       <ScrollView style={{marginBottom: 30}}>
         {/* first Container */}
         <View style={styles.secoundContainer}>
-          <Text style={styles.restStyle}>Rastaurant</Text>
+          <Text style={styles.restStyle}>{t('common:restaurant')}</Text>
           <Text style={styles.restNameStyle}>{shopeDetails?.shopName}</Text>
         </View>
         {/* secoundContainer */}
@@ -53,7 +56,7 @@ const OrderDetails = ({navigation, route}) => {
           return (
             <>
               <View style={styles.secoundContainer}>
-                <Text style={styles.restStyle}>Order Detail</Text>
+                <Text style={styles.restStyle}>{t('common:orderdetail')}</Text>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -85,7 +88,7 @@ const OrderDetails = ({navigation, route}) => {
                           fontSize: 18,
                           color: 'black',
                         }}>
-                        Deail 5
+                        {t('common:deal')} 5
                       </Text>
                       <Text style={{color: 'gray', fontSize: 14}}>
                         {item?.itemName}
@@ -110,8 +113,8 @@ const OrderDetails = ({navigation, route}) => {
             },
           ]}>
           <View>
-            <Text style={styles.restStyle}>Subtotal</Text>
-            <Text style={styles.restNameStyle}>Delivery Fee</Text>
+            <Text style={styles.restStyle}>{t('common:subtotal')}</Text>
+            <Text style={styles.restNameStyle}>{t('common:deliveryfee')}</Text>
           </View>
           <View>
             <Text style={styles.restStyle}> Rs 1,510.00</Text>
@@ -130,8 +133,10 @@ const OrderDetails = ({navigation, route}) => {
             },
           ]}>
           <View style={{flexDirection: 'row'}}>
-            <Text style={styles.restStyle}>Total</Text>
-            <Text style={{color: 'gray', top: 3, left: 10}}>(incl. TEX)</Text>
+            <Text style={styles.restStyle}>{t('common:total')}</Text>
+            <Text style={{color: 'gray', top: 3, left: 10}}>
+              (incl. {t('common:tax')})
+            </Text>
           </View>
           <Text
             style={[
@@ -149,10 +154,10 @@ const OrderDetails = ({navigation, route}) => {
             margin: 10,
           }}>
           <Text style={{fontWeight: '700', fontSize: 18, color: 'black'}}>
-            Payment Type
+            {t('common:paymentType')}
           </Text>
           <Text style={{fontWeight: '700', fontSize: 18, color: 'black'}}>
-            Cash On Delivery
+            {t('common:cashondelivery')}
           </Text>
         </View>
         {/* End 4th container */}

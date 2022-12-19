@@ -11,6 +11,7 @@ export default {
   youareonline: 'estas en linea',
   acceptance: 'Aceptación',
   cancellation: 'Cancelación',
+  details: 'Detalles',
 
   Orderisgettingready: 'el pedido se esta preparando',
   youhavegotaneworder: 'tienes un nuevo pedido',
@@ -56,4 +57,18 @@ export default {
   privacyPolicy: 'Política de privacidad',
   termmsCondition: 'Términos y Condiciones',
   aboutus: 'Sobre nosotras',
+
+  // @OrderDetails
+  restaurant: 'Restaurante',
+  orderdetail: 'Detalles del pedido',
+  deliveryfee: 'Gastos de envío',
+
+  deal: 'Trato',
+
+  subtotal: 'Total parcial',
+  total: 'Total',
+  tax: 'Impuesto',
+  paymentType: 'Tipo de pago',
+  cashondelivery: 'contra reembolso',
+  orderdeliverd: 'Pedido entregado',
 };
