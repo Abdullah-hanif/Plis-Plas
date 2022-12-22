@@ -29,14 +29,17 @@ const ProfileScreen = ({navigation}) => {
   const dummyImage = require('../../assets/Icons/Group3952.png');
   const [openModal, setopenModal] = React.useState(false);
   const [img, imgUri] = React.useState(null);
+  const [active, setActive] = React.useState('');
+  // @front and BAck card State
   const [frontLicence, setFrontLicence] = React.useState(null);
   const [backtLicence, setBackLicence] = React.useState(null);
+  const [frontCivilid, setfrontCivilid] = React.useState(null);
+  const [backCivilid, setbackCivilid] = React.useState(null);
 
-  console.log(img, '========>');
-
-  const ImagePicker = () => {
-    setopenModal(true);
-  };
+  console.log(frontLicence, '========>FRONT lise');
+  console.log(backtLicence, '========>Back lis');
+  console.log(frontCivilid, '========>font civiid');
+  console.log(backCivilid, '========>back civi');
 
   const LaunchImageLibrary = type => {
     const options = {
@@ -60,7 +63,17 @@ const ProfileScreen = ({navigation}) => {
         const source = response;
         console.log('===>URL', source.assets[0].uri);
         // imgUri(source.assets[0].uri);
-        setFrontLicence(source.assets[0].uri);
+        if (active == 'lFront') {
+          setFrontLicence(source.assets[0].uri);
+        } else if (active == 'lBack') {
+          setBackLicence(source.assets[0].uri);
+        } else if (active == 'cFront') {
+          setfrontCivilid(source.assets[0].uri);
+        } else if (active == 'cBack') {
+          setbackCivilid(source.assets[0].uri);
+        } else {
+          alert('notworking');
+        }
       }
     });
     setopenModal(false);
@@ -114,10 +127,16 @@ const ProfileScreen = ({navigation}) => {
         const source = response;
         console.log('===>URL============>', source);
         // imgUri(source.assets[0].uri);
+
         setBackLicence(source.assets[0].uri);
       }
     });
     setopenModal(false);
+  };
+
+  const setImage = title => {
+    setopenModal(true);
+    setActive(title);
   };
 
   return (
@@ -273,74 +292,216 @@ const ProfileScreen = ({navigation}) => {
         </View>
         {/* FirstComp Ended */}
         {/* license Container start */}
+        <View style={styles.LicenceContainer}>
+          <View
+            style={{
+              paddingVertical: 10,
+              borderBottomWidth: 1,
+              borderColor: 'lightgray',
+            }}>
+            <Text
+              style={{
+                fontSize: 17,
+                fontWeight: 'bold',
+                margin: 10,
+                color: 'black',
+                // padding: 10,
+              }}>
+              {/* {topHeading} */}
+              {t('common:Licence')}
+            </Text>
+          </View>
+          <View
+            style={{
+              margin: 10,
 
-        <LicenceContainer
-          onClick={ImagePicker}
-          icon={<Gender name="gender-female" size={25} color="black" />}
-          title="Gender"
-          name="Male"
-          topHeading={t('common:Licence')}
-          imgUri={
-            !frontLicence ? (
-              <>
-                <View
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+            }}>
+            <TouchableOpacity onPress={() => setImage('lFront')}>
+              <View>
+                <Text
                   style={{
-                    borderWidth: 1,
-                    borderColor: 'lightgray',
-                    padding: 50,
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    fontWeight: '400',
+                    color: 'black',
+                    fontSize: 17,
+                    margin: 10,
                   }}>
-                  <Image
-                    resizeMode="contain"
-                    style={{height: 30, width: 30, tintColor: 'black'}}
-                    source={dummyImage}
-                  />
-                  <Text style={{color: 'black'}}>{t('common:upload')}</Text>
-                </View>
-              </>
-            ) : (
-              <Image
-                style={{height: 150, width: 145}}
-                source={{uri: frontLicence}}
-              />
-            )
-          }
-        />
+                  {t('common:front')}
+                </Text>
 
+                {!frontLicence ? (
+                  <>
+                    <View
+                      style={{
+                        borderWidth: 1,
+                        borderColor: 'lightgray',
+                        padding: 50,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Image
+                        resizeMode="contain"
+                        style={{height: 30, width: 30, tintColor: 'black'}}
+                        source={dummyImage}
+                      />
+                      <Text style={{color: 'black'}}>{t('common:upload')}</Text>
+                    </View>
+                  </>
+                ) : (
+                  <Image
+                    style={{height: 150, width: 145}}
+                    source={{uri: frontLicence}}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setImage('lBack')}>
+              <View>
+                <Text
+                  style={{
+                    fontWeight: '400',
+                    color: 'black',
+                    fontSize: 17,
+                    margin: 10,
+                  }}>
+                  {t('common:Back')}
+                </Text>
+
+                {!backtLicence ? (
+                  <>
+                    <View
+                      style={{
+                        borderWidth: 1,
+                        borderColor: 'lightgray',
+                        padding: 50,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Image
+                        resizeMode="contain"
+                        style={{height: 30, width: 30, tintColor: 'black'}}
+                        source={dummyImage}
+                      />
+                      <Text style={{color: 'black'}}>{t('common:upload')}</Text>
+                    </View>
+                  </>
+                ) : (
+                  <Image
+                    style={{height: 150, width: 145}}
+                    source={{uri: backtLicence}}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
         {/* license Container End */}
         {/* CIVIL ID CONTAINER */}
-        <LicenceContainer
-          onClick={ImagePicker}
-          icon={<Gender name="gender-female" size={25} color="black" />}
-          title="Gender"
-          name="Male"
-          topHeading={t('common:CivilId')}
-          imgUri={
-            !img ? (
-              <>
-                <View
-                  style={{
-                    borderWidth: 1,
-                    borderColor: 'lightgray',
-                    padding: 50,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Image
-                    resizeMode="contain"
-                    style={{height: 30, width: 30, tintColor: 'black'}}
-                    source={dummyImage}
-                  />
-                  <Text style={{color: 'black'}}>{t('common:upload')}</Text>
-                </View>
-              </>
-            ) : (
-              <Image style={{height: 150, width: 145}} source={{uri: img}} />
-            )
-          }
-        />
+        <View style={styles.LicenceContainer}>
+          <View
+            style={{
+              paddingVertical: 10,
+              borderBottomWidth: 1,
+              borderColor: 'lightgray',
+            }}>
+            <Text
+              style={{
+                fontSize: 17,
+                fontWeight: 'bold',
+                margin: 10,
+                color: 'black',
+                // padding: 10,
+              }}>
+              {/* {topHeading} */}
+              {t('common:CivilId')}
+            </Text>
+          </View>
+          <View
+            style={{
+              margin: 10,
 
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+            }}>
+            <TouchableOpacity onPress={() => setImage('cFront')}>
+              <View>
+                <Text
+                  style={{
+                    fontWeight: '400',
+                    color: 'black',
+                    fontSize: 17,
+                    margin: 10,
+                  }}>
+                  {t('common:front')}
+                </Text>
+
+                {!frontCivilid ? (
+                  <>
+                    <View
+                      style={{
+                        borderWidth: 1,
+                        borderColor: 'lightgray',
+                        padding: 50,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Image
+                        resizeMode="contain"
+                        style={{height: 30, width: 30, tintColor: 'black'}}
+                        source={dummyImage}
+                      />
+                      <Text style={{color: 'black'}}>{t('common:upload')}</Text>
+                    </View>
+                  </>
+                ) : (
+                  <Image
+                    style={{height: 150, width: 145}}
+                    source={{uri: frontCivilid}}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setImage('cBack')}>
+              <View>
+                <Text
+                  style={{
+                    fontWeight: '400',
+                    color: 'black',
+                    fontSize: 17,
+                    margin: 10,
+                  }}>
+                  {t('common:Back')}
+                </Text>
+
+                {!backCivilid ? (
+                  <>
+                    <View
+                      style={{
+                        borderWidth: 1,
+                        borderColor: 'lightgray',
+                        padding: 50,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Image
+                        resizeMode="contain"
+                        style={{height: 30, width: 30, tintColor: 'black'}}
+                        source={dummyImage}
+                      />
+                      <Text style={{color: 'black'}}>{t('common:upload')}</Text>
+                    </View>
+                  </>
+                ) : (
+                  <Image
+                    style={{height: 150, width: 145}}
+                    source={{uri: backCivilid}}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
         {/* End CIVIL CONTAINER */}
 
         {/* //Modal View */}
@@ -447,30 +608,6 @@ const InfromationDetails = ({icon, title, name}) => {
           </View>
         </View>
       </View>
-      {/* <View
-        style={
-          {
-            // margin: 10,
-            // justifyContent: 'space-between',
-            // flexDirection: 'row',
-          }
-        }>
-        <View style={{flexDirection: 'row'}}>
-          <View>{icon}</View>
-        </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-          <Text
-            style={{
-              fontWeight: 'bold',
-              color: 'black',
-              fontSize: 17,
-              left: 10,
-            }}>
-            {title}
-          </Text>
-          <Text style={{color: 'black', right: 25}}>{name}</Text>
-        </View>
-      </View> */}
     </>
   );
 };
@@ -479,23 +616,7 @@ const LicenceContainer = ({icon, title, name, topHeading, onClick, imgUri}) => {
   const {t} = useTranslation();
   return (
     <>
-      <View
-        style={{
-          margin: 20,
-          // marginTop: 110,
-          backgroundColor: 'white',
-          // padding: 10,
-          borderRadius: 10,
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 4,
-          },
-          shadowOpacity: 0.3,
-          shadowRadius: 4.65,
-
-          elevation: 8,
-        }}>
+      <View style={styles.LicenceContainer}>
         <View
           style={{
             paddingVertical: 10,
@@ -520,7 +641,7 @@ const LicenceContainer = ({icon, title, name, topHeading, onClick, imgUri}) => {
             justifyContent: 'space-between',
             flexDirection: 'row',
           }}>
-          <TouchableOpacity onPress={onClick}>
+          <TouchableOpacity onPress={() => onClick('front')}>
             <View>
               <Text
                 style={{
@@ -531,15 +652,11 @@ const LicenceContainer = ({icon, title, name, topHeading, onClick, imgUri}) => {
                 }}>
                 {t('common:front')}
               </Text>
-              {/* <Text style={{color: 'black', right: 25}}>{name}</Text> */}
-              {/* <Image
-                style={{height: 150, width: 145}}
-                source={require('../../assets/Images/licese.jpg')}
-              /> */}
+
               {imgUri}
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={onClick}>
+          <TouchableOpacity onPress={() => onClick('back')}>
             <View>
               <Text
                 style={{
@@ -550,12 +667,8 @@ const LicenceContainer = ({icon, title, name, topHeading, onClick, imgUri}) => {
                 }}>
                 {t('common:Back')}
               </Text>
-              {/* <Text style={{color: 'black', right: 25}}>{name}</Text> */}
+
               {imgUri}
-              {/* <Image
-                style={{height: 150, width: 145}}
-                source={require('../../assets/Images/licese.jpg')}
-              /> */}
             </View>
           </TouchableOpacity>
         </View>
@@ -593,5 +706,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: 'black',
+  },
+  LicenceContainer: {
+    margin: 20,
+    // marginTop: 110,
+    backgroundColor: 'white',
+    // padding: 10,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+
+    elevation: 8,
   },
 });
