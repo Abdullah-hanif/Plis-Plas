@@ -8,8 +8,9 @@ import {
   ScrollView,
   TouchableOpacity,
   PermissionsAndroid,
+  TextInput,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Ico from 'react-native-vector-icons/AntDesign';
 import Edit from 'react-native-vector-icons/Feather';
 import Gender from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -23,9 +24,14 @@ import {color} from '../../theme';
 
 // @transaltion
 import {useTranslation} from 'react-i18next';
+import {updateProfile} from '../../api/api';
+import Button from '../../components/Button/Button';
+import {useToast} from 'react-native-toast-notifications';
 
 const ProfileScreen = ({navigation}) => {
   const {t} = useTranslation();
+  const toast = useToast();
+
   const dummyImage = require('../../assets/Icons/Group3952.png');
   const [openModal, setopenModal] = React.useState(false);
   const [img, imgUri] = React.useState(null);
@@ -36,10 +42,20 @@ const ProfileScreen = ({navigation}) => {
   const [frontCivilid, setfrontCivilid] = React.useState(null);
   const [backCivilid, setbackCivilid] = React.useState(null);
 
-  console.log(frontLicence, '========>FRONT lise');
-  console.log(backtLicence, '========>Back lis');
-  console.log(frontCivilid, '========>font civiid');
-  console.log(backCivilid, '========>back civi');
+  const [editField, setEditFiled] = useState(false);
+
+  const [name, setName] = useState('');
+  const [phone, setPhon] = useState('');
+  const [gender, setGender] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+
+  // console.log(name, '========>Name');
+  // console.log(phone, '========>phone');
+  // console.log(gender, '========>gendder');
+  // console.log(dateOfBirth, '========>DOB');
+
+  // console.log(frontCivilid, '========>font civiid');
+  // console.log(backCivilid, '========>back civi');
 
   const LaunchImageLibrary = type => {
     const options = {
@@ -50,18 +66,18 @@ const ProfileScreen = ({navigation}) => {
     };
 
     launchImageLibrary(options, response => {
-      console.log('Image LibraResponse = ', response);
+      // console.log('Image LibraResponse = ', response);
 
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        // console.log('User cancelled image picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        // console.log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+        // console.log('User tapped custom button: ', response.customButton);
         alert(response.customButton);
       } else {
         const source = response;
-        console.log('===>URL', source.assets[0].uri);
+        // console.log('===>URL', source.assets[0].uri);
         // imgUri(source.assets[0].uri);
         if (active == 'lFront') {
           setFrontLicence(source.assets[0].uri);
@@ -134,9 +150,44 @@ const ProfileScreen = ({navigation}) => {
     setopenModal(false);
   };
 
+  // React.useEffect(() => {
+  //   editFields();
+  // }, [editField]);
+  const editFields = () => {
+    setEditFiled(!editField);
+  };
+
   const setImage = title => {
     setopenModal(true);
     setActive(title);
+  };
+
+  const setData = async () => {
+    setEditFiled(false);
+
+    const data = new FormData();
+    data.append('userId', '35');
+    data.append('name', name);
+    data.append('phone', phone);
+    data.append('gender', gender);
+    data.append('dateOfBirth', dateOfBirth);
+    // data.append("name","Rider1")
+    // data.append("name","Rider1")
+    // data.append("name","Rider1")
+    // data.append("name","Rider1")
+    // data.append("name","Rider1")
+
+    console.log(data, '===>Formdata');
+
+    const response = await updateProfile(data);
+    console.log('PROFILE UPDATE RESPONSE======> +++', response?.message);
+    toast.show(response?.message, {
+      type: 'success',
+      placement: 'top',
+      duration: 4000,
+      offset: 30,
+      animationType: 'slide-in | zoom-in',
+    });
   };
 
   return (
@@ -161,7 +212,9 @@ const ProfileScreen = ({navigation}) => {
             <View>
               <Text style={styles.txt}>{t('common:MyProfile')}</Text>
             </View>
-            <TouchableOpacity style={{paddingRight: '3%'}}>
+            <TouchableOpacity
+              onPress={() => editFields()}
+              style={{paddingRight: '3%'}}>
               <Image
                 source={require('../../assets/Icons/editProfile.png')}
                 style={{width: 22, height: 22, marginRight: '2%'}}
@@ -240,6 +293,8 @@ const ProfileScreen = ({navigation}) => {
           </View>
           {/* End Informtion area */}
           <InfromationDetails
+            edit={editField}
+            getInput={txt => setName(txt)}
             icon={
               <Image
                 source={require('../../assets/Icons/name.png')}
@@ -250,6 +305,8 @@ const ProfileScreen = ({navigation}) => {
             name="Poco Ramos"
           />
           <InfromationDetails
+            edit={editField}
+            getInput={txt => setPhon(txt)}
             icon={
               <Image
                 source={require('../../assets/Icons/Group10722.png')}
@@ -260,6 +317,8 @@ const ProfileScreen = ({navigation}) => {
             name="+92345628299"
           />
           <InfromationDetails
+            edit={editField}
+            getInput={txt => console.log('email==>', txt)}
             icon={
               <Image
                 source={require('../../assets/Icons/Group10723.png')}
@@ -270,6 +329,8 @@ const ProfileScreen = ({navigation}) => {
             name="PocoRamos@gmail.com"
           />
           <InfromationDetails
+            edit={editField}
+            getInput={txt => setGender(txt)}
             icon={
               <Image
                 source={require('../../assets/Icons/Group41.png')}
@@ -280,6 +341,8 @@ const ProfileScreen = ({navigation}) => {
             name="Male"
           />
           <InfromationDetails
+            edit={editField}
+            getInput={txt => setDateOfBirth(txt)}
             icon={
               <Image
                 source={require('../../assets/Icons/calender.png')}
@@ -503,6 +566,11 @@ const ProfileScreen = ({navigation}) => {
           </View>
         </View>
         {/* End CIVIL CONTAINER */}
+        {/* ///////////////Update Button///////////// */}
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Button onPress={() => setData()} text="Update" />
+        </View>
+        {/* ///////////////END Update Button///////////// */}
 
         {/* //Modal View */}
         {openModal ? (
@@ -561,10 +629,17 @@ const ProfileScreen = ({navigation}) => {
   );
 };
 
-const InfromationDetails = ({icon, title, name}) => {
+const InfromationDetails = ({icon, title, name, edit, getInput}) => {
+  // console.log('condition', edit);
   return (
     <>
-      <View style={{flexDirection: 'row', margin: 15}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          marginVertical: -5,
+          margin: 10,
+          alignItems: 'center',
+        }}>
         <View style={{alignItems: 'center'}}>{icon}</View>
         <View
           style={{
@@ -592,19 +667,32 @@ const InfromationDetails = ({icon, title, name}) => {
             </Text>
           </View>
           <View style={{width: '90%', alignItems: 'center', top: '1%'}}>
-            <Text
+            {/* {!edit ? (
+              <Text
+                style={{
+                  color: 'black',
+                  alignSelf: 'flex-start',
+
+                  // textAlign: 'right',
+                  // marginHorizontal: 20,
+                  // textAlign: 'left',
+                  // flexDirection: 'row',
+                  // alignSelf: 'flex-start',
+                }}>
+                {name}
+              </Text>
+            ) : ( */}
+            <TextInput
+              editable={edit}
+              placeholderTextColor="black"
               style={{
                 color: 'black',
                 alignSelf: 'flex-start',
-
-                // textAlign: 'right',
-                // marginHorizontal: 20,
-                // textAlign: 'left',
-                // flexDirection: 'row',
-                // alignSelf: 'flex-start',
-              }}>
-              {name}
-            </Text>
+              }}
+              onChangeText={txt => getInput(txt)}
+              placeholder={name}
+            />
+            {/* )} */}
           </View>
         </View>
       </View>

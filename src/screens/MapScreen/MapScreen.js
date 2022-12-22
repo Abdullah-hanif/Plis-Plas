@@ -24,7 +24,7 @@ import Header from '../../components/Header';
 import {color} from '../../theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
-import {approvedOrder} from '../../api/api';
+import {approvedOrder, onlineOffline} from '../../api/api';
 import {useToast} from 'react-native-toast-notifications';
 // @Translation
 import {useTranslation} from 'react-i18next';
@@ -44,6 +44,8 @@ export const ShowAlerScree = value => {
 };
 
 const MapScreen = ({navigation}) => {
+  const toast = useToast();
+
   const mapRef = useRef();
   const markerRef = useRef();
   const [isEnabled, setIsEnabled] = useState(false);
@@ -55,7 +57,7 @@ const MapScreen = ({navigation}) => {
 
   // const [meetDistance, setMeetDistance] = useState();
 
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   // console.log('====FUNICUCNC===>', myconditon);
 
   const showAcceptScreen = () => {
@@ -335,8 +337,31 @@ const MapScreen = ({navigation}) => {
         {!showacceptScreen ? (
           <BottomSheet
             isEnabled={isEnabled}
-            toggleSwitch={() => {
+            toggleSwitch={async () => {
               setIsEnabled(previousState => !previousState);
+              // alert(isEnabled);
+              const res = await onlineOffline({
+                userId: 35,
+                value: !isEnabled ? 'on' : 'offline',
+              });
+
+              !isEnabled
+                ? toast.show('you are online', {
+                    type: 'success',
+                    placement: 'top',
+                    duration: 4000,
+                    offset: 30,
+                    animationType: 'slide-in | zoom-in',
+                  })
+                : toast.show('your offline', {
+                    type: 'danger',
+                    placement: 'top',
+                    duration: 4000,
+                    offset: 30,
+                    animationType: 'slide-in | zoom-in',
+                  });
+
+              console.log('===>RESPONSEEEEE===>', res);
               // setTimeout(() => {
               //   setAcceptScree(true);
               // }, 4000);

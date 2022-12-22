@@ -53,6 +53,7 @@ const Login = ({navigation}) => {
         setUserId(data?.data?.id);
         const fcmid = data?.data?.id;
         setFCM(fcmid);
+
         // console.log(data?.data?.id, '====>inside login fun');
 
         if (data?.message == 'Email and password are required') {

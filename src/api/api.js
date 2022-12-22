@@ -29,3 +29,31 @@ export const approvedOrder = async (params, data) => {
 
   return content;
 };
+
+export const updateProfile = async data => {
+  const rawResponse = await fetch(`http://45.77.60.11/api/rider-update`, {
+    method: 'POST',
+    headers: {
+      // Accept: 'application/json',
+      'Content-Type': 'multipart/form-data',
+    },
+    body: data,
+  });
+  const content = await rawResponse.json();
+
+  return content;
+};
+
+export const onlineOffline = async data => {
+  const rawResponse = await fetch(`http://45.77.60.11/api/maintain-status`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  const content = await rawResponse.json();
+
+  return content;
+};
