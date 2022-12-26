@@ -7,7 +7,7 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {DrawerContentScrollView} from '@react-navigation/drawer';
 import Ico from 'react-native-vector-icons/Entypo';
 import LogOut from 'react-native-vector-icons/MaterialIcons';
@@ -18,10 +18,24 @@ import Cross from 'react-native-vector-icons/EvilIcons';
 import {color} from '../../theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// @redux
+import {useDispatch, useSelector} from 'react-redux';
+
 // @translation
 import {useTranslation} from 'react-i18next';
+import {useIsFocused} from '@react-navigation/native';
 
 export const DrawerContent = ({navigation}) => {
+  const [name, setName] = useState('Poco Ramos');
+  const [profileImg, setProfileImg] = useState('Poco Ramos');
+  const focused = useIsFocused();
+  const reduData = useSelector(state => state.profileDetail);
+  React.useEffect(() => {
+    reduData?.profileDetail.map((data, index) => {
+      return setName(data?.name), setProfileImg(data?.profilePicture);
+    });
+  }, [focused == true]);
+  console.log('PROFILE IMAGE===>', profileImg);
   const {t} = useTranslation();
   return (
     <>
@@ -60,6 +74,7 @@ export const DrawerContent = ({navigation}) => {
               <Image
                 style={{height: 80, width: 80, borderRadius: 70}}
                 source={require('../../assets/Images/men.jpg')}
+                // source={{uri: `http://45.77.60.11/api${profileImg}`}}
               />
             </View>
             <Text
@@ -69,7 +84,7 @@ export const DrawerContent = ({navigation}) => {
                 fontSize: 18,
                 marginTop: 10,
               }}>
-              Poco Ramos
+              {name}
             </Text>
           </View>
           {/* Start Drawer ITems */}

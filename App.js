@@ -20,6 +20,10 @@ import {ToastProvider} from 'react-native-toast-notifications';
 import {useTranslation} from 'react-i18next';
 import './src/constants/DCSLocalize';
 
+//Redux toolkit
+import {Provider} from 'react-redux';
+import {store} from './src/redux/store';
+
 import {
   requestUserPermission,
   NotificationListner,
@@ -62,12 +66,14 @@ const App = () => {
     <>
       {/* <Text>App</Text> */}
       {/* <Login /> */}
-      <ToastProvider>
-        <ForegroundHandler />
-        <NavigationContainer>
-          <StackNavigation />
-        </NavigationContainer>
-      </ToastProvider>
+      <Provider store={store}>
+        <ToastProvider>
+          <ForegroundHandler />
+          <NavigationContainer>
+            <StackNavigation />
+          </NavigationContainer>
+        </ToastProvider>
+      </Provider>
     </>
   );
 };

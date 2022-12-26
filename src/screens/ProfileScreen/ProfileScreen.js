@@ -24,13 +24,18 @@ import {color} from '../../theme';
 
 // @transaltion
 import {useTranslation} from 'react-i18next';
-import {updateProfile} from '../../api/api';
+import {updateProfileapi} from '../../api/api';
 import Button from '../../components/Button/Button';
 import {useToast} from 'react-native-toast-notifications';
+
+//@redux
+import {useDispatch, useSelector} from 'react-redux';
+import {updateProfile} from '../../redux/ProfileSlice/ProfileSlice';
 
 const ProfileScreen = ({navigation}) => {
   const {t} = useTranslation();
   const toast = useToast();
+  const dispatch = useDispatch();
 
   const dummyImage = require('../../assets/Icons/Group3952.png');
   const [openModal, setopenModal] = React.useState(false);
@@ -44,10 +49,10 @@ const ProfileScreen = ({navigation}) => {
 
   const [editField, setEditFiled] = useState(false);
 
-  const [name, setName] = useState('');
-  const [phone, setPhon] = useState('');
-  const [gender, setGender] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [name, setName] = useState('Poco Ramos');
+  const [phone, setPhon] = useState('+9234334333');
+  const [gender, setGender] = useState('Male');
+  const [dateOfBirth, setDateOfBirth] = useState('08/17/1996');
 
   // console.log(name, '========>Name');
   // console.log(phone, '========>phone');
@@ -56,6 +61,18 @@ const ProfileScreen = ({navigation}) => {
 
   // console.log(frontCivilid, '========>font civiid');
   // console.log(backCivilid, '========>back civi');
+  const reduData = useSelector(state => state.profileDetail);
+  React.useEffect(() => {
+    reduData?.profileDetail.map((data, index) => {
+      return (
+        setName(data?.name),
+        setPhon(data?.phone),
+        setGender(data?.gender),
+        setDateOfBirth(data?.dateOfBirth)
+      );
+    });
+    console.log(reduData, '========>REDUX DATA');
+  }, []);
 
   const LaunchImageLibrary = type => {
     const options = {
@@ -179,8 +196,10 @@ const ProfileScreen = ({navigation}) => {
 
     console.log(data, '===>Formdata');
 
-    const response = await updateProfile(data);
-    console.log('PROFILE UPDATE RESPONSE======> +++', response?.message);
+    const response = await updateProfileapi(data);
+    dispatch(updateProfile(response?.data));
+    console.log('PROFILE UPDATE RESPONSE======> +++', response?.data);
+
     toast.show(response?.message, {
       type: 'success',
       placement: 'top',
@@ -293,6 +312,7 @@ const ProfileScreen = ({navigation}) => {
           </View>
           {/* End Informtion area */}
           <InfromationDetails
+            stateName={name}
             edit={editField}
             getInput={txt => setName(txt)}
             icon={
@@ -305,6 +325,7 @@ const ProfileScreen = ({navigation}) => {
             name="Poco Ramos"
           />
           <InfromationDetails
+            stateName={phone}
             edit={editField}
             getInput={txt => setPhon(txt)}
             icon={
@@ -318,6 +339,7 @@ const ProfileScreen = ({navigation}) => {
           />
           <InfromationDetails
             edit={editField}
+            stateName={'PocoRamos@gmail.com'}
             getInput={txt => console.log('email==>', txt)}
             icon={
               <Image
@@ -329,6 +351,7 @@ const ProfileScreen = ({navigation}) => {
             name="PocoRamos@gmail.com"
           />
           <InfromationDetails
+            stateName={gender}
             edit={editField}
             getInput={txt => setGender(txt)}
             icon={
@@ -341,6 +364,7 @@ const ProfileScreen = ({navigation}) => {
             name="Male"
           />
           <InfromationDetails
+            stateName={dateOfBirth}
             edit={editField}
             getInput={txt => setDateOfBirth(txt)}
             icon={
@@ -629,7 +653,7 @@ const ProfileScreen = ({navigation}) => {
   );
 };
 
-const InfromationDetails = ({icon, title, name, edit, getInput}) => {
+const InfromationDetails = ({icon, title, name, edit, getInput, stateName}) => {
   // console.log('condition', edit);
   return (
     <>
@@ -683,6 +707,7 @@ const InfromationDetails = ({icon, title, name, edit, getInput}) => {
               </Text>
             ) : ( */}
             <TextInput
+              value={stateName}
               editable={edit}
               placeholderTextColor="black"
               style={{

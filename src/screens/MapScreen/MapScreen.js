@@ -29,6 +29,11 @@ import {useToast} from 'react-native-toast-notifications';
 // @Translation
 import {useTranslation} from 'react-i18next';
 
+// @redux
+import {useSelector, useDispatch} from 'react-redux';
+import OrderDetails from '../OrderDetails/OrderDetails';
+import {useIsFocused} from '@react-navigation/native';
+
 const screen = Dimensions.get('window');
 const ASPECT_RATIO = screen.width / screen.height;
 const LATITUDE_DELTA = 0.04;
@@ -52,6 +57,10 @@ const MapScreen = ({navigation}) => {
   const [showacceptScreen, setAcceptScree] = useState(false);
   const [checkOutId, setCheckOutId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+
+  // @redux Details
+  const [name, setName] = useState('Poco Ramos');
+  const [profileImg, setProfileImg] = useState('Poco Ramos');
 
   const {t} = useTranslation();
 
@@ -165,6 +174,22 @@ const MapScreen = ({navigation}) => {
       });
     }
   };
+
+  const reduData = useSelector(state => state.profileDetail);
+  const getName = () => {
+    // alert('name fun');
+    reduData?.profileDetail.map((data, index) => {
+      return setName(data?.name), setProfileImg(data?.profilePicture);
+    });
+  };
+  const focused = useIsFocused();
+
+  useEffect(() => {
+    // reduData?.profileDetail.map((data, index) => {
+    //   return setName(data?.name), setProfileImg(data?.profilePicture);
+    // });
+    getName();
+  }, [focused == true]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -336,6 +361,8 @@ const MapScreen = ({navigation}) => {
         </View>
         {!showacceptScreen ? (
           <BottomSheet
+            changeNamefunc={() => getName()}
+            personName={name}
             isEnabled={isEnabled}
             toggleSwitch={async () => {
               setIsEnabled(previousState => !previousState);
@@ -711,9 +738,13 @@ const AcceptRejectContainer = ({
     </View>
   );
 };
-const BottomSheet = ({isEnabled, toggleSwitch}) => {
+const BottomSheet = ({isEnabled, toggleSwitch, personName, changeNamefunc}) => {
   // const [isEnabled, setIsEnabled] = useState(false);
   // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  useEffect(() => {
+    changeNamefunc();
+  }, []);
+
   const {t} = useTranslation();
   return (
     <View
@@ -782,7 +813,7 @@ const BottomSheet = ({isEnabled, toggleSwitch}) => {
                   fontSize: 19,
                   top: 13,
                 }}>
-                Poco Ramos
+                {personName}
               </Text>
             </View>
             {/* <Switch /> */}

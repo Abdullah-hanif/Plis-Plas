@@ -30,7 +30,7 @@ export const approvedOrder = async (params, data) => {
   return content;
 };
 
-export const updateProfile = async data => {
+export const updateProfileapi = async data => {
   const rawResponse = await fetch(`http://45.77.60.11/api/rider-update`, {
     method: 'POST',
     headers: {
