@@ -278,6 +278,7 @@ const ProfileScreen = ({navigation}) => {
         <View
           style={{
             margin: 20,
+            paddingVertical: 20,
             marginTop: 110,
             backgroundColor: 'white',
             // padding: 10,
@@ -295,7 +296,7 @@ const ProfileScreen = ({navigation}) => {
           {/* Informtion area */}
           <View
             style={{
-              paddingVertical: 10,
+              // paddingVertical: 10,
               borderBottomWidth: 1,
               borderColor: 'lightgray',
             }}>
@@ -691,21 +692,6 @@ const InfromationDetails = ({icon, title, name, edit, getInput, stateName}) => {
             </Text>
           </View>
           <View style={{width: '90%', alignItems: 'center', top: '1%'}}>
-            {/* {!edit ? (
-              <Text
-                style={{
-                  color: 'black',
-                  alignSelf: 'flex-start',
-
-                  // textAlign: 'right',
-                  // marginHorizontal: 20,
-                  // textAlign: 'left',
-                  // flexDirection: 'row',
-                  // alignSelf: 'flex-start',
-                }}>
-                {name}
-              </Text>
-            ) : ( */}
             <TextInput
               value={stateName}
               editable={edit}
@@ -713,6 +699,10 @@ const InfromationDetails = ({icon, title, name, edit, getInput, stateName}) => {
               style={{
                 color: 'black',
                 alignSelf: 'flex-start',
+                // backgroundColor: 'green',
+                borderColor: 'green',
+                borderBottomWidth: edit ? 1 : null,
+                width: '90%',
               }}
               onChangeText={txt => getInput(txt)}
               placeholder={name}
