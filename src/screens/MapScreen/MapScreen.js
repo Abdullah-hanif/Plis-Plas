@@ -60,7 +60,9 @@ const MapScreen = ({navigation}) => {
 
   // @redux Details
   const [name, setName] = useState('Poco Ramos');
-  const [profileImg, setProfileImg] = useState('Poco Ramos');
+  const [profileImg, setProfileImg] = useState(
+    'http://projects.websetters.in/digg-seos/digg/wp-content/themes/twentytwenty-child-theme/img/demo-prof.jpg',
+  );
 
   const {t} = useTranslation();
 
@@ -363,6 +365,7 @@ const MapScreen = ({navigation}) => {
           <BottomSheet
             changeNamefunc={() => getName()}
             personName={name}
+            imgrUri={profileImg}
             isEnabled={isEnabled}
             toggleSwitch={async () => {
               setIsEnabled(previousState => !previousState);
@@ -738,7 +741,13 @@ const AcceptRejectContainer = ({
     </View>
   );
 };
-const BottomSheet = ({isEnabled, toggleSwitch, personName, changeNamefunc}) => {
+const BottomSheet = ({
+  isEnabled,
+  toggleSwitch,
+  personName,
+  changeNamefunc,
+  imgrUri,
+}) => {
   // const [isEnabled, setIsEnabled] = useState(false);
   // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   useEffect(() => {
@@ -802,7 +811,8 @@ const BottomSheet = ({isEnabled, toggleSwitch, personName, changeNamefunc}) => {
                     width: 48,
                     resizeMode: 'contain',
                   }}
-                  source={require('../../assets/Images/men.jpg')}
+                  source={{uri: imgrUri}}
+                  // source={require('../../assets/Images/men.jpg')}
                 />
               </View>
               <Text

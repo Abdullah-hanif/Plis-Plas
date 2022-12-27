@@ -27,15 +27,20 @@ import {useIsFocused} from '@react-navigation/native';
 
 export const DrawerContent = ({navigation}) => {
   const [name, setName] = useState('Poco Ramos');
-  const [profileImg, setProfileImg] = useState('Poco Ramos');
+  // const [profileImg, setProfileImg] = useState(
+  //   'http://projects.websetters.in/digg-seos/digg/wp-content/themes/twentytwenty-child-theme/img/demo-prof.jpg',
+  // );
+  const [img, SetImgUri] = useState(
+    'http://projects.websetters.in/digg-seos/digg/wp-content/themes/twentytwenty-child-theme/img/demo-prof.jpg',
+  );
   const focused = useIsFocused();
   const reduData = useSelector(state => state.profileDetail);
   React.useEffect(() => {
     reduData?.profileDetail.map((data, index) => {
-      return setName(data?.name), setProfileImg(data?.profilePicture);
+      return setName(data?.name), SetImgUri(data?.profilePicture);
     });
   }, [focused == true]);
-  console.log('PROFILE IMAGE===>', profileImg);
+  // console.log('PROFILE IMAGE===>', profileImg);
   const {t} = useTranslation();
   return (
     <>
@@ -73,8 +78,8 @@ export const DrawerContent = ({navigation}) => {
               }}>
               <Image
                 style={{height: 80, width: 80, borderRadius: 70}}
-                source={require('../../assets/Images/men.jpg')}
-                // source={{uri: `http://45.77.60.11/api${profileImg}`}}
+                // source={require('../../assets/Images/men.jpg')}
+                source={{uri: img}}
               />
             </View>
             <Text

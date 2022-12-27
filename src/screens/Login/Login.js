@@ -81,7 +81,7 @@ const Login = ({navigation}) => {
             animationType: 'slide-in | zoom-in',
           });
           console.log('StATE END LOGIN FUN====>', userId);
-          // navigation.navigate('DrawerNavigator');
+          navigation.navigate('DrawerNavigator');
         }
         // console.log(data?.data?.fcm);
 
@@ -122,7 +122,7 @@ const Login = ({navigation}) => {
         console.log('FCMM TOKEN====>', data);
         // alert('TOKENSSS FCMSOTE');
 
-        navigation.navigate('DrawerNavigator');
+        // navigation.navigate('DrawerNavigator');
       });
   };
   return (

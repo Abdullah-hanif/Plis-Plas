@@ -31,6 +31,7 @@ import {useToast} from 'react-native-toast-notifications';
 //@redux
 import {useDispatch, useSelector} from 'react-redux';
 import {updateProfile} from '../../redux/ProfileSlice/ProfileSlice';
+import {useIsFocused} from '@react-navigation/native';
 
 const ProfileScreen = ({navigation}) => {
   const {t} = useTranslation();
@@ -39,7 +40,6 @@ const ProfileScreen = ({navigation}) => {
 
   const dummyImage = require('../../assets/Icons/Group3952.png');
   const [openModal, setopenModal] = React.useState(false);
-  const [img, imgUri] = React.useState(null);
   const [active, setActive] = React.useState('');
   // @front and BAck card State
   const [frontLicence, setFrontLicence] = React.useState(null);
@@ -53,6 +53,9 @@ const ProfileScreen = ({navigation}) => {
   const [phone, setPhon] = useState('+9234334333');
   const [gender, setGender] = useState('Male');
   const [dateOfBirth, setDateOfBirth] = useState('08/17/1996');
+  const [img, setImgUri] = React.useState(
+    'http://projects.websetters.in/digg-seos/digg/wp-content/themes/twentytwenty-child-theme/img/demo-prof.jpg',
+  );
 
   // console.log(name, '========>Name');
   // console.log(phone, '========>phone');
@@ -61,6 +64,7 @@ const ProfileScreen = ({navigation}) => {
 
   // console.log(frontCivilid, '========>font civiid');
   // console.log(backCivilid, '========>back civi');
+  const focues = useIsFocused();
   const reduData = useSelector(state => state.profileDetail);
   React.useEffect(() => {
     reduData?.profileDetail.map((data, index) => {
@@ -68,7 +72,8 @@ const ProfileScreen = ({navigation}) => {
         setName(data?.name),
         setPhon(data?.phone),
         setGender(data?.gender),
-        setDateOfBirth(data?.dateOfBirth)
+        setDateOfBirth(data?.dateOfBirth),
+        setImgUri(data?.profilePicture)
       );
     });
     console.log(reduData, '========>REDUX DATA');
@@ -198,7 +203,12 @@ const ProfileScreen = ({navigation}) => {
 
     const response = await updateProfileapi(data);
     dispatch(updateProfile(response?.data));
-    console.log('PROFILE UPDATE RESPONSE======> +++', response?.data);
+
+    console.log(
+      'PROFILE UPDATE RESPONSE======> +++',
+      response?.data?.profilePicture,
+    );
+    setImgUri(response?.data?.profilePicture);
 
     toast.show(response?.message, {
       type: 'success',
@@ -268,7 +278,8 @@ const ProfileScreen = ({navigation}) => {
                   width: 120,
                   resizeMode: 'contain',
                 }}
-                source={require('../../assets/Images/profileimg.jpg')}
+                // source={require('../../assets/Images/profileimg.jpg')}
+                source={{uri: img}}
               />
             </View>
           </View>
