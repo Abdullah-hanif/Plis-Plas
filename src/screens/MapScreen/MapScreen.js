@@ -59,7 +59,7 @@ const MapScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   // @redux Details
-  const [name, setName] = useState('Poco Ramos');
+  const [name, setName] = useState('');
   const [profileImg, setProfileImg] = useState(
     'http://projects.websetters.in/digg-seos/digg/wp-content/themes/twentytwenty-child-theme/img/demo-prof.jpg',
   );
@@ -87,8 +87,8 @@ const MapScreen = ({navigation}) => {
       longitudeDelta: 0.0421,
     },
     destinationCords: {
-      latitude: 24.817622,
-      longitude: 67.139973,
+      latitude: 0.0,
+      longitude: 0.0,
     },
     isLoading: false,
     coordinate: new AnimatedRegion({
@@ -178,19 +178,29 @@ const MapScreen = ({navigation}) => {
   };
 
   const reduData = useSelector(state => state.profileDetail);
-  const getName = () => {
+  const getName = async () => {
     // alert('name fun');
-    reduData?.profileDetail.map((data, index) => {
-      return setName(data?.name), setProfileImg(data?.profilePicture);
-    });
+    reduData?.profileDetail.length == 0
+      ? setName(await AsyncStorage.getItem('userName'))
+      : reduData?.profileDetail.map((data, index) => {
+          return setName(data?.name), setProfileImg(data?.profilePicture);
+        });
   };
   const focused = useIsFocused();
+
+  const getMode = async () => {
+    const mode = await AsyncStorage.getItem('mode');
+    console.log('MODE======>', mode);
+    mode == 'ON' ? setIsEnabled(true) : setIsEnabled(false);
+    return mode;
+  };
 
   useEffect(() => {
     // reduData?.profileDetail.map((data, index) => {
     //   return setName(data?.name), setProfileImg(data?.profilePicture);
     // });
     getName();
+    getMode();
   }, [focused == true]);
 
   useEffect(() => {
@@ -370,6 +380,9 @@ const MapScreen = ({navigation}) => {
             toggleSwitch={async () => {
               setIsEnabled(previousState => !previousState);
               // alert(isEnabled);
+              !isEnabled
+                ? await AsyncStorage.setItem('mode', 'ON')
+                : await AsyncStorage.setItem('mode', 'OFF');
               const res = await onlineOffline({
                 userId: 35,
                 value: !isEnabled ? 'on' : 'offline',
@@ -838,7 +851,7 @@ const BottomSheet = ({
           </View>
           {/* End 2nd Container */}
           {/* 3rd Container */}
-          <View
+          {/* <View
             style={{
               marginTop: 20,
               flexDirection: 'row',
@@ -866,7 +879,7 @@ const BottomSheet = ({
                 {t('common:cancellation')}
               </Text>
             </View>
-          </View>
+          </View> */}
         </View>
         {/* End 3rd Container */}
       </View>

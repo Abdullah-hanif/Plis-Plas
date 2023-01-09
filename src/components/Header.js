@@ -8,21 +8,21 @@ import {useNavigation} from '@react-navigation/native';
 const Header = ({onClick}) => {
   return (
     <View style={styles.headerContainer}>
-      <TouchableOpacity onPress={onClick} style={{paddingLeft:'5%'}}>
-      <Image
-        style={{width:20,height:20}}
-        source={require('../assets/Icons/menu.png')}
-      />
+      <TouchableOpacity onPress={onClick} style={{paddingLeft: '5%'}}>
+        <Image
+          style={{width: 20, height: 20}}
+          source={require('../assets/Icons/menu.png')}
+        />
       </TouchableOpacity>
       <Image
         style={styles.imgStyle}
         source={require('../assets/Icons/Group15265.png')}
       />
-       <TouchableOpacity style={{paddingRight:'5%'}}>
-       <Image
+      <TouchableOpacity style={{paddingRight: '5%'}}>
+        {/* <Image
         style={{width:20,height:20}}
         source={require('../assets/Icons/bell.png')}
-      />
+      /> */}
       </TouchableOpacity>
     </View>
   );
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: color.blue,
     padding: 20,
-   justifyContent: 'space-between',
-    alignItems:'center'
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   imgStyle: {
     height: 50,

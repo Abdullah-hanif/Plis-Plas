@@ -32,6 +32,7 @@ import {useToast} from 'react-native-toast-notifications';
 import {useDispatch, useSelector} from 'react-redux';
 import {updateProfile} from '../../redux/ProfileSlice/ProfileSlice';
 import {useIsFocused} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = ({navigation}) => {
   const {t} = useTranslation();
@@ -203,6 +204,7 @@ const ProfileScreen = ({navigation}) => {
 
     const response = await updateProfileapi(data);
     dispatch(updateProfile(response?.data));
+    await AsyncStorage.setItem('userName', response?.data?.name);
 
     console.log(
       'PROFILE UPDATE RESPONSE======> +++',

@@ -35,7 +35,15 @@ export const DrawerContent = ({navigation}) => {
   );
   const focused = useIsFocused();
   const reduData = useSelector(state => state.profileDetail);
+
+  const getUsername = async () => {
+    const userName = await AsyncStorage.getItem('userName');
+    console.log('userNAAAAAAAAAAAAAAMMMMMMMMMMME==>', userName);
+    setName(userName);
+  };
+
   React.useEffect(() => {
+    getUsername();
     reduData?.profileDetail.map((data, index) => {
       return setName(data?.name), SetImgUri(data?.profilePicture);
     });

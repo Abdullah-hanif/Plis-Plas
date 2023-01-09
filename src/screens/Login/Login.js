@@ -81,6 +81,7 @@ const Login = ({navigation}) => {
             animationType: 'slide-in | zoom-in',
           });
           console.log('StATE END LOGIN FUN====>', userId);
+          AsyncStorage.setItem('userName', data?.data?.name);
           navigation.navigate('DrawerNavigator');
         }
         // console.log(data?.data?.fcm);
