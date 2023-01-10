@@ -41,7 +41,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const GOOGLE_MAP_KEY = 'AIzaSyC_47Al-kSZhkd7VidzuGiKl1R39E1lN8E';
 
-let myconditon = '';
+let myconditon = null;
 
 export const ShowAlerScree = value => {
   myconditon = value;
@@ -57,6 +57,7 @@ const MapScreen = ({navigation}) => {
   const [showacceptScreen, setAcceptScree] = useState(false);
   const [checkOutId, setCheckOutId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [notiData, setNotiData] = useState();
 
   // @redux Details
   const [name, setName] = useState('');
@@ -73,7 +74,7 @@ const MapScreen = ({navigation}) => {
 
   const showAcceptScreen = () => {
     setTimeout(() => {
-      // alert(myconditon);
+      console.log('ACCPET SCREEN', myconditon);
       // AsyncStorage.setItem("acitveScreen","accept")
       myconditon ? setAcceptScree(true) : null;
     }, 1000);
@@ -122,9 +123,18 @@ const MapScreen = ({navigation}) => {
   } = state;
   const updateState = data => setState(state => ({...state, ...data}));
 
+  const getAddress = async () => {
+    const data = await AsyncStorage.getItem('restaurantDetails');
+    // console.log('PUSH NOTIFICATION JSON DATA===>', data);
+    const realData = JSON.parse(data);
+    setNotiData(realData);
+  };
+
   const getDestination = async () => {
     const data = await AsyncStorage.getItem('restaurantDetails');
+    // console.log('PUSH NOTIFICATION JSON DATA===>', data);
     const realData = JSON.parse(data);
+    // setNotiData(realData);
     setCheckOutId(realData?.checkoutId);
     // const {destinationCords} = state;
 
@@ -148,6 +158,7 @@ const MapScreen = ({navigation}) => {
   useEffect(() => {
     getLiveLocation();
     // getToken();
+    getAddress();
     showAcceptScreen();
   }, [myconditon]);
 
@@ -191,6 +202,8 @@ const MapScreen = ({navigation}) => {
   const getMode = async () => {
     const mode = await AsyncStorage.getItem('mode');
     console.log('MODE======>', mode);
+    const data = await AsyncStorage.getItem('restaurantDetails');
+    // console.log('PUSH NOTIFICATION JSON DATA===>', data);
     mode == 'ON' ? setIsEnabled(true) : setIsEnabled(false);
     return mode;
   };
@@ -271,11 +284,11 @@ const MapScreen = ({navigation}) => {
       },
     });
   };
-
+  console.log('NOTIFICATION DATA==>', notiData);
   return (
     <>
       <Header onClick={() => navigation.openDrawer()} />
-      {showacceptScreen ? <PickupDropoffContainer /> : null}
+      {showacceptScreen ? <PickupDropoffContainer details={notiData} /> : null}
 
       <View style={styles.container}>
         {/* {distance !== 0 && time !== 0 && (
@@ -464,9 +477,12 @@ const AcceptRejectContainer = ({
 
   const AcceptOrder = async () => {
     setEnableAccept(true);
+    const userID = await AsyncStorage.getItem('userID');
+    console.log('CHECKOUT ID====>', checkOutId, userID);
+
     const res = await approvedOrder('/approved', {
       checkoutId: checkOutId,
-      userId: 35,
+      userId: userID,
     });
     showDestination();
     console.log('RESPONSE +++', res);
@@ -480,9 +496,10 @@ const AcceptRejectContainer = ({
   };
 
   const RejectOrder = async () => {
+    const userID = await AsyncStorage.getItem('userID');
     const res = await approvedOrder('/cancelled', {
       checkoutId: checkOutId,
-      userId: 35,
+      userId: userID,
     });
     console.log('RESPONSE +++', res);
     toast.show(res?.message, {
@@ -553,7 +570,7 @@ const AcceptRejectContainer = ({
               </Text>
             </TouchableOpacity>
           </View>
-          {distance * 1000 <= 30 ? (
+          {distance * 1000 <= 30 && distance == null ? (
             <TouchableOpacity
               onPress={DispatchedOrder}
               style={{
@@ -804,7 +821,7 @@ const BottomSheet = ({
           {/* 2nd Container */}
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{flexDirection: 'row'}}>
-              <View
+              {/* <View
                 style={{
                   height: 50,
                   width: 50,
@@ -827,14 +844,14 @@ const BottomSheet = ({
                   source={{uri: imgrUri}}
                   // source={require('../../assets/Images/men.jpg')}
                 />
-              </View>
+              </View> */}
               <Text
                 style={{
                   fontWeight: 'bold',
                   left: 15,
                   color: 'black',
                   fontSize: 19,
-                  top: 13,
+                  // top: 13,
                 }}>
                 {personName}
               </Text>
@@ -887,7 +904,8 @@ const BottomSheet = ({
   );
 };
 
-const PickupDropoffContainer = () => {
+const PickupDropoffContainer = ({details}) => {
+  console.log('PICKUP CONTAINER====>', details);
   return (
     <>
       <View
@@ -929,17 +947,21 @@ const PickupDropoffContainer = () => {
           /> */}
         </View>
         <View style={{left: 10}}>
-          <View>
+          <View style={{flexWrap: 'wrap'}}>
             <Text style={{color: 'black', fontSize: 12}}>
-              AI Zumarodn Tower Floor 21,20,m2
+              {/* AI Zumarodn Tower Floor 21,20,m2 */}
+              {details?.pickupAddress}
             </Text>
             <Text style={{fontWeight: 'bold', color: 'black'}}>
               Pickeup Location
             </Text>
           </View>
-          <View style={{top: 25}}>
-            <Text style={{color: 'black', fontSize: 12}}>
-              AI Zumarodn Tower Floor 21,20,m2
+          <View style={{top: 25, width: '95%'}}>
+            <Text
+              numberOfLines={1}
+              style={{color: 'black', fontSize: 12, flexWrap: 'wrap'}}>
+              {/* AI Zumarodn Tower Floor 21,20,m2 */}
+              {details?.deliveryAddress}
             </Text>
             <Text style={{fontWeight: 'bold', color: 'black'}}>
               Delivery Address

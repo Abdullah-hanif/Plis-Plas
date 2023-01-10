@@ -49,6 +49,9 @@ const Login = ({navigation}) => {
     fetch(`${Base_Url}/login`, params)
       .then(response => response.json())
       .then(data => {
+        console.log('UUIDDDDD===>', typeof data?.data?.id);
+        const id = data?.data?.id;
+        AsyncStorage.setItem('userID', JSON.stringify(id));
         getToken();
         setUserId(data?.data?.id);
         const fcmid = data?.data?.id;

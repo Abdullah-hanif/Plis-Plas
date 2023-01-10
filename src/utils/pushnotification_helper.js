@@ -51,7 +51,7 @@ export const NotificationListner = async () => {
   messaging().onMessage(remoteMessage => {
     ShowAlerScree(true),
       console.log(
-        'notification on foreground state pushnotification....',
+        'notification on foreground state pushnotification....==>',
         remoteMessage?.data?.data,
         AsyncStorage.setItem('restaurantDetails', remoteMessage?.data?.data),
         ShowAlerScree(true),
