@@ -427,6 +427,7 @@ const MapScreen = ({navigation}) => {
           <AcceptRejectContainer
             orderDispatched={() => OrderDispatched()}
             distance={distance}
+            // distance={0.03}
             checkOutId={checkOutId}
             showDestination={() => getDestination()}
             viewOrderScreen={enableAccept => {
@@ -547,12 +548,16 @@ const AcceptRejectContainer = ({
               alignItems: 'center',
             }}>
             <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
-              {distance * 1000 <= 50
+              {distance * 1000 == 0 ? t('common:HeaderUp') : null}
+              {distance * 1000 > 30 ? 'Order Start' : null}
+              {distance * 1000 <= 30 && distance != 0
                 ? t('common:Pleasewait')
-                : t('common:HeaderUp')}
+                : null}
             </Text>
             <Text style={{color: 'black', fontSize: 15, top: 5}}>
-              {distance * 1000 <= 50
+              {/* {distance * 1000 == 0 ? t('common:youhavegotaneworder') : null} */}
+
+              {distance * 1000 <= 30 && distance == !0
                 ? t('common:Orderisgettingready')
                 : t('common:youhavegotaneworder')}
             </Text>
@@ -564,13 +569,21 @@ const AcceptRejectContainer = ({
                   top: 5,
                   textDecorationLine: 'underline',
                 }}>
-                {distance * 1000 <= 50
+                {distance * 1000 <= 30 && distance != 0
                   ? t('common:Pleasewaitfewmintues')
-                  : t('common:ViewOrder')}
+                  : null}
+                {distance * 1000 == 0 ? t('common:ViewOrder') : null}
+                {distance * 1000 > 30 ? 'Order is getting ready' : null}
+
+                {/* {distance * 1000 <= 30 && distance !== 0
+                  ? t('common:Pleasewaitfewmintues')
+                  : distance == 0
+                  ? t('common:ViewOrder')
+                  : null} */}
               </Text>
             </TouchableOpacity>
           </View>
-          {distance * 1000 <= 30 && distance == null ? (
+          {distance * 1000 <= 30 && distance !== 0 ? (
             <TouchableOpacity
               onPress={DispatchedOrder}
               style={{

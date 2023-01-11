@@ -108,7 +108,7 @@ const Login = ({navigation}) => {
 
   const setFCM = async fcmid => {
     // console.log('StATE inside setFCm====>', userId);
-    alert(fcmid);
+    // alert(fcmid);
 
     const token = await getToken();
     console.log('TOKENSSSSSSSSSS===>', token);
