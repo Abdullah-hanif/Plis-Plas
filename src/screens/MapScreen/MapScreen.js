@@ -45,6 +45,7 @@ let myconditon = null;
 
 export const ShowAlerScree = value => {
   myconditon = value;
+  console.log('INSIDE FUNC', myconditon);
   return myconditon;
 };
 
@@ -58,6 +59,7 @@ const MapScreen = ({navigation}) => {
   const [checkOutId, setCheckOutId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [notiData, setNotiData] = useState();
+  const [showHeaderDetails, setHeaderDetails] = useState('both');
 
   // @redux Details
   const [name, setName] = useState('');
@@ -271,7 +273,7 @@ const MapScreen = ({navigation}) => {
     // const realData = JSON.parse(data);
     // setCheckOutId(realData?.checkoutId);
     // const {destinationCords} = state;
-
+    setHeaderDetails('DropOff');
     setState({
       ...state,
       destinationCords: {
@@ -284,11 +286,16 @@ const MapScreen = ({navigation}) => {
       },
     });
   };
-  console.log('NOTIFICATION DATA==>', notiData);
+  // console.log('NOTIFICATION DATA==>', notiData);
   return (
     <>
       <Header onClick={() => navigation.openDrawer()} />
-      {showacceptScreen ? <PickupDropoffContainer details={notiData} /> : null}
+      {showacceptScreen ? (
+        <PickupDropoffContainer
+          showDetails={showHeaderDetails}
+          details={notiData}
+        />
+      ) : null}
 
       <View style={styles.container}>
         {/* {distance !== 0 && time !== 0 && (
@@ -427,9 +434,25 @@ const MapScreen = ({navigation}) => {
           <AcceptRejectContainer
             orderDispatched={() => OrderDispatched()}
             distance={distance}
+            showHeaderDetails={() => setHeaderDetails('Pickup')}
             // distance={0.03}
             checkOutId={checkOutId}
             showDestination={() => getDestination()}
+            finalFunction={() => {
+              setState({
+                ...state,
+                destinationCords: {
+                  latitude: 0.0,
+                  longitude: 0.0,
+                  //<=======================Real COde is here=======================>
+                  // latitude: JSON.parse(realData?.latitude),
+                  // longitude: JSON.parse(realData?.longitude),
+                  //<=======================Real COde is here=======================>
+                },
+              });
+              setAcceptScree(false);
+              setHeaderDetails('both');
+            }}
             viewOrderScreen={enableAccept => {
               navigation.navigate('OrderDetails', {enableAccept: enableAccept});
               // setAcceptScree(false);
@@ -465,6 +488,8 @@ const AcceptRejectContainer = ({
   showDestination,
   distance,
   orderDispatched,
+  showHeaderDetails,
+  finalFunction,
 }) => {
   const toast = useToast();
   const [enableAccept, setEnableAccept] = useState(false);
@@ -486,6 +511,7 @@ const AcceptRejectContainer = ({
       userId: userID,
     });
     showDestination();
+    showHeaderDetails();
     console.log('RESPONSE +++', res);
     toast.show(res?.message, {
       type: 'success',
@@ -510,6 +536,30 @@ const AcceptRejectContainer = ({
       offset: 30,
       animationType: 'slide-in | zoom-in',
     });
+  };
+
+  const DeliveredOrder = async () => {
+    const userID = await AsyncStorage.getItem('userID');
+    const res = await approvedOrder('/delivered', {
+      checkoutId: checkOutId,
+      userId: userID,
+    });
+    setTimeout(() => {
+      finalFunction();
+    }, 2000);
+    console.log('RESPONSE +++', res);
+
+    res?.message == 'Delivered successfully'
+      ? setModalVisible(true)
+      : alert('their is a problem check again');
+
+    // toast.show(res?.message, {
+    //   type: 'success',
+    //   placement: 'top',
+    //   duration: 4000,
+    //   offset: 30,
+    //   animationType: 'slide-in | zoom-in',
+    // });
   };
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -701,7 +751,7 @@ const AcceptRejectContainer = ({
             <TouchableOpacity
               onPress={() => {
                 // alert(t('common:orderdeliverd'));
-                setModalVisible(true);
+                DeliveredOrder();
               }}
               style={{
                 marginVertical: 10,
@@ -917,7 +967,7 @@ const BottomSheet = ({
   );
 };
 
-const PickupDropoffContainer = ({details}) => {
+const PickupDropoffContainer = ({details, showDetails}) => {
   console.log('PICKUP CONTAINER====>', details);
   return (
     <>
@@ -945,11 +995,13 @@ const PickupDropoffContainer = ({details}) => {
           elevation: 9,
         }}>
         <View>
-          <Image
-            resizeMode="contain"
-            style={{height: '80%'}}
-            source={require('../../assets/Icons/Group16945.png')}
-          />
+          {showDetails == 'both' ? (
+            <Image
+              resizeMode="contain"
+              style={{height: '80%'}}
+              source={require('../../assets/Icons/Group16945.png')}
+            />
+          ) : null}
           {/* <Image
             style={{height: 30, width: 30}}
             source={require('../../assets/Icons/Group15266.png')}
@@ -959,28 +1011,73 @@ const PickupDropoffContainer = ({details}) => {
             source={require('../../assets/Icons/Group15266.png')}
           /> */}
         </View>
-        <View style={{left: 10}}>
-          <View style={{flexWrap: 'wrap'}}>
-            <Text style={{color: 'black', fontSize: 12}}>
+        {showDetails == 'both' ? (
+          <View style={{left: 10}}>
+            <View style={{flexWrap: 'wrap'}}>
+              <Text style={{color: 'black', fontSize: 12}}>
+                {/* AI Zumarodn Tower Floor 21,20,m2 */}
+                {details?.pickupAddress}
+              </Text>
+              <Text style={{fontWeight: 'bold', color: 'black'}}>
+                Pickeup Location
+              </Text>
+            </View>
+            <View style={{top: 25, width: '95%'}}>
+              <Text
+                numberOfLines={1}
+                style={{color: 'black', fontSize: 12, flexWrap: 'wrap'}}>
+                {/* AI Zumarodn Tower Floor 21,20,m2 */}
+                {details?.deliveryAddress}
+              </Text>
+              <Text style={{fontWeight: 'bold', color: 'black'}}>
+                Delivery Address
+              </Text>
+            </View>
+          </View>
+        ) : null}
+        {showDetails == 'Pickup' ? (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              // backgroundColor: 'red',
+              width: '100%',
+            }}>
+            <Text
+              style={{fontWeight: 'bold', color: 'black', textAlign: 'center'}}>
+              Pickeup Location
+            </Text>
+            <Text style={{color: 'black', fontSize: 12, top: 10}}>
               {/* AI Zumarodn Tower Floor 21,20,m2 */}
               {details?.pickupAddress}
             </Text>
-            <Text style={{fontWeight: 'bold', color: 'black'}}>
+            {/* <Text style={{fontWeight: 'bold', color: 'black'}}>
               Pickeup Location
-            </Text>
+            </Text> */}
           </View>
-          <View style={{top: 25, width: '95%'}}>
-            <Text
-              numberOfLines={1}
-              style={{color: 'black', fontSize: 12, flexWrap: 'wrap'}}>
-              {/* AI Zumarodn Tower Floor 21,20,m2 */}
-              {details?.deliveryAddress}
-            </Text>
+        ) : null}
+        {showDetails == 'DropOff' ? (
+          <View
+            style={{
+              width: '100%',
+              // backgroundColor: 'red',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             <Text style={{fontWeight: 'bold', color: 'black'}}>
               Delivery Address
             </Text>
+            <Text
+              numberOfLines={1}
+              style={{color: 'black', fontSize: 12, flexWrap: 'wrap', top: 10}}>
+              {/* AI Zumarodn Tower Floor 21,20,m2 */}
+              {details?.deliveryAddress}
+            </Text>
+            {/* <Text style={{fontWeight: 'bold', color: 'black'}}>
+              Delivery Address
+            </Text> */}
           </View>
-        </View>
+        ) : null}
       </View>
     </>
   );
