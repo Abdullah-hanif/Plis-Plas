@@ -9,6 +9,8 @@ import OrderDetails from '../screens/OrderDetails/OrderDetails';
 import SettingScreen from '../screens/SettingScreen/SettingScreen';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 import DrawerNavigator from './DrawerNavigator';
+import MyWallet from '../screens/MyWallet/MyWallet';
+
 const Stack = createStackNavigator();
 const StackNavigation = () => {
   return (
@@ -24,6 +26,8 @@ const StackNavigation = () => {
         <Stack.Screen name="OrderDetails" component={OrderDetails} />
         <Stack.Screen name="SettingScreen" component={SettingScreen} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Stack.Screen name="MyWallet" component={MyWallet} />
+
         <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} />
       </Stack.Navigator>
     </>

@@ -156,6 +156,27 @@ export const DrawerContent = ({navigation}) => {
             }
           />
           <DrawerItemContainer
+            onpress={() => navigation.navigate('MyWallet')}
+            ico={
+              <Image
+                source={require('../../assets/Icons/Group10642.png')}
+                style={{height: 25, width: 25, tintColor: 'gray'}}
+              />
+            }
+            name={
+              <Text
+                style={{
+                  margin: 10,
+                  left: 10,
+                  color: 'black',
+
+                  width: '100%',
+                }}>
+                My Wallet
+              </Text>
+            }
+          />
+          <DrawerItemContainer
             onpress={() => {
               AsyncStorage.clear(), navigation.navigate('Login');
             }}

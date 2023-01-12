@@ -5,14 +5,21 @@ import Drawer from 'react-native-vector-icons/EvilIcons';
 import Bell from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 
-const Header = ({onClick}) => {
+const Header = ({onClick, backarrow}) => {
   return (
     <View style={styles.headerContainer}>
       <TouchableOpacity onPress={onClick} style={{paddingLeft: '5%'}}>
-        <Image
-          style={{width: 20, height: 20}}
-          source={require('../assets/Icons/menu.png')}
-        />
+        {backarrow ? (
+          <Image
+            source={require('../assets/Icons/back.png')}
+            style={{width: 22, height: 22}}
+          />
+        ) : (
+          <Image
+            style={{width: 20, height: 20}}
+            source={require('../assets/Icons/menu.png')}
+          />
+        )}
       </TouchableOpacity>
       <Image
         style={styles.imgStyle}

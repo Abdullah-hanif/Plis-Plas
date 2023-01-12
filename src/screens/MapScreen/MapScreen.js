@@ -441,10 +441,12 @@ const MapScreen = ({navigation}) => {
         ) : showContainer ? (
           <AcceptRejectContainer
             showContainerBtn={txt => setShowContainer(txt)}
-            orderDispatched={() => OrderDispatched()}
-            distance={distance}
+            orderDispatched={() => {
+              OrderDispatched();
+            }}
+            // distance={distance}
             showHeaderDetails={() => setHeaderDetails('Pickup')}
-            // distance={0.03}
+            distance={0.03}
             checkOutId={checkOutId}
             showDestination={() => getDestination()}
             finalFunction={() => {
@@ -504,6 +506,7 @@ const AcceptRejectContainer = ({
   const toast = useToast();
   const [enableAccept, setEnableAccept] = useState(false);
   const [customerHandle, setCustomerHandle] = useState(false);
+  const [showDetails, setShowDetails] = useState(true);
   const {t} = useTranslation();
 
   const DispatchedOrder = () => {
@@ -718,81 +721,90 @@ const AcceptRejectContainer = ({
         </View>
       ) : (
         <>
-          <View
-            style={{
-              backgroundColor: 'white',
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
-              // borderColor: 'lightgray',
-              // borderWidth: 1,
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 4,
-              },
-              shadowOpacity: 0.32,
-              shadowRadius: 5.46,
-
-              elevation: 9,
-              justifyContent: 'center',
-              alignItems: 'center',
-              // padding: 10,
-              paddingVertical: 30,
-            }}>
-            <Text>{distance * 1000}</Text>
-            <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
-              {t('common:OnTheWay')}
-            </Text>
-
+          <TouchableOpacity onPress={() => setShowDetails(!showDetails)}>
+            <Text>show</Text>
+          </TouchableOpacity>
+          {showDetails ? (
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}>
-              <Image
-                resizeMode="contain"
-                style={{height: 50, width: 50, right: 10}}
-                source={require('../../assets/Icons/Group13525.png')}
-              />
-              <Text style={{color: 'black', fontSize: 18}}>
-                {t('common:ContactCustomer')}
-              </Text>
-            </View>
-            <TouchableOpacity onPress={() => viewOrderScreen(enableAccept)}>
-              <Text
-                style={{
-                  color: 'black',
-                  fontSize: 15,
-                  textDecorationLine: 'underline',
-                }}>
-                {t('common:details')}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                // alert(t('common:orderdeliverd'));
-                DeliveredOrder();
-              }}
-              style={{
-                marginVertical: 10,
-                backgroundColor: color.blue,
-                padding: 15,
-                top: 30,
-                paddingHorizontal: 100,
+                backgroundColor: 'white',
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
+                // borderColor: 'lightgray',
+                // borderWidth: 1,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 4,
+                },
+                shadowOpacity: 0.32,
+                shadowRadius: 5.46,
 
-                // borderColor:'black',
-                borderRadius: 30,
+                elevation: 9,
+                justifyContent: 'center',
+                alignItems: 'center',
+                // padding: 10,
+                paddingVertical: 30,
               }}>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  color: 'white',
-                }}>
-                {t('common:Delivered')}
+              <Text>{distance * 1000}</Text>
+              <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
+                {t('common:OnTheWay')}
               </Text>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  resizeMode="contain"
+                  style={{height: 50, width: 50, right: 10}}
+                  source={require('../../assets/Icons/Group13525.png')}
+                />
+                <Text style={{color: 'black', fontSize: 18}}>
+                  {t('common:ContactCustomer')}
+                </Text>
+              </View>
+              <TouchableOpacity onPress={() => viewOrderScreen(enableAccept)}>
+                <Text
+                  style={{
+                    color: 'black',
+                    fontSize: 15,
+                    textDecorationLine: 'underline',
+                  }}>
+                  {t('common:details')}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  // alert(t('common:orderdeliverd'));
+                  DeliveredOrder();
+                }}
+                style={{
+                  marginVertical: 10,
+                  backgroundColor: color.blue,
+                  padding: 15,
+                  top: 30,
+                  paddingHorizontal: 100,
+
+                  // borderColor:'black',
+                  borderRadius: 30,
+                }}>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    color: 'white',
+                  }}>
+                  {t('common:Delivered')}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <TouchableOpacity onPress={() => setShowDetails(!showDetails)}>
+              <Text>show</Text>
             </TouchableOpacity>
-          </View>
+          )}
 
           <Modal
             statusBarTranslucent={true}
@@ -904,35 +916,38 @@ const BottomSheet = ({
           </Text>
           {/* 2nd Container */}
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <View style={{flexDirection: 'row'}}>
-              {/* <View
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
                 style={{
-                  height: 50,
-                  width: 50,
+                  height: 45,
+                  width: 45,
                   marginLeft: '8%',
-                  borderWidth: 3,
-                  borderColor: 'black',
+                  // borderWidth: 3,
+                  // borderColor: 'black',
                   borderRadius: 360,
                   alignItems: 'center',
                   justifyContent: 'center',
+                  backgroundColor: color.blue,
                 }}>
                 <Image
                   style={{
                     margin: 10,
 
                     borderRadius: 360,
-                    height: 48,
-                    width: 48,
+                    height: 30,
+                    width: 30,
+                    tintColor: 'white',
                     resizeMode: 'contain',
                   }}
-                  source={{uri: imgrUri}}
-                  // source={require('../../assets/Images/men.jpg')}
+                  // source={{uri: imgrUri}}
+                  source={require('../../assets/Icons/Group15299.png')}
                 />
-              </View> */}
+              </View>
               <Text
                 style={{
                   fontWeight: 'bold',
                   left: 15,
+
                   color: 'black',
                   fontSize: 19,
                   // top: 13,
