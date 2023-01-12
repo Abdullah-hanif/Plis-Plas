@@ -61,6 +61,9 @@ const MapScreen = ({navigation}) => {
   const [notiData, setNotiData] = useState();
   const [showHeaderDetails, setHeaderDetails] = useState('both');
 
+  //@Container show
+  const [showContainer, setShowContainer] = useState(true);
+
   // @redux Details
   const [name, setName] = useState('');
   const [profileImg, setProfileImg] = useState(
@@ -161,8 +164,13 @@ const MapScreen = ({navigation}) => {
     getLiveLocation();
     // getToken();
     getAddress();
+    // setShowContainer(true);
     showAcceptScreen();
   }, [myconditon]);
+
+  useEffect(() => {
+    setShowContainer(true);
+  }, [distance * 1000 <= 30 && distance !== 0]);
 
   // const getToken = async () => {
   //   await messaging().registerDeviceForRemoteMessages();
@@ -412,14 +420,14 @@ const MapScreen = ({navigation}) => {
                 ? toast.show('you are online', {
                     type: 'success',
                     placement: 'top',
-                    duration: 4000,
+                    duration: 500,
                     offset: 30,
                     animationType: 'slide-in | zoom-in',
                   })
                 : toast.show('your offline', {
                     type: 'danger',
                     placement: 'top',
-                    duration: 4000,
+                    duration: 500,
                     offset: 30,
                     animationType: 'slide-in | zoom-in',
                   });
@@ -430,8 +438,9 @@ const MapScreen = ({navigation}) => {
               // }, 4000);
             }}
           />
-        ) : (
+        ) : showContainer ? (
           <AcceptRejectContainer
+            showContainerBtn={txt => setShowContainer(txt)}
             orderDispatched={() => OrderDispatched()}
             distance={distance}
             showHeaderDetails={() => setHeaderDetails('Pickup')}
@@ -458,7 +467,7 @@ const MapScreen = ({navigation}) => {
               // setAcceptScree(false);
             }}
           />
-        )}
+        ) : null}
       </View>
       <Modal
         animationType="slide"
@@ -490,16 +499,25 @@ const AcceptRejectContainer = ({
   orderDispatched,
   showHeaderDetails,
   finalFunction,
+  showContainerBtn,
 }) => {
   const toast = useToast();
   const [enableAccept, setEnableAccept] = useState(false);
   const [customerHandle, setCustomerHandle] = useState(false);
+  const [bottomContainer, setBottomContainer] = useState(true);
   const {t} = useTranslation();
 
   const DispatchedOrder = () => {
     orderDispatched();
+    // showContainerBtn(false);
+    setBottomContainer(false);
+
     setCustomerHandle(!customerHandle);
   };
+
+  // useEffect(() => {
+  //   showContainerBtn(true);
+  // }, [distance * 1000 <= 30 && distance !== 0]);
 
   const AcceptOrder = async () => {
     setEnableAccept(true);
@@ -512,6 +530,7 @@ const AcceptRejectContainer = ({
     });
     showDestination();
     showHeaderDetails();
+    showContainerBtn(false);
     console.log('RESPONSE +++', res);
     toast.show(res?.message, {
       type: 'success',
@@ -634,21 +653,24 @@ const AcceptRejectContainer = ({
             </TouchableOpacity>
           </View>
           {distance * 1000 <= 30 && distance !== 0 ? (
-            <TouchableOpacity
-              onPress={DispatchedOrder}
-              style={{
-                backgroundColor: color.blue,
-                padding: 15,
-                paddingHorizontal: 50,
-                margin: 20,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 30,
-              }}>
-              <Text style={{fontWeight: 'bold', color: 'white'}}>
-                {t('common:OrderDispatched')}
-              </Text>
-            </TouchableOpacity>
+            (console.log('working'),
+            (
+              <TouchableOpacity
+                onPress={DispatchedOrder}
+                style={{
+                  backgroundColor: color.blue,
+                  padding: 15,
+                  paddingHorizontal: 50,
+                  margin: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 30,
+                }}>
+                <Text style={{fontWeight: 'bold', color: 'white'}}>
+                  {t('common:OrderDispatched')}
+                </Text>
+              </TouchableOpacity>
+            ))
           ) : (
             <View
               style={{
@@ -719,6 +741,7 @@ const AcceptRejectContainer = ({
               // padding: 10,
               paddingVertical: 30,
             }}>
+            {/* <Text>{distance * 1000}</Text> */}
             <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
               {t('common:OnTheWay')}
             </Text>
