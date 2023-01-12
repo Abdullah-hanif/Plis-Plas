@@ -504,13 +504,11 @@ const AcceptRejectContainer = ({
   const toast = useToast();
   const [enableAccept, setEnableAccept] = useState(false);
   const [customerHandle, setCustomerHandle] = useState(false);
-  const [bottomContainer, setBottomContainer] = useState(true);
   const {t} = useTranslation();
 
   const DispatchedOrder = () => {
     orderDispatched();
     // showContainerBtn(false);
-    setBottomContainer(false);
 
     setCustomerHandle(!customerHandle);
   };
@@ -741,7 +739,7 @@ const AcceptRejectContainer = ({
               // padding: 10,
               paddingVertical: 30,
             }}>
-            {/* <Text>{distance * 1000}</Text> */}
+            <Text>{distance * 1000}</Text>
             <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
               {t('common:OnTheWay')}
             </Text>
