@@ -507,14 +507,20 @@ const AcceptRejectContainer = ({
   const [enableAccept, setEnableAccept] = useState(false);
   const [customerHandle, setCustomerHandle] = useState(false);
   const [showDetails, setShowDetails] = useState(true);
+  const [showButtons, setShowButton] = useState(true);
   const {t} = useTranslation();
 
   const DispatchedOrder = () => {
     orderDispatched();
     // showContainerBtn(false);
-
+    setShowDetails(false);
     setCustomerHandle(!customerHandle);
   };
+
+  // useEffect(() => {
+  //   setShowDetails(true);
+  //   alert('wkokg');
+  // }, [distance * 1000 <= 30]);
 
   // useEffect(() => {
   //   showContainerBtn(true);
@@ -531,7 +537,8 @@ const AcceptRejectContainer = ({
     });
     showDestination();
     showHeaderDetails();
-    showContainerBtn(false);
+    // showContainerBtn(false);
+    setShowButton(false);
     console.log('RESPONSE +++', res);
     toast.show(res?.message, {
       type: 'success',
@@ -643,7 +650,7 @@ const AcceptRejectContainer = ({
                   ? t('common:Pleasewaitfewmintues')
                   : null}
                 {distance * 1000 == 0 ? t('common:ViewOrder') : null}
-                {distance * 1000 > 30 ? 'Order is getting ready' : null}
+                {distance * 1000 > 30 ? 'Details' : null}
 
                 {/* {distance * 1000 <= 30 && distance !== 0
                   ? t('common:Pleasewaitfewmintues')
@@ -672,7 +679,7 @@ const AcceptRejectContainer = ({
                 </Text>
               </TouchableOpacity>
             ))
-          ) : (
+          ) : showButtons ? (
             <View
               style={{
                 padding: 10,
@@ -717,14 +724,16 @@ const AcceptRejectContainer = ({
               </TouchableOpacity>
               {/* ACCEPT END=========> */}
             </View>
-          )}
+          ) : null}
         </View>
       ) : (
         <>
-          <TouchableOpacity onPress={() => setShowDetails(!showDetails)}>
+          {/* <TouchableOpacity
+            style={{backgroundColor: 'white'}}
+            onPress={() => setShowDetails(!showDetails)}>
             <Text>show</Text>
-          </TouchableOpacity>
-          {showDetails ? (
+          </TouchableOpacity> */}
+          {
             <View
               style={{
                 backgroundColor: 'white',
@@ -746,11 +755,12 @@ const AcceptRejectContainer = ({
                 // padding: 10,
                 paddingVertical: 30,
               }}>
+              {/* {showDetails ? ( */}
+              {/* <> */}
               <Text>{distance * 1000}</Text>
               <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
                 {t('common:OnTheWay')}
               </Text>
-
               <View
                 style={{
                   flexDirection: 'row',
@@ -799,12 +809,13 @@ const AcceptRejectContainer = ({
                   {t('common:Delivered')}
                 </Text>
               </TouchableOpacity>
+              {/* </> */}
             </View>
-          ) : (
-            <TouchableOpacity onPress={() => setShowDetails(!showDetails)}>
-              <Text>show</Text>
-            </TouchableOpacity>
-          )}
+
+            // <TouchableOpacity onPress={() => setShowDetails(!showDetails)}>
+            //   <Text>show</Text>
+            // </TouchableOpacity>
+          }
 
           <Modal
             statusBarTranslucent={true}

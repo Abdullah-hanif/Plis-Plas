@@ -82,14 +82,14 @@ const OrderDetails = ({navigation, route}) => {
                       <Text style={{color: 'black'}}>{item?.quantity}</Text>
                     </View>
                     <View style={{left: 10}}>
-                      <Text
+                      {/* <Text
                         style={{
                           fontWeight: 'bold',
                           fontSize: 18,
                           color: 'black',
                         }}>
                         {t('common:deal')} 5
-                      </Text>
+                      </Text> */}
                       <Text style={{color: 'gray', fontSize: 14}}>
                         {item?.itemName}
                       </Text>
@@ -104,7 +104,7 @@ const OrderDetails = ({navigation, route}) => {
           );
         })}
         {/* 3rd Container */}
-        <View
+        {/* <View
           style={[
             styles.secoundContainer,
             {
@@ -122,7 +122,7 @@ const OrderDetails = ({navigation, route}) => {
               Rs 49.00
             </Text>
           </View>
-        </View>
+        </View> */}
         {/* 4th container */}
         <View
           style={[
