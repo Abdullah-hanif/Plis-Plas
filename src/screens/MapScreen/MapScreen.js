@@ -444,9 +444,9 @@ const MapScreen = ({navigation}) => {
             orderDispatched={() => {
               OrderDispatched();
             }}
-            // distance={distance}
+            distance={distance}
             showHeaderDetails={() => setHeaderDetails('Pickup')}
-            distance={0.03}
+            // distance={0.03}
             checkOutId={checkOutId}
             showDestination={() => getDestination()}
             finalFunction={() => {
