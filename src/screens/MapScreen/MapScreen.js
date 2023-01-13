@@ -184,6 +184,7 @@ const MapScreen = ({navigation}) => {
     if (locPermissionDenied) {
       const {latitude, longitude, heading} = await getCurrentLocation();
       console.log('get live location after 4 second', heading);
+
       animate(latitude, longitude);
       updateState({
         heading: heading,
