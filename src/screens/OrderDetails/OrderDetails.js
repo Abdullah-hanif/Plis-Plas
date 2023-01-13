@@ -161,7 +161,7 @@ const OrderDetails = ({navigation, route}) => {
           </Text>
         </View>
         {/* End 4th container */}
-        {!enableAccept ? (
+        {/* {!enableAccept ? (
           <View
             style={{
               margin: 50,
@@ -175,7 +175,7 @@ const OrderDetails = ({navigation, route}) => {
               <Text style={{fontWeight: 'bold', color: 'black'}}>Reject</Text>
             </TouchableOpacity>
           </View>
-        ) : null}
+        ) : null} */}
       </ScrollView>
     </View>
   );
