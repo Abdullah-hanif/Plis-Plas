@@ -274,14 +274,20 @@ const ProfileScreen = ({navigation}) => {
                 style={{
                   margin: 10,
                   borderWidth: 0.8,
-                  borderColor: 'black',
+                  borderColor: 'white',
                   borderRadius: 60,
                   height: 120,
                   width: 120,
+                  backgroundColor: color.blue,
                   resizeMode: 'contain',
+                  tintColor: 'white',
                 }}
                 // source={require('../../assets/Images/profileimg.jpg')}
-                source={{uri: img}}
+                source={require('../../assets/Icons/Group15299.png')}
+                //   <Image
+                //   style={{height: 50, width: 50}}
+                // />
+                // {/* source={{uri: img}} */}
               />
             </View>
           </View>

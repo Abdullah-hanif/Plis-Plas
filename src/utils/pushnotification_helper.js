@@ -4,6 +4,8 @@ import PushNotification from 'react-native-push-notification';
 import {ShowAlerScree} from '../screens/MapScreen/MapScreen';
 
 export const requestUserPermission = async () => {
+  // ShowAlerScree(true);
+
   const authStatus = await messaging().requestPermission();
   const enabled =
     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||

@@ -85,9 +85,19 @@ export const DrawerContent = ({navigation}) => {
                 borderRadius: 70,
               }}>
               <Image
-                style={{height: 80, width: 80, borderRadius: 70}}
+                style={{
+                  height: 80,
+                  width: 80,
+                  borderRadius: 70,
+                  tintColor: 'white',
+                }}
                 // source={require('../../assets/Images/men.jpg')}
-                source={{uri: img}}
+                // source={{uri: img}}
+                source={require('../../assets/Icons/Group15299.png')}
+
+                //   <Image
+                //   style={{height: 50, width: 50}}
+                // />
               />
             </View>
             <Text
@@ -155,7 +165,7 @@ export const DrawerContent = ({navigation}) => {
               </Text>
             }
           />
-          <DrawerItemContainer
+          {/* <DrawerItemContainer
             onpress={() => navigation.navigate('MyWallet')}
             ico={
               <Image
@@ -175,7 +185,7 @@ export const DrawerContent = ({navigation}) => {
                 My Wallet
               </Text>
             }
-          />
+          /> */}
           <DrawerItemContainer
             onpress={() => {
               AsyncStorage.clear(), navigation.navigate('Login');

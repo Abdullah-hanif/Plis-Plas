@@ -61,6 +61,8 @@ const MapScreen = ({navigation}) => {
   const [notiData, setNotiData] = useState();
   const [showHeaderDetails, setHeaderDetails] = useState('both');
 
+  const [distanceTop, setDistanceTop] = useState(0);
+
   //@Container show
   const [showContainer, setShowContainer] = useState(true);
 
@@ -303,6 +305,8 @@ const MapScreen = ({navigation}) => {
         <PickupDropoffContainer
           showDetails={showHeaderDetails}
           details={notiData}
+          getDistance={txt => setDistanceTop(txt)}
+          distance={distanceTop}
         />
       ) : null}
 
@@ -448,6 +452,7 @@ const MapScreen = ({navigation}) => {
             distance={distance}
             showHeaderDetails={() => setHeaderDetails('Pickup')}
             // distance={0.03}
+            getDistance={txt => setDistanceTop(txt)}
             checkOutId={checkOutId}
             showDestination={() => getDestination()}
             finalFunction={() => {
@@ -503,6 +508,7 @@ const AcceptRejectContainer = ({
   showHeaderDetails,
   finalFunction,
   showContainerBtn,
+  getDistance,
 }) => {
   const toast = useToast();
   const [enableAccept, setEnableAccept] = useState(false);
@@ -522,6 +528,7 @@ const AcceptRejectContainer = ({
   //   setShowDetails(true);
   //   alert('wkokg');
   // }, [distance * 1000 <= 30]);
+  getDistance(distance);
 
   // useEffect(() => {
   //   showContainerBtn(true);
@@ -556,6 +563,9 @@ const AcceptRejectContainer = ({
       checkoutId: checkOutId,
       userId: userID,
     });
+    setTimeout(() => {
+      finalFunction();
+    }, 1000);
     console.log('RESPONSE +++', res);
     toast.show(res?.message, {
       type: 'danger',
@@ -959,7 +969,7 @@ const BottomSheet = ({
                 style={{
                   fontWeight: 'bold',
                   left: 15,
-
+                  // fontFamily: 'sofiapro-light',
                   color: 'black',
                   fontSize: 19,
                   // top: 13,
@@ -1015,14 +1025,21 @@ const BottomSheet = ({
   );
 };
 
-const PickupDropoffContainer = ({details, showDetails}) => {
+const PickupDropoffContainer = ({
+  details,
+  showDetails,
+  distance,
+  getDistance,
+}) => {
   console.log('PICKUP CONTAINER====>', details);
+  getDistance(distance);
   return (
     <>
       <View
         style={{
           backgroundColor: 'white',
-          height: '20%',
+          // height: '20%',
+          paddingVertical: 25,
           position: 'absolute',
           width: '90%',
 
@@ -1061,16 +1078,27 @@ const PickupDropoffContainer = ({details, showDetails}) => {
         </View>
         {showDetails == 'both' ? (
           <View style={{left: 10}}>
+            <Text
+              style={{fontWeight: 'bold', color: 'black', textAlign: 'center'}}>
+              {distance * 1000 >= 1000
+                ? `${distance}KM`
+                : `${distance * 1000}m`}
+            </Text>
             <View style={{flexWrap: 'wrap'}}>
               <Text style={{color: 'black', fontSize: 12}}>
                 {/* AI Zumarodn Tower Floor 21,20,m2 */}
                 {details?.pickupAddress}
               </Text>
-              <Text style={{fontWeight: 'bold', color: 'black'}}>
-                Pickeup Location
+
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color: 'black',
+                }}>
+                Pickup Location
               </Text>
             </View>
-            <View style={{top: 25, width: '95%'}}>
+            <View style={{width: '95%'}}>
               <Text
                 numberOfLines={1}
                 style={{color: 'black', fontSize: 12, flexWrap: 'wrap'}}>
@@ -1091,9 +1119,19 @@ const PickupDropoffContainer = ({details, showDetails}) => {
               // backgroundColor: 'red',
               width: '100%',
             }}>
+            <Text style={{fontWeight: 'bold', color: 'black'}}>
+              {distance * 1000 >= 1000
+                ? `${distance}KM`
+                : `${distance * 1000}m`}
+            </Text>
             <Text
-              style={{fontWeight: 'bold', color: 'black', textAlign: 'center'}}>
-              Pickeup Location
+              style={{
+                fontWeight: 'bold',
+                // color: 'black',
+                textAlign: 'center',
+                // fontFamily: 'sofiapro-light',
+              }}>
+              Pickup Location
             </Text>
             <Text style={{color: 'black', fontSize: 12, top: 10}}>
               {/* AI Zumarodn Tower Floor 21,20,m2 */}
@@ -1113,11 +1151,21 @@ const PickupDropoffContainer = ({details, showDetails}) => {
               alignItems: 'center',
             }}>
             <Text style={{fontWeight: 'bold', color: 'black'}}>
+              {distance * 1000 >= 1000
+                ? `${distance}KM`
+                : `${distance * 1000}m`}
+            </Text>
+            <Text style={{fontWeight: 'bold', color: 'black'}}>
               Delivery Address
             </Text>
             <Text
               numberOfLines={1}
-              style={{color: 'black', fontSize: 12, flexWrap: 'wrap', top: 10}}>
+              style={{
+                color: 'black',
+                fontSize: 12,
+                flexWrap: 'wrap',
+                top: 10,
+              }}>
               {/* AI Zumarodn Tower Floor 21,20,m2 */}
               {details?.deliveryAddress}
             </Text>
