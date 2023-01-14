@@ -449,9 +449,9 @@ const MapScreen = ({navigation}) => {
             orderDispatched={() => {
               OrderDispatched();
             }}
-            distance={distance}
+            // distance={distance}
             showHeaderDetails={() => setHeaderDetails('Pickup')}
-            // distance={0.03}
+            distance={0.03}
             getDistance={txt => setDistanceTop(txt)}
             checkOutId={checkOutId}
             showDestination={() => getDestination()}
@@ -768,7 +768,7 @@ const AcceptRejectContainer = ({
               }}>
               {/* {showDetails ? ( */}
               {/* <> */}
-              <Text>{distance * 1000}</Text>
+
               <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
                 {t('common:OnTheWay')}
               </Text>
@@ -969,7 +969,7 @@ const BottomSheet = ({
                 style={{
                   fontWeight: 'bold',
                   left: 15,
-                  // fontFamily: 'sofiapro-light',
+
                   color: 'black',
                   fontSize: 19,
                   // top: 13,
@@ -1127,7 +1127,7 @@ const PickupDropoffContainer = ({
             <Text
               style={{
                 fontWeight: 'bold',
-                // color: 'black',
+                color: 'black',
                 textAlign: 'center',
                 // fontFamily: 'sofiapro-light',
               }}>

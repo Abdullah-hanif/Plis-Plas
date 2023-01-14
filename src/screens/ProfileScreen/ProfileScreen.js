@@ -325,6 +325,7 @@ const ProfileScreen = ({navigation}) => {
                 fontWeight: 'bold',
                 margin: 10,
                 color: 'black',
+
                 paddingLeft: 5,
               }}>
               {t('common:Information')}
@@ -433,6 +434,7 @@ const ProfileScreen = ({navigation}) => {
                     color: 'black',
                     fontSize: 17,
                     margin: 10,
+                    fontFamily: 'sofiapro-light',
                   }}>
                   {t('common:front')}
                 </Text>
@@ -446,13 +448,17 @@ const ProfileScreen = ({navigation}) => {
                         padding: 50,
                         alignItems: 'center',
                         justifyContent: 'center',
+                        fontFamily: 'sofiapro-light',
                       }}>
                       <Image
                         resizeMode="contain"
                         style={{height: 30, width: 30, tintColor: 'black'}}
                         source={dummyImage}
                       />
-                      <Text style={{color: 'black'}}>{t('common:upload')}</Text>
+                      <Text
+                        style={{color: 'black', fontFamily: 'sofiapro-light'}}>
+                        {t('common:upload')}
+                      </Text>
                     </View>
                   </>
                 ) : (
@@ -471,6 +477,7 @@ const ProfileScreen = ({navigation}) => {
                     color: 'black',
                     fontSize: 17,
                     margin: 10,
+                    fontFamily: 'sofiapro-light',
                   }}>
                   {t('common:Back')}
                 </Text>
@@ -490,7 +497,14 @@ const ProfileScreen = ({navigation}) => {
                         style={{height: 30, width: 30, tintColor: 'black'}}
                         source={dummyImage}
                       />
-                      <Text style={{color: 'black'}}>{t('common:upload')}</Text>
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontFamily: 'sofiapro-light',
+                          fontFamily: 'sofiapro-light',
+                        }}>
+                        {t('common:upload')}
+                      </Text>
                     </View>
                   </>
                 ) : (
@@ -518,6 +532,7 @@ const ProfileScreen = ({navigation}) => {
                 fontWeight: 'bold',
                 margin: 10,
                 color: 'black',
+                fontFamily: 'sofiapro-light',
                 // padding: 10,
               }}>
               {/* {topHeading} */}
@@ -539,6 +554,7 @@ const ProfileScreen = ({navigation}) => {
                     color: 'black',
                     fontSize: 17,
                     margin: 10,
+                    fontFamily: 'sofiapro-light',
                   }}>
                   {t('common:front')}
                 </Text>
@@ -558,7 +574,10 @@ const ProfileScreen = ({navigation}) => {
                         style={{height: 30, width: 30, tintColor: 'black'}}
                         source={dummyImage}
                       />
-                      <Text style={{color: 'black'}}>{t('common:upload')}</Text>
+                      <Text
+                        style={{color: 'black', fontFamily: 'sofiapro-light'}}>
+                        {t('common:upload')}
+                      </Text>
                     </View>
                   </>
                 ) : (
@@ -577,6 +596,7 @@ const ProfileScreen = ({navigation}) => {
                     color: 'black',
                     fontSize: 17,
                     margin: 10,
+                    fontFamily: 'sofiapro-light',
                   }}>
                   {t('common:Back')}
                 </Text>
@@ -596,7 +616,10 @@ const ProfileScreen = ({navigation}) => {
                         style={{height: 30, width: 30, tintColor: 'black'}}
                         source={dummyImage}
                       />
-                      <Text style={{color: 'black'}}>{t('common:upload')}</Text>
+                      <Text
+                        style={{color: 'black', fontFamily: 'sofiapro-light'}}>
+                        {t('common:upload')}
+                      </Text>
                     </View>
                   </>
                 ) : (
@@ -722,6 +745,7 @@ const InfromationDetails = ({icon, title, name, edit, getInput, stateName}) => {
                 borderColor: 'green',
                 borderBottomWidth: edit ? 1 : null,
                 width: '90%',
+                fontFamily: 'sofiapro-light',
               }}
               onChangeText={txt => getInput(txt)}
               placeholder={name}

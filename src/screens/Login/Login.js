@@ -168,7 +168,13 @@ const Login = ({navigation}) => {
                 placeholderTextColor={'black'}
                 placeholder="Paco ramos"
                 onChangeText={txt => setUsername(txt)}
-                style={{left: 10, fontSize: 15}}
+                style={{
+                  left: 10,
+
+                  fontSize: 15,
+                  width: '90%',
+                  fontFamily: 'sofiapro-light',
+                }}
               />
             </View>
             <View style={styles.passInput}>
@@ -187,7 +193,7 @@ const Login = ({navigation}) => {
                 placeholder={t('common:password')}
                 onChangeText={txt => setPassword(txt)}
                 secureTextEntry={true}
-                style={{left: 10, fontSize: 15}}
+                style={{left: 10, fontSize: 15, fontFamily: 'sofiapro-light'}}
               />
             </View>
           </View>

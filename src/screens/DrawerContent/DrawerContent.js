@@ -106,6 +106,7 @@ export const DrawerContent = ({navigation}) => {
                 color: 'black',
                 fontSize: 18,
                 marginTop: 10,
+                fontFamily: 'sofiapro-light',
               }}>
               {name}
             </Text>
@@ -119,7 +120,13 @@ export const DrawerContent = ({navigation}) => {
               />
             }
             name={
-              <Text style={{margin: 10, left: 10, color: 'black'}}>
+              <Text
+                style={{
+                  margin: 10,
+                  left: 10,
+                  color: 'black',
+                  fontFamily: 'sofiapro-light',
+                }}>
                 {t('common:home')}
               </Text>
             }
@@ -133,7 +140,13 @@ export const DrawerContent = ({navigation}) => {
               />
             }
             name={
-              <Text style={{margin: 10, left: 10, color: 'black'}}>
+              <Text
+                style={{
+                  margin: 10,
+                  left: 10,
+                  color: 'black',
+                  fontFamily: 'sofiapro-light',
+                }}>
                 {t('common:profile')}
               </Text>
             }
@@ -146,7 +159,13 @@ export const DrawerContent = ({navigation}) => {
               />
             }
             name={
-              <Text style={{margin: 10, left: 10, color: 'black'}}>
+              <Text
+                style={{
+                  margin: 10,
+                  left: 10,
+                  color: 'black',
+                  fontFamily: 'sofiapro-light',
+                }}>
                 {t('common:orders')}
               </Text>
             }
@@ -160,7 +179,13 @@ export const DrawerContent = ({navigation}) => {
               />
             }
             name={
-              <Text style={{margin: 10, left: 10, color: 'black'}}>
+              <Text
+                style={{
+                  margin: 10,
+                  left: 10,
+                  color: 'black',
+                  fontFamily: 'sofiapro-light',
+                }}>
                 {t('common:settings')}
               </Text>
             }
@@ -197,7 +222,13 @@ export const DrawerContent = ({navigation}) => {
               />
             }
             name={
-              <Text style={{margin: 10, left: 10, color: 'black'}}>
+              <Text
+                style={{
+                  margin: 10,
+                  left: 10,
+                  color: 'black',
+                  fontFamily: 'sofiapro-light',
+                }}>
                 {t('common:logout')}
               </Text>
             }

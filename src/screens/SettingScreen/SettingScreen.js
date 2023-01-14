@@ -89,6 +89,7 @@ const SettingItems = ({name, icon, onPress}) => {
           <Text
             style={{
               color: 'black',
+              fontFamily: 'sofiapro-light',
               textAlign: 'center',
               textAlignVertical: 'center',
               fontSize: 17,

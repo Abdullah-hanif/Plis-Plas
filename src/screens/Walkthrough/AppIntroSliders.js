@@ -96,11 +96,23 @@ const AppIntroSliders = ({navigation}) => {
             marginBottom: 190,
           }}>
           <View style={{paddingLeft: '5%', paddingTop: '15%'}}>
-            <Text style={{fontSize: 15, color: 'black', fontWeight: '400'}}>
+            <Text
+              style={{
+                fontSize: 15,
+                color: 'black',
+                fontWeight: '400',
+                fontFamily: 'sofiapro-light',
+              }}>
               {/* Hello nice to meet you! */}
               {t('common:Hellonicetomeetyou')}
             </Text>
-            <Text style={{fontSize: 27, color: 'black', fontWeight: 'bold'}}>
+            <Text
+              style={{
+                fontSize: 27,
+                color: 'black',
+                fontWeight: 'bold',
+                fontFamily: 'sofiapro-light',
+              }}>
               {t('common:Getanewexperience')}
             </Text>
           </View>
