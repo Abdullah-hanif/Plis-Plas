@@ -8,31 +8,31 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
-import {color} from '../../theme';
+import React, { useState } from 'react';
+import { color } from '../../theme';
 import Button from '../../components/Button/Button';
 import Mail from 'react-native-vector-icons/Fontisto';
 import Lock from 'react-native-vector-icons/EvilIcons';
 
 // @API
-import {loginUser} from '../../api/api';
-import {Base_Url} from '../../api/api';
+import { loginUser } from '../../api/api';
+import { Base_Url } from '../../api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 
 // @Toast
-import {useToast} from 'react-native-toast-notifications';
+import { useToast } from 'react-native-toast-notifications';
 
 // @langugeChange
-import {useTranslation} from 'react-i18next';
-const Login = ({navigation}) => {
+import { useTranslation } from 'react-i18next';
+const Login = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [userId, setUserId] = useState('');
   const [token, setToken] = useState('');
 
   const toast = useToast();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const login = async () => {
     //  navigation.navigate('DrawerNavigator')
@@ -40,7 +40,7 @@ const Login = ({navigation}) => {
 
     const params = {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: username,
         password: password,
@@ -114,7 +114,7 @@ const Login = ({navigation}) => {
     console.log('TOKENSSSSSSSSSS===>', token);
     const params = {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         userId: fcmid,
         fcm: token,
@@ -134,7 +134,7 @@ const Login = ({navigation}) => {
       <StatusBar hidden />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{flex: 1, backgroundColor: 'white'}}>
+        style={{ flex: 1, backgroundColor: 'white' }}>
         <View style={styles.container}>
           <View style={styles.innerContainer}>
             <Image
@@ -170,7 +170,6 @@ const Login = ({navigation}) => {
                 onChangeText={txt => setUsername(txt)}
                 style={{
                   left: 10,
-
                   fontSize: 15,
                   width: '90%',
                   fontFamily: 'sofiapro-light',
@@ -193,14 +192,19 @@ const Login = ({navigation}) => {
                 placeholder={t('common:password')}
                 onChangeText={txt => setPassword(txt)}
                 secureTextEntry={true}
-                style={{left: 10, fontSize: 15, fontFamily: 'sofiapro-light'}}
+                style={{
+                  left: 10,
+                  fontSize: 15,
+                  width: '90%',
+                  fontFamily: 'sofiapro-light',
+                }}
               />
             </View>
           </View>
-          <View style={{alignItems: 'flex-end', margin: 20}}>
+          <View style={{ alignItems: 'flex-end', margin: 20 }}>
             <TouchableOpacity
               onPress={() => navigation.navigate('ForgotPassword')}>
-              <Text style={{color: 'black', fontWeight: 'bold', fontSize: 15}}>
+              <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 15 }}>
                 {t('common:ForgotPassword')}
               </Text>
             </TouchableOpacity>
