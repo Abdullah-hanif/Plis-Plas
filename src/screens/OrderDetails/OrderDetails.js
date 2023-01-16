@@ -96,7 +96,7 @@ const OrderDetails = ({navigation, route}) => {
                     </View>
                   </View>
                   <Text style={{fontWeight: '900', top: 20, color: 'black'}}>
-                    {` Rs${item?.itemPrice}`}
+                    {`EUR ${item?.itemPrice}`}
                   </Text>
                 </View>
               </View>
@@ -143,7 +143,7 @@ const OrderDetails = ({navigation, route}) => {
               styles.restNameStyle,
               {fontWeight: 'bold', color: 'black'},
             ]}>
-            {`Rs${shopeDetails?.totalPrice}`}
+            {`EUR ${shopeDetails?.totalPrice}`}
           </Text>
         </View>
         {/* 4th container */}

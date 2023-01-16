@@ -89,10 +89,10 @@ const MapScreen = ({ navigation }) => {
 
   const [state, setState] = useState({
     curLoc: {
-      latitude: 24.833797888244483,
-      longitude: 67.07092911044822,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
+      latitude: 41.390205,
+      longitude:  2.154007,
+      latitudeDelta:LATITUDE_DELTA,
+      longitudeDelta:LONGITUDE_DELTA,
     },
     destinationCords: {
       latitude: 0.0,
@@ -100,8 +100,8 @@ const MapScreen = ({ navigation }) => {
     },
     isLoading: false,
     coordinate: new AnimatedRegion({
-      latitude: 24.833797888244483,
-      longitude: 67.07092911044822,
+      latitude: 41.390205,
+      longitude: 2.154007,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
     }),
@@ -297,7 +297,7 @@ const MapScreen = ({ navigation }) => {
       },
     });
   };
-  // console.log('NOTIFICATION DATA==>', notiData);
+  //  console.log('NOTIFICATION DATA==>', notiData);
   return (
     <>
       <Header onClick={() => navigation.openDrawer()} />
@@ -418,9 +418,9 @@ const MapScreen = ({ navigation }) => {
                 : await AsyncStorage.setItem('mode', 'OFF');
               const res = await onlineOffline({
                 userId: 35,
-                value: !isEnabled ? 'on' : 'offline',
+                value: !isEnabled ? 'yes' : 'no',
               });
-
+             
               !isEnabled
                 ? toast.show('you are online', {
                   type: 'success',
