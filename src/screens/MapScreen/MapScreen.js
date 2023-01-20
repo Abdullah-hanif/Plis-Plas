@@ -471,9 +471,9 @@ const MapScreen = ({navigation}) => {
               OrderDispatched();
             }}
             setStatus={txt => setStatus(txt)}
-            distance={distance}
+            // distance={distance}
             showHeaderDetails={() => setHeaderDetails('Pickup')}
-            // distance={0.03}
+            distance={0.03}
             getDistance={txt => setDistanceTop(txt)}
             checkOutId={checkOutId}
             showDestination={() => getDestination()}
@@ -541,12 +541,14 @@ const AcceptRejectContainer = ({
   const [showButtons, setShowButton] = useState(true);
   // @background Controller
   const [check, setCheck] = useState(false);
+  const [showDispatch, setShowDispatch] = useState(false);
   const {t} = useTranslation();
 
   const DispatchedOrder = () => {
     orderDispatched();
     // showContainerBtn(false);
     setShowDetails(false);
+    AsyncStorage.setItem('dipatchView', 'show');
     setCustomerHandle(!customerHandle);
   };
 
@@ -613,6 +615,7 @@ const AcceptRejectContainer = ({
       finalFunction();
       setStatus(false);
       AsyncStorage.setItem('status', 'hide');
+      // AsyncStorage.clear();
     }, 2000);
     console.log('RESPONSE +++', res);
 
@@ -631,11 +634,13 @@ const AcceptRejectContainer = ({
   const checkConditions = async () => {
     const get = await checkStatue();
     get == 'orderStart' ? setCheck(true) : setCheck(false);
-    get == 'orderStart' ? showDestination() : null;
+    get == 'orderStart' ? showDestination() : setCheck(false);
+
+    const checkDispatch = await AsyncStorage.getItem('dipatchView');
+    checkDispatch == 'show' ? setShowDispatch(true) : setShowDispatch(false);
 
     console.log('=============>Order Status====>', await checkStatue());
   };
-
   useEffect(() => {
     checkConditions();
   }, []);
@@ -648,7 +653,7 @@ const AcceptRejectContainer = ({
         //   backgroundColor: 'yellow',
         flexDirection: 'column-reverse',
       }}>
-      {!customerHandle ? (
+      {!customerHandle && !showDispatch ? (
         <View
           style={{
             backgroundColor: 'white',
@@ -711,7 +716,7 @@ const AcceptRejectContainer = ({
               </Text>
             </TouchableOpacity>
           </View>
-          {distance * 1000 <= 30 && distance !== 0 ? (
+          {distance * 1000 <= 30 && distance !== 0 && !showDispatch ? (
             (console.log('working'),
             (
               <TouchableOpacity
