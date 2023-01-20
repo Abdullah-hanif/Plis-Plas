@@ -413,11 +413,12 @@ const MapScreen = ({ navigation }) => {
             toggleSwitch={async () => {
               setIsEnabled(previousState => !previousState);
               // alert(isEnabled);
+              const userID = await AsyncStorage.getItem('userID');
               !isEnabled
                 ? await AsyncStorage.setItem('mode', 'ON')
                 : await AsyncStorage.setItem('mode', 'OFF');
               const res = await onlineOffline({
-                userId: 35,
+                userId: userID,
                 value: !isEnabled ? 'yes' : 'no',
               });
              
