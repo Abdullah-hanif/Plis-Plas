@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
   Touchable,
   Modal,
 } from 'react-native';
-import MapView, { Marker, AnimatedRegion } from 'react-native-maps';
+import MapView, {Marker, AnimatedRegion} from 'react-native-maps';
 
 import MapViewDirections from 'react-native-maps-directions';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -21,18 +21,18 @@ import {
   getCurrentLocation,
 } from '../../helper/helperFunction';
 import Header from '../../components/Header';
-import { color } from '../../theme';
+import {color} from '../../theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
-import { approvedOrder, onlineOffline } from '../../api/api';
-import { useToast } from 'react-native-toast-notifications';
+import {approvedOrder, onlineOffline} from '../../api/api';
+import {useToast} from 'react-native-toast-notifications';
 // @Translation
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 // @redux
-import { useSelector, useDispatch } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import OrderDetails from '../OrderDetails/OrderDetails';
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 
 const screen = Dimensions.get('window');
 const ASPECT_RATIO = screen.width / screen.height;
@@ -46,10 +46,11 @@ let myconditon = null;
 export const ShowAlerScree = value => {
   myconditon = value;
   console.log('INSIDE FUNC', myconditon);
+  AsyncStorage.setItem('status', 'show');
   return myconditon;
 };
 
-const MapScreen = ({ navigation }) => {
+const MapScreen = ({navigation}) => {
   const toast = useToast();
 
   const mapRef = useRef();
@@ -60,6 +61,8 @@ const MapScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [notiData, setNotiData] = useState();
   const [showHeaderDetails, setHeaderDetails] = useState('both');
+  // @conditional background controller
+  const [status, setStatus] = useState(false);
 
   const [distanceTop, setDistanceTop] = useState(0);
 
@@ -72,7 +75,8 @@ const MapScreen = ({ navigation }) => {
     'http://projects.websetters.in/digg-seos/digg/wp-content/themes/twentytwenty-child-theme/img/demo-prof.jpg',
   );
 
-  const { t } = useTranslation();
+  const {t} = useTranslation();
+  // AsyncStorage.clear();
 
   // const [meetDistance, setMeetDistance] = useState();
 
@@ -83,6 +87,7 @@ const MapScreen = ({ navigation }) => {
     setTimeout(() => {
       console.log('ACCPET SCREEN', myconditon);
       // AsyncStorage.setItem("acitveScreen","accept")
+
       myconditon ? setAcceptScree(true) : null;
     }, 1000);
   };
@@ -90,9 +95,9 @@ const MapScreen = ({ navigation }) => {
   const [state, setState] = useState({
     curLoc: {
       latitude: 41.390205,
-      longitude:  2.154007,
-      latitudeDelta:LATITUDE_DELTA,
-      longitudeDelta:LONGITUDE_DELTA,
+      longitude: 2.154007,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
     },
     destinationCords: {
       latitude: 0.0,
@@ -128,7 +133,7 @@ const MapScreen = ({ navigation }) => {
     coordinate,
     heading,
   } = state;
-  const updateState = data => setState(state => ({ ...state, ...data }));
+  const updateState = data => setState(state => ({...state, ...data}));
 
   const getAddress = async () => {
     const data = await AsyncStorage.getItem('restaurantDetails');
@@ -168,6 +173,7 @@ const MapScreen = ({ navigation }) => {
     getAddress();
     // setShowContainer(true);
     showAcceptScreen();
+    // AsyncStorage.setItem('status', 'show');
   }, [myconditon]);
 
   useEffect(() => {
@@ -184,13 +190,13 @@ const MapScreen = ({ navigation }) => {
   const getLiveLocation = async () => {
     const locPermissionDenied = await locationPermission();
     if (locPermissionDenied) {
-      const { latitude, longitude, heading } = await getCurrentLocation();
+      const {latitude, longitude, heading} = await getCurrentLocation();
       console.log('get live location after 4 second', heading);
 
       animate(latitude, longitude);
       updateState({
         heading: heading,
-        curLoc: { latitude, longitude },
+        curLoc: {latitude, longitude},
         coordinate: new AnimatedRegion({
           latitude: latitude,
           longitude: longitude,
@@ -207,8 +213,8 @@ const MapScreen = ({ navigation }) => {
     reduData?.profileDetail.length == 0
       ? setName(await AsyncStorage.getItem('userName'))
       : reduData?.profileDetail.map((data, index) => {
-        return setName(data?.name), setProfileImg(data?.profilePicture);
-      });
+          return setName(data?.name), setProfileImg(data?.profilePicture);
+        });
   };
   const focused = useIsFocused();
 
@@ -218,6 +224,11 @@ const MapScreen = ({ navigation }) => {
     const data = await AsyncStorage.getItem('restaurantDetails');
     // console.log('PUSH NOTIFICATION JSON DATA===>', data);
     mode == 'ON' ? setIsEnabled(true) : setIsEnabled(false);
+    const status = await AsyncStorage.getItem('status');
+    console.log('STAUS====>', status);
+    status == 'show' ? setStatus(true) : setStatus(false);
+    // status == 'show' ? alert('show') : alert('not show');
+
     return mode;
   };
 
@@ -227,6 +238,7 @@ const MapScreen = ({ navigation }) => {
     // });
     getName();
     getMode();
+    console.log('SSSSSSSSSSSTTTTTAAATUUUUUSS===>', status);
   }, [focused == true]);
 
   useEffect(() => {
@@ -237,7 +249,7 @@ const MapScreen = ({ navigation }) => {
   }, []);
 
   const onPressLocation = () => {
-    navigation.navigate('chooseLocation', { getCordinates: fetchValue });
+    navigation.navigate('chooseLocation', {getCordinates: fetchValue});
   };
   const fetchValue = data => {
     console.log('this is data', data);
@@ -250,7 +262,7 @@ const MapScreen = ({ navigation }) => {
   };
 
   const animate = (latitude, longitude) => {
-    const newCoordinate = { latitude, longitude };
+    const newCoordinate = {latitude, longitude};
     if (Platform.OS == 'android') {
       if (markerRef.current) {
         markerRef.current.animateMarkerToCoordinate(newCoordinate, 7000);
@@ -301,8 +313,12 @@ const MapScreen = ({ navigation }) => {
   return (
     <>
       <Header onClick={() => navigation.openDrawer()} />
-      {showacceptScreen ? (
+      {!showacceptScreen && status == true ? (
         <PickupDropoffContainer
+          checkStatue={() => {
+            const checkStatus = AsyncStorage.getItem('secoundStatus');
+            return checkStatus;
+          }}
           showDetails={showHeaderDetails}
           details={notiData}
           getDistance={txt => setDistanceTop(txt)}
@@ -319,7 +335,7 @@ const MapScreen = ({ navigation }) => {
         )} */}
         {/* //Incomming Details pickup and Dropoff */}
         {/* Incomming Details END pickup and Dropoff */}
-        <View style={{ flex: 1 }}>
+        <View style={{flex: 1}}>
           <MapView
             ref={mapRef}
             style={StyleSheet.absoluteFill}
@@ -334,7 +350,7 @@ const MapScreen = ({ navigation }) => {
                 style={{
                   width: 30,
                   height: 30,
-                  transform: [{ rotate: `${heading}deg` }],
+                  transform: [{rotate: `${heading}deg`}],
                 }}
                 resizeMode="contain"
               />
@@ -343,16 +359,16 @@ const MapScreen = ({ navigation }) => {
             {Object.keys(destinationCords).length > 0 && (
               <Marker
                 coordinate={destinationCords}
-              // pinColor="hotpink"
+                // pinColor="hotpink"
 
-              // source={require('../../assets/Icons/Group15307.png')}
+                // source={require('../../assets/Icons/Group15307.png')}
               >
                 <Image
                   source={require('../../assets/Icons/Group15307.png')}
                   style={{
                     width: 40,
                     height: 40,
-                    transform: [{ rotate: `${heading}deg` }],
+                    transform: [{rotate: `${heading}deg`}],
                   }}
                   resizeMode="contain"
                 />
@@ -399,12 +415,12 @@ const MapScreen = ({ navigation }) => {
             }}
             onPress={onCenter}>
             <Image
-              style={{ height: 80, width: 80 }}
+              style={{height: 80, width: 80}}
               source={require('../../assets/Icons/Group15300.png')}
             />
           </TouchableOpacity>
         </View>
-        {!showacceptScreen ? (
+        {!showacceptScreen && status == false ? (
           <BottomSheet
             changeNamefunc={() => getName()}
             personName={name}
@@ -421,22 +437,22 @@ const MapScreen = ({ navigation }) => {
                 userId: userID,
                 value: !isEnabled ? 'yes' : 'no',
               });
-             
+
               !isEnabled
                 ? toast.show('you are online', {
-                  type: 'success',
-                  placement: 'top',
-                  duration: 500,
-                  offset: 30,
-                  animationType: 'slide-in | zoom-in',
-                })
+                    type: 'success',
+                    placement: 'top',
+                    duration: 500,
+                    offset: 30,
+                    animationType: 'slide-in | zoom-in',
+                  })
                 : toast.show('your offline', {
-                  type: 'danger',
-                  placement: 'top',
-                  duration: 500,
-                  offset: 30,
-                  animationType: 'slide-in | zoom-in',
-                });
+                    type: 'danger',
+                    placement: 'top',
+                    duration: 500,
+                    offset: 30,
+                    animationType: 'slide-in | zoom-in',
+                  });
 
               console.log('===>RESPONSEEEEE===>', res);
               // setTimeout(() => {
@@ -446,10 +462,15 @@ const MapScreen = ({ navigation }) => {
           />
         ) : showContainer ? (
           <AcceptRejectContainer
+            checkStatue={() => {
+              const checkStatus = AsyncStorage.getItem('secoundStatus');
+              return checkStatus;
+            }}
             showContainerBtn={txt => setShowContainer(txt)}
             orderDispatched={() => {
               OrderDispatched();
             }}
+            setStatus={txt => setStatus(txt)}
             distance={distance}
             showHeaderDetails={() => setHeaderDetails('Pickup')}
             // distance={0.03}
@@ -472,7 +493,7 @@ const MapScreen = ({ navigation }) => {
               setHeaderDetails('both');
             }}
             viewOrderScreen={enableAccept => {
-              navigation.navigate('OrderDetails', { enableAccept: enableAccept });
+              navigation.navigate('OrderDetails', {enableAccept: enableAccept});
               // setAcceptScree(false);
             }}
           />
@@ -482,15 +503,15 @@ const MapScreen = ({ navigation }) => {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-      // onRequestClose={() => {
-      //   Alert.alert('Modal has been closed.');
-      //   setModalVisible(!modalVisible);
-      // }}
+        // onRequestClose={() => {
+        //   Alert.alert('Modal has been closed.');
+        //   setModalVisible(!modalVisible);
+        // }}
       >
-        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.62)' }}>
+        <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.62)'}}>
           <View>
             <Image
-              style={{ height: 50, width: 50 }}
+              style={{height: 50, width: 50}}
               source={require('../../assets/Icons/Group15299.png')}
             />
           </View>
@@ -510,13 +531,17 @@ const AcceptRejectContainer = ({
   finalFunction,
   showContainerBtn,
   getDistance,
+  setStatus,
+  checkStatue,
 }) => {
   const toast = useToast();
   const [enableAccept, setEnableAccept] = useState(false);
   const [customerHandle, setCustomerHandle] = useState(false);
   const [showDetails, setShowDetails] = useState(true);
   const [showButtons, setShowButton] = useState(true);
-  const { t } = useTranslation();
+  // @background Controller
+  const [check, setCheck] = useState(false);
+  const {t} = useTranslation();
 
   const DispatchedOrder = () => {
     orderDispatched();
@@ -539,6 +564,7 @@ const AcceptRejectContainer = ({
     setEnableAccept(true);
     const userID = await AsyncStorage.getItem('userID');
     console.log('CHECKOUT ID====>', checkOutId, userID);
+    AsyncStorage.setItem('secoundStatus', 'orderStart');
 
     const res = await approvedOrder('/approved', {
       checkoutId: checkOutId,
@@ -585,6 +611,8 @@ const AcceptRejectContainer = ({
     });
     setTimeout(() => {
       finalFunction();
+      setStatus(false);
+      AsyncStorage.setItem('status', 'hide');
     }, 2000);
     console.log('RESPONSE +++', res);
 
@@ -600,6 +628,17 @@ const AcceptRejectContainer = ({
     //   animationType: 'slide-in | zoom-in',
     // });
   };
+  const checkConditions = async () => {
+    const get = await checkStatue();
+    get == 'orderStart' ? setCheck(true) : setCheck(false);
+    get == 'orderStart' ? showDestination() : null;
+
+    console.log('=============>Order Status====>', await checkStatue());
+  };
+
+  useEffect(() => {
+    checkConditions();
+  }, []);
 
   const [modalVisible, setModalVisible] = useState(false);
   return (
@@ -636,14 +675,14 @@ const AcceptRejectContainer = ({
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>
-              {distance * 1000 == 0 ? t('common:HeaderUp') : null}
-              {distance * 1000 > 30 ? 'Order Start' : null}
+            <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
+              {distance * 1000 == 0 && check ? t('common:HeaderUp') : null}
+              {distance * 1000 > 30 && check ? 'Order Start' : null}
               {distance * 1000 <= 30 && distance != 0
                 ? t('common:Pleasewait')
                 : null}
             </Text>
-            <Text style={{ color: 'black', fontSize: 15, top: 5 }}>
+            <Text style={{color: 'black', fontSize: 15, top: 5}}>
               {/* {distance * 1000 == 0 ? t('common:youhavegotaneworder') : null} */}
 
               {distance * 1000 <= 30 && distance == !0
@@ -674,24 +713,24 @@ const AcceptRejectContainer = ({
           </View>
           {distance * 1000 <= 30 && distance !== 0 ? (
             (console.log('working'),
-              (
-                <TouchableOpacity
-                  onPress={DispatchedOrder}
-                  style={{
-                    backgroundColor: color.blue,
-                    padding: 15,
-                    paddingHorizontal: 50,
-                    margin: 20,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: 30,
-                  }}>
-                  <Text style={{ fontWeight: 'bold', color: 'white' }}>
-                    {t('common:OrderDispatched')}
-                  </Text>
-                </TouchableOpacity>
-              ))
-          ) : showButtons ? (
+            (
+              <TouchableOpacity
+                onPress={DispatchedOrder}
+                style={{
+                  backgroundColor: color.blue,
+                  padding: 15,
+                  paddingHorizontal: 50,
+                  margin: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 30,
+                }}>
+                <Text style={{fontWeight: 'bold', color: 'white'}}>
+                  {t('common:OrderDispatched')}
+                </Text>
+              </TouchableOpacity>
+            ))
+          ) : showButtons && !check ? (
             <View
               style={{
                 padding: 10,
@@ -709,7 +748,7 @@ const AcceptRejectContainer = ({
                   paddingHorizontal: 50,
                   borderRadius: 30,
                 }}>
-                <Text style={{ fontWeight: 'bold', color: 'white' }}>
+                <Text style={{fontWeight: 'bold', color: 'white'}}>
                   {t('common:accept')}
                 </Text>
               </TouchableOpacity>
@@ -770,7 +809,7 @@ const AcceptRejectContainer = ({
               {/* {showDetails ? ( */}
               {/* <> */}
 
-              <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>
+              <Text style={{fontWeight: 'bold', color: 'black', fontSize: 18}}>
                 {t('common:OnTheWay')}
               </Text>
               <View
@@ -781,10 +820,10 @@ const AcceptRejectContainer = ({
                 }}>
                 <Image
                   resizeMode="contain"
-                  style={{ height: 50, width: 50, right: 10 }}
+                  style={{height: 50, width: 50, right: 10}}
                   source={require('../../assets/Icons/Group13525.png')}
                 />
-                <Text style={{ color: 'black', fontSize: 18 }}>
+                <Text style={{color: 'black', fontSize: 18}}>
                   {t('common:ContactCustomer')}
                 </Text>
               </View>
@@ -853,7 +892,7 @@ const AcceptRejectContainer = ({
                   borderRadius: 20,
                 }}>
                 <TouchableOpacity
-                  style={{ alignSelf: 'flex-end' }}
+                  style={{alignSelf: 'flex-end'}}
                   onPress={() => setModalVisible(!modalVisible)}>
                   <Text
                     style={{
@@ -866,11 +905,11 @@ const AcceptRejectContainer = ({
                 </TouchableOpacity>
                 <Image
                   resizeMode="contain"
-                  style={{ height: 150, width: 150 }}
+                  style={{height: 150, width: 150}}
                   source={require('../../assets/Icons/Group15265.png')}
                 />
                 <Text
-                  style={{ fontWeight: 'bold', fontSize: 19, color: 'black' }}>
+                  style={{fontWeight: 'bold', fontSize: 19, color: 'black'}}>
                   Order Delivered
                 </Text>
                 <Text
@@ -903,7 +942,7 @@ const BottomSheet = ({
     changeNamefunc();
   }, []);
 
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   return (
     <View
       style={{
@@ -928,7 +967,7 @@ const BottomSheet = ({
 
           elevation: 9,
         }}>
-        <View style={{ padding: 10 }}>
+        <View style={{padding: 10}}>
           <Text
             style={{
               textAlign: 'center',
@@ -938,8 +977,8 @@ const BottomSheet = ({
             {!isEnabled ? t('common:youareoffline') : t('common:youareonline')}
           </Text>
           {/* 2nd Container */}
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <View
                 style={{
                   height: 45,
@@ -980,12 +1019,12 @@ const BottomSheet = ({
             </View>
             {/* <Switch /> */}
             <Switch
-              trackColor={{ false: '#767577', true: color.blue }}
+              trackColor={{false: '#767577', true: color.blue}}
               thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleSwitch}
               value={isEnabled}
-              style={{ marginRight: '2%' }}
+              style={{marginRight: '2%'}}
             />
           </View>
           {/* End 2nd Container */}
@@ -1031,9 +1070,21 @@ const PickupDropoffContainer = ({
   showDetails,
   distance,
   getDistance,
+  checkStatue,
 }) => {
   console.log('PICKUP CONTAINER====>', details);
+  const [check, setCheck] = useState('both');
   getDistance(distance);
+  const checkConditions = async () => {
+    const get = await checkStatue();
+    get == 'orderStart' ? setCheck('Pickup') : setCheck('DropOff');
+    console.log(
+      '=============>Order PICKEUP CONTAINER====>',
+      await checkStatue(),
+    );
+  };
+  checkConditions();
+  console.log('DETAILSSSSS=========>', details);
   return (
     <>
       <View
@@ -1061,10 +1112,10 @@ const PickupDropoffContainer = ({
           elevation: 9,
         }}>
         <View>
-          {showDetails == 'both' ? (
+          {showDetails && check == 'both' ? (
             <Image
               resizeMode="contain"
-              style={{ height: '80%' }}
+              style={{height: '80%'}}
               source={require('../../assets/Icons/Group16945.png')}
             />
           ) : null}
@@ -1077,16 +1128,16 @@ const PickupDropoffContainer = ({
             source={require('../../assets/Icons/Group15266.png')}
           /> */}
         </View>
-        {showDetails == 'both' ? (
-          <View style={{ left: 10 }}>
+        {showDetails && check == 'both' ? (
+          <View style={{left: 10}}>
             <Text
-              style={{ fontWeight: 'bold', color: 'black', textAlign: 'center' }}>
+              style={{fontWeight: 'bold', color: 'black', textAlign: 'center'}}>
               {distance * 1000 >= 1000
                 ? `${distance}KM`
                 : `${distance * 1000}m`}
             </Text>
-            <View style={{ flexWrap: 'wrap' }}>
-              <Text style={{ color: 'black', fontSize: 12 }}>
+            <View style={{flexWrap: 'wrap'}}>
+              <Text style={{color: 'black', fontSize: 12}}>
                 {/* AI Zumarodn Tower Floor 21,20,m2 */}
                 {details?.pickupAddress}
               </Text>
@@ -1099,37 +1150,37 @@ const PickupDropoffContainer = ({
                 Pickup Location
               </Text>
             </View>
-            <View style={{ width: '95%' }}>
+            <View style={{width: '95%'}}>
               <Text
                 numberOfLines={1}
-                style={{ color: 'black', fontSize: 12, flexWrap: 'wrap' }}>
+                style={{color: 'black', fontSize: 12, flexWrap: 'wrap'}}>
                 {/* AI Zumarodn Tower Floor 21,20,m2 */}
                 {details?.deliveryAddress}
               </Text>
-              <Text style={{ fontWeight: 'bold', color: 'black' }}>
+              <Text style={{fontWeight: 'bold', color: 'black'}}>
                 Delivery Address
               </Text>
             </View>
           </View>
         ) : null}
-        {showDetails == 'Pickup' ? (
+        {showDetails && check == 'Pickup' ? (
           <View
             style={{
               justifyContent: 'center',
               alignItems: 'center',
               width: '100%',
-              padding:5
+              padding: 5,
             }}>
-                <Text
+            <Text
               style={{
                 fontWeight: 'bold',
                 color: 'black',
                 textAlign: 'center',
                 // fontFamily: 'sofiapro-light',
               }}>
-             Distance
+              Distance
             </Text>
-            <Text style={{ fontWeight: 'bold', color: 'black' }}>
+            <Text style={{fontWeight: 'bold', color: 'black'}}>
               {distance * 1000 >= 1000
                 ? `${distance}KM`
                 : `${distance * 1000}m`}
@@ -1139,12 +1190,12 @@ const PickupDropoffContainer = ({
                 fontWeight: 'bold',
                 color: 'black',
                 textAlign: 'center',
-                top:5
+                top: 5,
                 // fontFamily: 'sofiapro-light',
               }}>
               Pickup Location
             </Text>
-            <Text style={{ color: 'black', fontSize: 12,top:5}}>
+            <Text style={{color: 'black', fontSize: 12, top: 5}}>
               {/* AI Zumarodn Tower Floor 21,20,m2 */}
               {details?.pickupAddress}
             </Text>
@@ -1153,7 +1204,7 @@ const PickupDropoffContainer = ({
             </Text> */}
           </View>
         ) : null}
-        {showDetails == 'DropOff' ? (
+        {showDetails && check == 'DropOff' ? (
           <View
             style={{
               width: '100%',
@@ -1161,12 +1212,12 @@ const PickupDropoffContainer = ({
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Text style={{ fontWeight: 'bold', color: 'black' }}>
+            <Text style={{fontWeight: 'bold', color: 'black'}}>
               {distance * 1000 >= 1000
                 ? `${distance}KM`
                 : `${distance * 1000}m`}
             </Text>
-            <Text style={{ fontWeight: 'bold', color: 'black' }}>
+            <Text style={{fontWeight: 'bold', color: 'black'}}>
               Delivery Address
             </Text>
             <Text
