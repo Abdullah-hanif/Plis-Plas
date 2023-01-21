@@ -21,7 +21,7 @@ export const ForegroundHandler = () => {
       return unSubscribe;
     });
   }, []);
-  AsyncStorage.setItem('status', 'show');
+  // AsyncStorage.setItem('status', 'show');
 
   return null;
 };
