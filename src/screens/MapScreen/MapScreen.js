@@ -294,6 +294,7 @@ const MapScreen = ({navigation}) => {
     // alert('dispathced sucessfully');
     const data = await AsyncStorage.getItem('restaurantDetails');
     // const realData = JSON.parse(data);
+    // console.log('=====>ORDER==>', realData);
     // setCheckOutId(realData?.checkoutId);
     // const {destinationCords} = state;
     setHeaderDetails('DropOff');
