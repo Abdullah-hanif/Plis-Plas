@@ -12,9 +12,10 @@ import {
   Modal,
 } from 'react-native';
 import MapView, {Marker, AnimatedRegion} from 'react-native-maps';
-
+import Geolocation from 'react-native-geolocation-service';
 import MapViewDirections from 'react-native-maps-directions';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {AppState} from "react-native"
 // import Loader from '../components/Loader';
 import {
   locationPermission,
@@ -28,6 +29,7 @@ import {approvedOrder, onlineOffline} from '../../api/api';
 import {useToast} from 'react-native-toast-notifications';
 // @Translation
 import {useTranslation} from 'react-i18next';
+import useAppState from 'react-native-appstate-hook';
 
 // @redux
 import {useSelector, useDispatch} from 'react-redux';
@@ -57,7 +59,8 @@ const MapScreen = ({navigation}) => {
   const markerRef = useRef();
   const [isEnabled, setIsEnabled] = useState(false);
   const [showacceptScreen, setAcceptScree] = useState(false);
-  const [checkOutId, setCheckOutId] = useState('');
+  const [checkOutId, setCheckOutId] = useState();
+  const [currentAppState,setCurrentAppState] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [notiData, setNotiData] = useState();
   const [showHeaderDetails, setHeaderDetails] = useState('both');
@@ -75,12 +78,27 @@ const MapScreen = ({navigation}) => {
     'http://projects.websetters.in/digg-seos/digg/wp-content/themes/twentytwenty-child-theme/img/demo-prof.jpg',
   );
 
-  const {t} = useTranslation();
+  // const {t} = useTranslation();
   // AsyncStorage.clear();
 
   // const [meetDistance, setMeetDistance] = useState();
 
   // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+
+  const { appState } = useAppState({
+    onChange: (newAppState) => console.warn('App state changed to ', newAppState),
+    onForeground: (newAppState) => {getAddress()},
+    onBackground: (newAppState) => {
+      console.log("in background")
+      if(notiData != null) {
+      AsyncStorage.setItem('restaurantDetails',notiData )
+      }
+    },
+  });
+
+
+
   // console.log('====FUNICUCNC===>', myconditon);
 
   const showAcceptScreen = () => {
@@ -91,6 +109,27 @@ const MapScreen = ({navigation}) => {
       myconditon ? setAcceptScree(true) : null;
     }, 1000);
   };
+
+
+
+
+
+
+      
+    //   console.log("aap state ", nextAppState)
+
+    //   // The app has come to the foreground, check AsyncStorage for app state.
+    //   const savedAppState = await AsyncStorage.getItem('appState');
+
+    //    console.log("in aap listener")
+    //   console.log('Saved app state:', savedAppState);
+    // } else if (nextAppState.match(/inactive|background/)) {
+    //   // The app has gone to the background or is killed, save the app state.
+    //   console.log("aap state in back ground", nextAppState)
+    //   await AsyncStorage.setItem('appState', JSON.stringify({ appState: nextAppState }));
+    // }
+  };
+
 
   const [state, setState] = useState({
     curLoc: {
@@ -139,6 +178,7 @@ const MapScreen = ({navigation}) => {
     const data = await AsyncStorage.getItem('restaurantDetails');
     // console.log('PUSH NOTIFICATION JSON DATA===>', data);
     const realData = JSON.parse(data);
+    console.log("real data ", realData)
     setNotiData(realData);
   };
 
@@ -167,7 +207,26 @@ const MapScreen = ({navigation}) => {
     console.log('======>LATITIUDEEEEE', realData?.longitude);
   };
 
+
+useEffect(()=>{
+
+  Geolocation.getCurrentPosition (function(position) {
+   var  curLatitude =position.coords.latitude
+   var  curLongitude = position.coords.longitude
+  updateState({
+    curLoc: {curLatitude, curLongitude}
+    
+  }  )
+})
+
+
+
+
+},[])
+
   useEffect(() => {
+
+
     getLiveLocation();
     // getToken();
     getAddress();
@@ -182,6 +241,7 @@ const MapScreen = ({navigation}) => {
 
   // const getToken = async () => {
   //   await messaging().registerDeviceForRemoteMessages();
+
   //   const token = await messaging().getToken();
   //   AsyncStorage.setItem('token', token);
   //   return console.log('====>TOKENNNNNN====>', token);
@@ -235,17 +295,43 @@ const MapScreen = ({navigation}) => {
   useEffect(() => {
     // reduData?.profileDetail.map((data, index) => {
     //   return setName(data?.name), setProfileImg(data?.profilePicture);
-    // });
+    // });]
+
+let dat = AsyncStorage.getItem('restaurantDetails')
+ let realDatas = JSON.stringify(dat)
+ console.log("real data in here", realDatas)
+
     getName();
     getMode();
     console.log('SSSSSSSSSSSTTTTTAAATUUUUUSS===>', status);
   }, [focused == true]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      getLiveLocation();
-    }, 4000);
-    return () => clearInterval(interval);
+    const locPermissionDenied =  locationPermission();
+    if(locPermissionDenied){
+    const watchId = Geolocation.watchPosition(
+      position => {
+        latitude=position.coords.latitude,
+        longitude= position.coords.longitude,
+       
+        animate(latitude,longitude);
+        updateState({
+         
+          curLoc: {latitude,longitude },
+          coordinate: new AnimatedRegion({
+            latitude: latitude,
+            longitude: longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          })
+      });
+    },
+      error => console.log(error),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    
+    );
+    return () => Geolocation.clearWatch(watchId);
+    }
   }, []);
 
   const onPressLocation = () => {
@@ -278,7 +364,7 @@ const MapScreen = ({navigation}) => {
       longitude: curLoc.longitude,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
-    });
+    });  
   };
 
   const fetchTime = (d, t) => {
@@ -293,7 +379,10 @@ const MapScreen = ({navigation}) => {
   const OrderDispatched = async () => {
     // alert('dispathced sucessfully');
     const data = await AsyncStorage.getItem('restaurantDetails');
-    // const realData = JSON.parse(data);
+  
+     const realData = JSON.parse(data);
+
+     console.log("data details ", realData)
     // console.log('=====>ORDER==>', realData);
     // setCheckOutId(realData?.checkoutId);
     // const {destinationCords} = state;
@@ -314,6 +403,10 @@ const MapScreen = ({navigation}) => {
   return (
     <>
       <Header onClick={() => navigation.openDrawer()} />
+     
+
+      {console.log("data for details ",  )}
+
       {!showacceptScreen && status == true ? (
         <PickupDropoffContainer
           checkStatue={() => {
@@ -345,6 +438,7 @@ const MapScreen = ({navigation}) => {
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
             }}>
+              {console.log("current location ", curLoc)}
             <Marker.Animated ref={markerRef} coordinate={coordinate}>
               <Image
                 source={require('../../assets/Icons/CarImg.png')}
@@ -378,12 +472,14 @@ const MapScreen = ({navigation}) => {
 
             {Object.keys(destinationCords).length > 0 && (
               <MapViewDirections
-                origin={curLoc}
+                origin={
+            curLoc
+                }
                 destination={destinationCords}
                 apikey={GOOGLE_MAP_KEY}
                 strokeWidth={6}
                 strokeColor="black"
-                optimizeWaypoints={true}
+                // optimizeWaypoints={true}
                 onStart={params => {
                   console.log(
                     `Started routing between "${params.origin}" and "${params.destination}"`,
@@ -553,6 +649,10 @@ const AcceptRejectContainer = ({
     setCustomerHandle(!customerHandle);
   };
 
+
+  
+
+
   // useEffect(() => {
   //   setShowDetails(true);
   //   alert('wkokg');
@@ -566,8 +666,13 @@ const AcceptRejectContainer = ({
   const AcceptOrder = async () => {
     setEnableAccept(true);
     const userID = await AsyncStorage.getItem('userID');
+    const data = await AsyncStorage.getItem("restaurantDetails")
+    const resp = JSON.parse(data)
+    console.log("data in here for checkout Id",resp )
+   
+
     console.log('CHECKOUT ID====>', checkOutId, userID);
-    AsyncStorage.setItem('secoundStatus', 'orderStart');
+    AsyncStorage.setItem('secoundStatus', JSON.stringify('orderStart'));
 
     const res = await approvedOrder('/approved', {
       checkoutId: checkOutId,
@@ -596,7 +701,12 @@ const AcceptRejectContainer = ({
     setTimeout(() => {
       finalFunction();
     }, 1000);
+
     console.log('RESPONSE +++', res);
+
+    AsyncStorage.setItem('secoundStatus', 'order Cancelled');
+    AsyncStorage.setItem('restaurantDetails',"");
+
     toast.show(res?.message, {
       type: 'danger',
       placement: 'top',
@@ -618,12 +728,16 @@ const AcceptRejectContainer = ({
       AsyncStorage.setItem('status', 'hide');
       // AsyncStorage.clear();
     }, 2000);
+
     console.log('RESPONSE +++', res);
 
-    res?.message == 'Delivered successfully'
-      ? setModalVisible(true)
-      : alert('their is a problem check again');
-
+    if(res?.message == 'Delivered successfully'){
+       setModalVisible(true)
+      AsyncStorage.setItem('secoundStatus', 'orderDelivered');
+      AsyncStorage.setItem('restaurantDetails',"");
+    }else{
+       alert('their is a problem check again');
+    }
     // toast.show(res?.message, {
     //   type: 'success',
     //   placement: 'top',
