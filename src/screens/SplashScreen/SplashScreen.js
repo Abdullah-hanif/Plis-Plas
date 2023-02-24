@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const SplashScreen = ({navigation}) => {
   setTimeout(async () => {
     const token = await AsyncStorage.getItem('token');
+    
     console.log('SPLASH TOKEN', token);
     if (token == null) {
       navigation.navigate('AppIntroSliders');

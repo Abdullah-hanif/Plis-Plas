@@ -1,6 +1,8 @@
 import messaging from '@react-native-firebase/messaging';
 import PushNotification from 'react-native-push-notification';
 import React, {useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Alert} from 'react-native';
 
 export const ForegroundHandler = () => {
   React.useEffect(() => {
@@ -17,9 +19,12 @@ export const ForegroundHandler = () => {
         vibrate: true,
         playSound: true,
       });
+      // Alert.alert(1);
+      alert(1);
       return unSubscribe;
     });
   }, []);
+  // AsyncStorage.setItem('status', 'show');
 
   return null;
 };

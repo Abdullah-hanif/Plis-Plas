@@ -6,7 +6,7 @@ import {
   LogBox,
   NativeModules,
 } from 'react-native';
-import React from 'react';
+import React,{ useEffect, useState } from 'react';
 import SplashScreen from './src/screens/SplashScreen/SplashScreen';
 import Login from './src/screens/Login/Login';
 import {NavigationContainer} from '@react-navigation/native';
@@ -14,7 +14,6 @@ import StackNavigation from './src/navigations/StackNavigation';
 import messaging from '@react-native-firebase/messaging';
 import PushNotification from 'react-native-push-notification';
 import {ForegroundHandler} from './src/utils/ForegroundHandler';
-
 //Toast Notification
 import {ToastProvider} from 'react-native-toast-notifications';
 import {useTranslation} from 'react-i18next';
@@ -32,6 +31,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 LogBox.ignoreAllLogs();
 const App = () => {
+  const [orderStatus, setOrderStatus] = useState(null);
   // languge Changer
   const locale = NativeModules.I18nManager.localeIdentifier;
   console.log('==>LOCAL BEFORE===>', locale);
@@ -55,10 +55,25 @@ const App = () => {
 
   // Languge change end
 
+  const getOrderStatus = async () => {
+    try {
+      const status = await AsyncStorage.getItem("secoundStatus");
+      console.log("status in useEffect ", status)
+      if (status != "orderStart"){
+        NotificationListner()
+      }
+      setOrderStatus(status);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   //Post token
-
+ 
   React.useEffect(() => {
-    NotificationListner();
+    getOrderStatus()
+    console.log("orderStatus in useEffect ", orderStatus)
+ 
+  
     requestUserPermission();
   }, []);
 
