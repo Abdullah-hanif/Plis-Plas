@@ -17,12 +17,15 @@ export const requestUserPermission = async () => {
   }
 };
 
-function GetFCMToken() {
-  let fcmtoken = AsyncStorage.getItem('fcmtoken');
+const GetFCMToken =async()=> {
 
+  let fcmtoken = AsyncStorage.getItem('fcmtoken');
+  let token =await messaging().getToken();
+  console.log(token)
   if (!fcmtoken) {
     try {
       let fcmtoken = messaging().getToken();
+      console.log(fcmtoken)
       if (fcmtoken) {
         const token = AsyncStorage.setItem('fcmtoken', fcmtoken);
         console.log(token, '===>');

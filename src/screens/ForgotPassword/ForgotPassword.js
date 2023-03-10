@@ -10,21 +10,22 @@ import {
   Dimensions,
 } from 'react-native';
 import React from 'react';
-import {color} from '../../theme';
+import { color } from '../../theme';
 import Mail from 'react-native-vector-icons/Fontisto';
 import Back from 'react-native-vector-icons/Ionicons';
 
 // @langugeChanger
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
-const ForgotPassword = ({navigation}) => {
-  const {t} = useTranslation();
+const ForgotPassword = ({ navigation }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <StatusBar hidden />
       <View style={styles.container}>
         <TouchableOpacity
-          style={{left: 15, top: 15}}
+          style={{ left: 15, top: 15 }}
           onPress={() => navigation.goBack()}>
           <Back name="chevron-back" size={30} color="black" />
         </TouchableOpacity>
@@ -60,7 +61,7 @@ const ForgotPassword = ({navigation}) => {
               <TextInput
                 placeholderTextColor={'black'}
                 placeholder="Paco ramos"
-                style={{left: 10, fontSize: 15}}
+                style={{ left: 10, fontSize: 15 }}
               />
             </View>
           </View>
@@ -76,7 +77,7 @@ const ForgotPassword = ({navigation}) => {
               borderRadius: 40,
               backgroundColor: color.blue,
             }}>
-            <Text style={{fontWeight: 'bold', color: 'white'}}>
+            <Text style={{ fontWeight: 'bold', color: 'white' }}>
               {t('common:send')}
             </Text>
             {/* <Button /> */}

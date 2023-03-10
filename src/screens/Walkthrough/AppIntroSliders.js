@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
   buttonCircle: {
     width: 340,
     height: '55%',
-    // padding: 15,
     right: '3.5%',
     marginBottom: 50,
     backgroundColor: color.blue,
@@ -34,7 +33,6 @@ const styles = StyleSheet.create({
   buttonCirclet: {
     width: 340,
     height: '50%',
-    // padding: 15,
     right: '3.5%',
     marginBottom: 50,
     backgroundColor: color.blue,

@@ -90,9 +90,9 @@ const MapScreen = ({ navigation }) => {
   const [state, setState] = useState({
     curLoc: {
       latitude: 41.390205,
-      longitude:  2.154007,
-      latitudeDelta:LATITUDE_DELTA,
-      longitudeDelta:LONGITUDE_DELTA,
+      longitude: 2.154007,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
     },
     destinationCords: {
       latitude: 0.0,
@@ -139,7 +139,7 @@ const MapScreen = ({ navigation }) => {
 
   const getDestination = async () => {
     const data = await AsyncStorage.getItem('restaurantDetails');
-    // console.log('PUSH NOTIFICATION JSON DATA===>', data);
+    console.log('PUSH NOTIFICATION JSON DATA===>', data);
     const realData = JSON.parse(data);
     // setNotiData(realData);
     setCheckOutId(realData?.checkoutId);
@@ -172,7 +172,7 @@ const MapScreen = ({ navigation }) => {
 
   useEffect(() => {
     setShowContainer(true);
-  }, [distance * 1000 <= 30 && distance !== 0]);
+  }, [distance * 1000 <= 100 && distance !== 0]);
 
   // const getToken = async () => {
   //   await messaging().registerDeviceForRemoteMessages();
@@ -404,6 +404,7 @@ const MapScreen = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
+
         {!showacceptScreen ? (
           <BottomSheet
             changeNamefunc={() => getName()}
@@ -421,7 +422,7 @@ const MapScreen = ({ navigation }) => {
                 userId: userID,
                 value: !isEnabled ? 'yes' : 'no',
               });
-             
+
               !isEnabled
                 ? toast.show('you are online', {
                   type: 'success',
@@ -637,16 +638,16 @@ const AcceptRejectContainer = ({
               alignItems: 'center',
             }}>
             <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>
-              {distance * 1000 == 0 ? t('common:HeaderUp') : null}
-              {distance * 1000 > 30 ? 'Order Start' : null}
-              {distance * 1000 <= 30 && distance != 0
+              {distance * 1000 == 1500 ? t('common:HeaderUp') : null}
+              {distance * 1000 > 1500 ? 'Order Start' : null}
+              {distance * 1000 <= 1500 && distance != 0
                 ? t('common:Pleasewait')
                 : null}
             </Text>
             <Text style={{ color: 'black', fontSize: 15, top: 5 }}>
               {/* {distance * 1000 == 0 ? t('common:youhavegotaneworder') : null} */}
 
-              {distance * 1000 <= 30 && distance == !0
+              {distance * 1000 <= 1500 && distance == !0
                 ? t('common:Orderisgettingready')
                 : t('common:youhavegotaneworder')}
             </Text>
@@ -661,8 +662,8 @@ const AcceptRejectContainer = ({
                 {distance * 1000 <= 30 && distance != 0
                   ? t('common:Pleasewaitfewmintues')
                   : null}
-                {distance * 1000 == 0 ? t('common:ViewOrder') : null}
-                {distance * 1000 > 30 ? 'Details' : null}
+                {distance * 1000 == 1500 ? t('common:ViewOrder') : null}
+                {distance * 1000 > 1500 ? 'Details' : null}
 
                 {/* {distance * 1000 <= 30 && distance !== 0
                   ? t('common:Pleasewaitfewmintues')
@@ -672,7 +673,7 @@ const AcceptRejectContainer = ({
               </Text>
             </TouchableOpacity>
           </View>
-          {distance * 1000 <= 30 && distance !== 0 ? (
+          {distance * 1000 <= 1500 && distance !== 0 ? (
             (console.log('working'),
               (
                 <TouchableOpacity
@@ -907,8 +908,6 @@ const BottomSheet = ({
   return (
     <View
       style={{
-        //   flex: 1,
-        //   backgroundColor: 'yellow',
         flexDirection: 'column-reverse',
       }}>
       <View
@@ -916,8 +915,6 @@ const BottomSheet = ({
           backgroundColor: 'white',
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
-          // borderColor: 'lightgray',
-          // borderWidth: 1,
           shadowColor: '#000',
           shadowOffset: {
             width: 0,
@@ -925,7 +922,6 @@ const BottomSheet = ({
           },
           shadowOpacity: 0.32,
           shadowRadius: 5.46,
-
           elevation: 9,
         }}>
         <View style={{ padding: 10 }}>
@@ -937,7 +933,9 @@ const BottomSheet = ({
             }}>
             {!isEnabled ? t('common:youareoffline') : t('common:youareonline')}
           </Text>
+
           {/* 2nd Container */}
+
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View
@@ -945,8 +943,6 @@ const BottomSheet = ({
                   height: 45,
                   width: 45,
                   marginLeft: '8%',
-                  // borderWidth: 3,
-                  // borderColor: 'black',
                   borderRadius: 360,
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -962,7 +958,6 @@ const BottomSheet = ({
                     tintColor: 'white',
                     resizeMode: 'contain',
                   }}
-                  // source={{uri: imgrUri}}
                   source={require('../../assets/Icons/Group15299.png')}
                 />
               </View>
@@ -970,15 +965,15 @@ const BottomSheet = ({
                 style={{
                   fontWeight: 'bold',
                   left: 15,
-
                   color: 'black',
                   fontSize: 19,
-                  // top: 13,
                 }}>
                 {personName}
               </Text>
             </View>
-            {/* <Switch /> */}
+
+            {/* ===================== ONLINE OFFLINE STATUS =================================== */}
+
             <Switch
               trackColor={{ false: '#767577', true: color.blue }}
               thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
@@ -1039,12 +1034,9 @@ const PickupDropoffContainer = ({
       <View
         style={{
           backgroundColor: 'white',
-          // height: '20%',
           paddingVertical: 25,
           position: 'absolute',
           width: '90%',
-
-          // top: '10%',
           borderRadius: 10,
           padding: 10,
           margin: 15,
@@ -1057,7 +1049,6 @@ const PickupDropoffContainer = ({
           shadowOpacity: 0.32,
           shadowRadius: 5.46,
           flexDirection: 'row',
-
           elevation: 9,
         }}>
         <View>
@@ -1118,16 +1109,16 @@ const PickupDropoffContainer = ({
               justifyContent: 'center',
               alignItems: 'center',
               width: '100%',
-              padding:5
+              padding: 5
             }}>
-                <Text
+            <Text
               style={{
                 fontWeight: 'bold',
                 color: 'black',
                 textAlign: 'center',
                 // fontFamily: 'sofiapro-light',
               }}>
-             Distance
+              Distance
             </Text>
             <Text style={{ fontWeight: 'bold', color: 'black' }}>
               {distance * 1000 >= 1000
@@ -1139,12 +1130,12 @@ const PickupDropoffContainer = ({
                 fontWeight: 'bold',
                 color: 'black',
                 textAlign: 'center',
-                top:5
+                top: 5
                 // fontFamily: 'sofiapro-light',
               }}>
               Pickup Location
             </Text>
-            <Text style={{ color: 'black', fontSize: 12,top:5}}>
+            <Text style={{ color: 'black', fontSize: 12, top: 5 }}>
               {/* AI Zumarodn Tower Floor 21,20,m2 */}
               {details?.pickupAddress}
             </Text>
